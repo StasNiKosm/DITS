@@ -1,5 +1,6 @@
 package dao;
 
+import dao.entities.Test;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -16,10 +17,7 @@ public class HibernateSessionFactory {
             try {
                 Configuration configuration = new Configuration().configure();
 
-                /*
-                Добавить новвый класс.
-                configuration.addAnnotatedClass(Class.class);
-                 */
+                configuration.addAnnotatedClass(Test.class);
 
                 StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
                         .applySettings(configuration.getProperties());
