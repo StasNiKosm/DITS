@@ -4,7 +4,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "test_table")
-public class Test {
+public class Person {
+
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     private int id;
@@ -12,11 +13,11 @@ public class Test {
     @Column(length = 25)
     private String name;
 
-    public Test(String name) {
+    public Person(String name) {
         this.name = name;
     }
 
-    public Test() {
+    public Person() {
 
     }
 
@@ -34,5 +35,13 @@ public class Test {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
