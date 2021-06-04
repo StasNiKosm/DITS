@@ -15,7 +15,7 @@ public class WelcomeController {
         this.service = service;
     }
 
-    @GetMapping
+    @GetMapping("/hello")
     public String main() {
         return "main";
     }

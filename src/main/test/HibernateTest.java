@@ -3,6 +3,9 @@ import dao.HibernateSessionFactory;
 import dao.entities.Person;
 import org.hibernate.Session;
 import org.junit.Test;
+import scriptDB.DBInitializer;
+
+import java.sql.SQLException;
 
 public class HibernateTest {
 
@@ -25,6 +28,15 @@ public class HibernateTest {
         Person person = new Person("new person");
         daoPerson.save(person);
         person = daoPerson.findByID(person.getId());
+    }
+
+    @Test
+    public void initTest() {
+        try {
+            DBInitializer.init();
+        } catch (SQLException exception) {
+            throw new RuntimeException(exception);
+        }
     }
 
 }
