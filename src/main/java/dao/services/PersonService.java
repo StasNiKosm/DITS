@@ -8,9 +8,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class PersonService {
 
-    private final DaoPerson daoPerson;
+    private DaoPerson daoPerson;
 
-    @Autowired
     public PersonService(DaoPerson daoPerson) {
         this.daoPerson = daoPerson;
     }
@@ -25,5 +24,14 @@ public class PersonService {
 
     public void update(Person person) {
         daoPerson.update(person);
+    }
+
+    @Autowired
+    public void setDaoPerson(DaoPerson daoPerson) {
+        this.daoPerson = daoPerson;
+    }
+
+    public DaoPerson getDaoPerson() {
+        return daoPerson;
     }
 }

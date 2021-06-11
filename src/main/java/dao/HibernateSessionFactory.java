@@ -1,10 +1,15 @@
 package dao;
 
 import dao.entities.Person;
+import dao.entities.Question;
+import dao.entities.Test;
+import dao.entities.Topic;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.springframework.stereotype.Component;
 
+@Component
 public class HibernateSessionFactory {
     private static SessionFactory sessionFactory;
 
@@ -19,6 +24,9 @@ public class HibernateSessionFactory {
 
                 // Добавить класс @Entity сюда и в hibernate.cfg.xml добавить Mapping
                 configuration.addAnnotatedClass(Person.class);
+                configuration.addAnnotatedClass(Topic.class);
+                configuration.addAnnotatedClass(Test.class);
+                configuration.addAnnotatedClass(Question.class);
 
                 StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
                         .applySettings(configuration.getProperties());

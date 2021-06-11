@@ -14,6 +14,9 @@
     <property name="hbm2ddl.auto">update</property>
 
     <mapping class="dao.entities.Person" />
+    <mapping class="dao.entities.Topic" />
+    <mapping class="dao.entities.Test" />
+    <mapping class="dao.entities.Question" />
 
   </session-factory>
 </hibernate-configuration>

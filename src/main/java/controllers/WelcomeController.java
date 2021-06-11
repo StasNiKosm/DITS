@@ -17,6 +17,7 @@ public class WelcomeController {
 
     @GetMapping("/hello")
     public String main() {
+        System.out.println("touch WelcomeController!");
         return "main";
     }
 }

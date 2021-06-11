@@ -1,8 +1,11 @@
 package dao;
 
+import org.springframework.stereotype.Component;
+
 import java.sql.*;
 import java.util.Properties;
 
+@Component
 public class DataBaseConnectionFactory {
 
     private static final String DRIVER_CLASS_NAME = "org.postgresql.Driver";
