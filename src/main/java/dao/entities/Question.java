@@ -1,10 +1,14 @@
 package dao.entities;
 
 import javax.persistence.*;
+import java.util.Collections;
+import java.util.List;
 import java.util.Queue;
 
 @Entity
+@Table(name = "question")
 public class Question {
+
     @Column(name = "questionid")
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
@@ -16,6 +20,9 @@ public class Question {
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "testid")
     Test test;
+
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
+    private List<Literature> literature;
 
     public Question() {
 
@@ -58,5 +65,15 @@ public class Question {
                 ", description='" + description + '\'' +
                 ", test=" + test.getTestId() +
                 '}';
+    }
+
+    public List<Literature> getLiterature() {
+        if (literature == null)
+            return Collections.emptyList();
+        return literature;
+    }
+
+    public void setLiterature(List<Literature> literature) {
+        this.literature = literature;
     }
 }

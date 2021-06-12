@@ -11,12 +11,9 @@
     <property name="hibernate.connection.password">741AzxY321963</property>
     <property name="hibernate.show_sql">true</property>
     <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL10Dialect</property>
-    <property name="hbm2ddl.auto">update</property>
+    <property name="hibernate.connection.autocommit">true</property>
 
-    <mapping class="dao.entities.Person" />
-    <mapping class="dao.entities.Topic" />
-    <mapping class="dao.entities.Test" />
-    <mapping class="dao.entities.Question" />
+    <property name="hbm2ddl.auto">update</property>
 
   </session-factory>
 </hibernate-configuration>

@@ -1,9 +1,6 @@
 package dao;
 
-import dao.entities.Person;
-import dao.entities.Question;
-import dao.entities.Test;
-import dao.entities.Topic;
+import dao.entities.*;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -23,10 +20,10 @@ public class HibernateSessionFactory {
                 Configuration configuration = new Configuration().configure();
 
                 // Добавить класс @Entity сюда и в hibernate.cfg.xml добавить Mapping
-                configuration.addAnnotatedClass(Person.class);
                 configuration.addAnnotatedClass(Topic.class);
                 configuration.addAnnotatedClass(Test.class);
                 configuration.addAnnotatedClass(Question.class);
+                configuration.addAnnotatedClass(Literature.class);
 
                 StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
                         .applySettings(configuration.getProperties());

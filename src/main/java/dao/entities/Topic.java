@@ -19,7 +19,7 @@ public class Topic {
     @Column(name = "name", length = 20)
     String name;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "topic")
+    @OneToMany(mappedBy = "topic", fetch = FetchType.LAZY)
     private List<Test> tests;
 
     public Topic() {

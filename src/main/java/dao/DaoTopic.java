@@ -5,33 +5,41 @@ import org.hibernate.Session;
 
 public class DaoTopic extends AbstractDao<Topic> {
 
-    public Topic findById(int id) {
-        return HibernateSessionFactory.getSessionFactory().openSession().get(Topic.class, id);
+    @Override
+    public Topic findByID(int id) {
+        return findByID(id, Topic.class);
     }
 
     @Override
     public void update(Topic topic) {
         commitOperation(session -> {
             session.update(topic);
-            //topic.getTests().forEach(AppContextProvider.getAppContext().getBean(DaoTest.class)::update);
         });
     }
 
     @Override
-    public void save(Topic topic) {
-        commitOperation(session -> save(topic, session));
+    public void deepUpdate(Topic topic, Session session) {
+        session.update(topic);
+        DaoTest daoTest = contextProvider.getBean(DaoTest.class);
+        topic.getTests().forEach(
+            test -> daoTest.deepUpdate(test, session)
+        );
     }
 
-    public void save(Topic topic, Session session) {
-        commitOperation(session, session_ -> {
-            session_.save(topic);
-            DaoTest daoTest = new DaoTest();
-            topic.getTests().forEach(test -> daoTest.save(test, session_));
-            //topic.getTests().forEach(AppContextProvider.getAppContext().getBean(DaoTest.class)::update);
+    @Override
+    public void save(Topic topic) {
+        commitOperation(session -> {
+            session.save(topic);
         });
     }
 
-
-
+    @Override
+    public void deepSave(Topic topic, Session session) {
+        session.save(topic);
+        DaoTest daoTest = contextProvider.getBean(DaoTest.class);
+        topic.getTests().forEach(
+            test -> daoTest.deepSave(test, session)
+        );
+    }
 
 }

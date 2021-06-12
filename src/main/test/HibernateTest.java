@@ -1,18 +1,16 @@
-import dao.DaoPerson;
 import dao.DaoTopic;
 import dao.HibernateSessionFactory;
-import dao.entities.Person;
+import dao.entities.Literature;
 import dao.entities.Question;
 import dao.entities.Topic;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.Test;
-import org.springframework.context.support.AbstractApplicationContext;
-import provider.AppContextProvider;
 import scriptDB.DBInitializer;
 
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.function.Consumer;
 
 public class HibernateTest {
@@ -21,21 +19,6 @@ public class HibernateTest {
     public void checkConnection() {
         Session session = HibernateSessionFactory.getSessionFactory().openSession();
         session.close();
-    }
-
-    @Test
-    public void checkSave() {
-        DaoPerson daoPerson = new DaoPerson();
-        daoPerson.save(new Person("Dave"));
-        daoPerson.save(new Person("Vlad"));
-    }
-
-    @Test
-    public void checkSelect() {
-        DaoPerson daoPerson = new DaoPerson();
-        Person person = new Person("new person");
-        daoPerson.save(person);
-        person = daoPerson.findByID(person.getId());
     }
 
     @Test
@@ -61,10 +44,14 @@ public class HibernateTest {
     }
 
     public static void printTopic(Topic topic) {
+        System.out.println("TOPIC : " + topic);
         topic.getTests().forEach(test -> {
-            System.out.println("### " + test + " | topic_id=" + test.getTopic().getTopicId());
+            System.out.println("###\t " + test + " | topic_id=" + test.getTopic().getTopicId());
             test.getQuestions().forEach(question -> {
-                System.out.println("### " + question + " | test_id=" + question.getTest().getTestId());
+                System.out.println("###\t\t " + question + " | test_id=" + question.getTest().getTestId());
+                question.getLiterature().forEach(literature -> {
+                    System.out.println("###\t\t\t " + literature + " | test_id=" + literature.getQuestion().getQuestionId());
+                });
             });
         });
     }
@@ -105,6 +92,16 @@ public class HibernateTest {
         Question question_2 = new Question(0, topic.getDescription(), test_1);
         Question question_3 = new Question(0, topic.getDescription(), test_1);
         Question question_4 = new Question(0, topic.getDescription(), test_1);
+        Literature literature_1 = new Literature(0, topic.getDescription(), question_1);
+        Literature literature_2 = new Literature(0, topic.getDescription(), question_1);
+        Literature literature_3 = new Literature(0, topic.getDescription(), question_2);
+        Literature literature_4 = new Literature(0, topic.getDescription(), question_3);
+        question_1.setLiterature(Arrays.asList(
+                literature_1,
+                literature_2
+        ));
+        question_2.setLiterature(Collections.singletonList(literature_3));
+        question_3.setLiterature(Collections.singletonList(literature_4));
         test_1.setQuestions(Arrays.asList(
                 question_1,
                 question_2,
@@ -116,8 +113,12 @@ public class HibernateTest {
                 test_2
         ));
         DaoTopic daoTopic = new DaoTopic();
-        daoTopic.save(topic);
-        topic = daoTopic.findById(topic.getTopicId());
+        try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            daoTopic.deepSave(topic, session);
+            transaction.commit();
+        }
+        topic = daoTopic.findByID(topic.getTopicId());
         printTopic(topic);
     }
 
