@@ -1,11 +1,12 @@
-import dao.DaoTopic;
 import dao.HibernateSessionFactory;
+import dao.TopicRepository;
 import dao.entities.Literature;
 import dao.entities.Question;
 import dao.entities.Topic;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.Test;
+import provider.AppContextProvider;
 import scriptDB.DBInitializer;
 
 import java.sql.SQLException;
@@ -43,8 +44,10 @@ public class HibernateTest {
         }
     }
 
+    private static int count = 0;
+
     public static void printTopic(Topic topic) {
-        System.out.println("TOPIC : " + topic);
+        System.out.println("COUNT = " + count++ + " | TOPIC : " + topic);
         topic.getTests().forEach(test -> {
             System.out.println("###\t " + test + " | topic_id=" + test.getTopic().getTopicId());
             test.getQuestions().forEach(question -> {
@@ -54,6 +57,7 @@ public class HibernateTest {
                 });
             });
         });
+        System.out.println();
     }
 
     @Test
@@ -84,42 +88,61 @@ public class HibernateTest {
     }
 
     @Test
-    public void relDaoModelTest() {
+    public void testRepository() throws SQLException {
+
+        DBInitializer.init();
+
         Topic topic = new Topic(0, "relDaoModelTest", "topic-1");
+
         dao.entities.Test test_1 = new dao.entities.Test(0, topic.getDescription(), "test-1", topic);
         dao.entities.Test test_2 = new dao.entities.Test(0, topic.getDescription(), "test-2", topic);
+
         Question question_1 = new Question(0, topic.getDescription(), test_1);
-        Question question_2 = new Question(0, topic.getDescription(), test_1);
-        Question question_3 = new Question(0, topic.getDescription(), test_1);
-        Question question_4 = new Question(0, topic.getDescription(), test_1);
+
         Literature literature_1 = new Literature(0, topic.getDescription(), question_1);
-        Literature literature_2 = new Literature(0, topic.getDescription(), question_1);
-        Literature literature_3 = new Literature(0, topic.getDescription(), question_2);
-        Literature literature_4 = new Literature(0, topic.getDescription(), question_3);
-        question_1.setLiterature(Arrays.asList(
-                literature_1,
-                literature_2
-        ));
-        question_2.setLiterature(Collections.singletonList(literature_3));
-        question_3.setLiterature(Collections.singletonList(literature_4));
-        test_1.setQuestions(Arrays.asList(
-                question_1,
-                question_2,
-                question_3,
-                question_4
-        ));
-        topic.setTests(Arrays.asList(
-                test_1,
-                test_2
-        ));
-        DaoTopic daoTopic = new DaoTopic();
-        try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
+
+        question_1.setLiterature(Collections.singletonList(literature_1));
+        test_1.setQuestions(Collections.singletonList(question_1));
+
+        topic.setTests(Arrays.asList(test_1, test_2));
+
+        TopicRepository topicRepository = AppContextProvider.getAppContext().getBean(TopicRepository.class);
+
+        topicRepository.create(topic);
+
+        {
+            Session session = HibernateSessionFactory.getSessionFactory().openSession();
             Transaction transaction = session.beginTransaction();
-            daoTopic.deepSave(topic, session);
+            topicRepository.save(topic, session);
             transaction.commit();
+
+            topic = topicRepository.findAll(Topic.class, session).get(0);
+            printTopic(topic);
+
+            topic.setName("topic-1-update");
+            transaction = session.beginTransaction();
+            topicRepository.update(topic, session);
+            transaction.commit();
+
+            topic = topicRepository.findAll(Topic.class, session).get(0);
+            printTopic(topic);
+
+            topic.setName("topic-1-update-1");
+            transaction = session.beginTransaction();
+            topicRepository.update(topic, session);
+            transaction.commit();
+
+            topic = topicRepository.findAll(Topic.class, session).get(0);
+            printTopic(topic);
+
+            transaction = session.beginTransaction();
+            topicRepository.delete(topic, session);
+            transaction.commit();
+
+            System.out.println(topicRepository.findAll(Topic.class, session).size());
         }
-        topic = daoTopic.findByID(topic.getTopicId());
-        printTopic(topic);
+
     }
 
 }
+
