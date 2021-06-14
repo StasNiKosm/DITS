@@ -2,6 +2,7 @@ package config.app;
 
 import dao.*;
 import dao.entities.*;
+import dao.services.TopicService;
 import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,6 +43,11 @@ public class DaoConfig {
     @Bean
     public TopicRepository topicRepository() {
         return new TopicRepository();
+    }
+
+    @Bean
+    public TopicService topicService() {
+        return new TopicService(topicRepository(), sessionFactory());
     }
 
 }

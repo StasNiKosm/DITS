@@ -1,11 +1,13 @@
 package dao.entities;
 
+import lombok.*;
+
 import javax.persistence.*;
-import java.util.Collections;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "topic")
+@Getter @Setter @RequiredArgsConstructor @ToString
 public class Topic {
 
     @Column(name = "topicid")
@@ -19,60 +21,7 @@ public class Topic {
     @Column(name = "name", length = 20)
     String name;
 
-    @OneToMany(mappedBy = "topic", fetch = FetchType.LAZY)
-    private List<Test> tests;
+    @OneToMany(mappedBy = "topic", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude private Set<Test> tests;
 
-    public Topic() {
-
-    }
-
-    public Topic(int id, String description, String name) {
-        this.topicId = id;
-        this.name = name;
-        this.description = description;
-    }
-
-    public void setTests(List<Test> tests) {
-        this.tests = tests;
-    }
-
-    public List<Test> getTests() {
-        if (tests == null)
-            return Collections.emptyList();
-        return tests;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getTopicId() {
-        return topicId;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setTopicId(int topicId) {
-        this.topicId = topicId;
-    }
-
-    @Override
-    public String toString() {
-        return "Topic{" +
-                "topicId=" + topicId +
-                ", description='" + description + '\'' +
-                ", name='" + name + '\'' +
-                ", tests=" + tests +
-                '}';
-    }
 }

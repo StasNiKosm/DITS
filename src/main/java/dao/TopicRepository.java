@@ -1,14 +1,21 @@
 package dao;
 
 import dao.entities.Topic;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
+import org.springframework.stereotype.Repository;
 
-public class TopicRepository extends AbstractDaoRepository<Topic> {
+@Repository
+public class TopicRepository extends AbstractRepository<Topic> {
 
-    @Autowired
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+    public TopicRepository() {
+        super(Topic.class);
     }
 
+    @Override
+    public Topic findById(int id, Session session) {
+        Topic topic = super.findById(id, session);
+        Hibernate.initialize(topic.getTests());
+        return topic;
+    }
 }
