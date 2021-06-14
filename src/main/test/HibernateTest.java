@@ -37,13 +37,31 @@ public class HibernateTest {
 
         Topic readTopic = topicService.read(topic.getTopicId());
 
+        System.out.println("\nFirst Compare:");
         System.out.println("Topics compare:");
         System.out.println(topic);
         System.out.println(readTopic);
-
         System.out.println("Test compare:");
         System.out.println(topic.getTests().iterator().next());
         System.out.println(readTopic.getTests().iterator().next());
+
+        topic = readTopic;
+        test = topic.getTests().iterator().next();
+
+        topic.setName("topic-1-update");
+        test.setName("test-1-update");
+
+        topicService.update(topic);
+        readTopic = topicService.read(topic.getTopicId());
+
+        System.out.println("\nSecondCompare:");
+        System.out.println("Topics compare:");
+        System.out.println(topic);
+        System.out.println(readTopic);
+        System.out.println("Test compare:");
+        System.out.println(topic.getTests().iterator().next());
+        System.out.println(readTopic.getTests().iterator().next());
+
 
     }
 
