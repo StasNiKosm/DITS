@@ -1,7 +1,7 @@
 package dao.services;
 
+import dao.entities.Question;
 import dao.repository.DaoRepository;
-import dao.entities.Topic;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class TopicService implements RepositoryService<Topic> {
+public class QuestionService implements RepositoryService<Question>{
 
     @Autowired
-    private final DaoRepository<Topic> repository;
+    private final DaoRepository<Question> repository;
 
     @Autowired
     private final SessionFactory sessionFactory;
@@ -23,8 +23,7 @@ public class TopicService implements RepositoryService<Topic> {
     }
 
     @Override
-    public DaoRepository<Topic> getRepository() {
+    public DaoRepository<Question> getRepository() {
         return repository;
     }
-
 }

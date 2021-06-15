@@ -3,6 +3,7 @@ package dao.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Collections;
 import java.util.Set;
 
 @Entity
@@ -21,11 +22,11 @@ public class Test {
     @Column(name = "name", length = 20)
     String name;
 
-    @ManyToOne(optional = false, fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false, fetch=FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "topicid")
     Topic topic;
 
     @OneToMany(mappedBy = "test", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude private Set<Question> questions;
+    @ToString.Exclude private Set<Question> questions = Collections.emptySet();
 
 }

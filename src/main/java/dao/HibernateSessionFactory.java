@@ -1,18 +1,17 @@
 package dao;
 
 import dao.entities.*;
+import lombok.NoArgsConstructor;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.springframework.stereotype.Component;
 
 @Component
+@NoArgsConstructor
 public class HibernateSessionFactory {
+
     private static SessionFactory sessionFactory;
-
-    private HibernateSessionFactory() {
-
-    }
 
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
@@ -34,4 +33,5 @@ public class HibernateSessionFactory {
         }
         return sessionFactory;
     }
+
 }

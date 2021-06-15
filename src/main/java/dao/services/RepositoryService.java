@@ -1,6 +1,6 @@
 package dao.services;
 
-import dao.DaoRepository;
+import dao.repository.DaoRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -21,7 +21,7 @@ public interface RepositoryService<T> {
 
     default T read(int id) {
         try(Session session = getSessionFactory().openSession()){
-            return getRepository().findById(getRepository().getTemplatedClass(), id, session);
+            return read(id, session);
         }
     }
 
@@ -39,6 +39,17 @@ public interface RepositoryService<T> {
             getRepository().delete(entity, session);
             transaction.commit();
         }
+    }
+
+    /**
+     * Метод используется для получения прокси объекта с "живой" сессией. Используйте этот метод, когда нужно получить доступ к полям объекта,
+     * которые помечены "{@code fetch = FetchType.LAZY}". Ответственность за состояние сессии ложится на пользователя.
+     * @param id идентификатор объекта
+     * @param session сессия соединения с БД
+     * @return объект с указанным идентификатором.
+     */
+    default T read(int id, Session session) {
+        return getRepository().findById(getRepository().getTemplatedClass(), id, session);
     }
 
 }
