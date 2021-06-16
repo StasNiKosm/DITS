@@ -17,6 +17,7 @@ public interface DaoRepository<T> {
     }
 
     default void delete(T t, Session session) {
+        session.update(t);
         session.delete(t);
     }
 
