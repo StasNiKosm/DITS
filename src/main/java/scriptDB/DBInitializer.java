@@ -1,14 +1,9 @@
 package scriptDB;
 
 import dao.DataBaseConnectionFactory;
-import dao.entities.Literature;
-import dao.entities.Question;
-import dao.entities.Topic;
 
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Arrays;
-import java.util.Collections;
 
 public class DBInitializer {
 

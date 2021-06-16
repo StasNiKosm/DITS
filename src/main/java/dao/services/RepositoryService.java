@@ -36,6 +36,8 @@ public interface RepositoryService<T> {
     default void delete(T entity) {
         try(Session session = getSessionFactory().openSession()){
             Transaction transaction = session.beginTransaction();
+            session.merge(entity);
+            transaction.commit();
             getRepository().delete(entity, session);
             transaction.commit();
         }

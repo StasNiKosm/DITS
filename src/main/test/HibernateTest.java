@@ -7,7 +7,6 @@ import org.hibernate.Session;
 import org.junit.Test;
 import provider.AppContextProvider;
 
-import java.sql.SQLException;
 import java.util.Collections;
 
 public class HibernateTest {
