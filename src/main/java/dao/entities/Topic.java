@@ -3,6 +3,7 @@ package dao.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Collections;
 import java.util.Set;
 
 @Entity
@@ -22,6 +23,6 @@ public class Topic {
     String name;
 
     @OneToMany(mappedBy = "topic", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude private Set<Test> tests;
+    @ToString.Exclude private Set<Test> tests = Collections.emptySet();
 
 }

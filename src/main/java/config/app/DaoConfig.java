@@ -2,7 +2,8 @@ package config.app;
 
 import dao.*;
 import dao.entities.*;
-import dao.services.TopicService;
+import dao.repository.*;
+import dao.services.*;
 import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -48,6 +49,36 @@ public class DaoConfig {
     @Bean
     public TopicService topicService() {
         return new TopicService(topicRepository(), sessionFactory());
+    }
+
+    @Bean
+    public TestRepository testRepository() {
+        return new TestRepository();
+    }
+
+    @Bean
+    public TestService testService() {
+        return new TestService(testRepository(), sessionFactory());
+    }
+
+    @Bean
+    public QuestionRepository questionRepository() {
+        return new QuestionRepository();
+    }
+
+    @Bean
+    public QuestionService questionService() {
+        return new QuestionService(questionRepository(), sessionFactory());
+    }
+
+    @Bean
+    public LiteratureRepository literatureRepository() {
+        return new LiteratureRepository();
+    }
+
+    @Bean
+    public LiteratureService literatureService() {
+        return new LiteratureService(literatureRepository(), sessionFactory());
     }
 
 }

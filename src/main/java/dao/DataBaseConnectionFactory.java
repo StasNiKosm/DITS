@@ -1,11 +1,13 @@
 package dao;
 
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.Properties;
 
 @Component
+@NoArgsConstructor
 public class DataBaseConnectionFactory {
 
     private static final String DRIVER_CLASS_NAME = "org.postgresql.Driver";
@@ -15,10 +17,6 @@ public class DataBaseConnectionFactory {
     private static final String PASSWORD = "stas";
 
     private static Properties properties = null;
-
-    private DataBaseConnectionFactory() {
-
-    }
 
     private static void init() throws ClassNotFoundException, SQLException {
         Class.forName(DRIVER_CLASS_NAME);

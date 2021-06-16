@@ -17,7 +17,7 @@ public class Literature {
     @Column(name = "description", length = 100)
     String description;
 
-    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "questionid")
     Question question;
 
