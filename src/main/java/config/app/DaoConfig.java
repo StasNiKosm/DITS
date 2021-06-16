@@ -3,6 +3,8 @@ package config.app;
 import dao.*;
 import dao.entities.*;
 import dao.repository.*;
+import dao.repository.eager.TestEagerRepository;
+import dao.repository.eager.TopicEagerRepository;
 import dao.services.*;
 import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;
@@ -79,6 +81,16 @@ public class DaoConfig {
     @Bean
     public LiteratureService literatureService() {
         return new LiteratureService(literatureRepository(), sessionFactory());
+    }
+
+    @Bean
+    public TestEagerRepository testEagerRepository() {
+        return new TestEagerRepository(testRepository(), sessionFactory());
+    }
+
+    @Bean
+    public TopicEagerRepository topicEagerRepository() {
+        return new TopicEagerRepository(testEagerRepository(), topicRepository(), sessionFactory());
     }
 
 }

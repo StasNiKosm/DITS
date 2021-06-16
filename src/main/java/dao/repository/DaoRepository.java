@@ -29,6 +29,6 @@ public interface DaoRepository<T> {
         return session.createQuery("From " + tClass.getSimpleName(), tClass).list();
     }
 
-     Class<T> getTemplatedClass();
+    Class<T> getTemplatedClass();
 
 }
