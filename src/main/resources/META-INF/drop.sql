@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS topic, test, question, answer, role, tuser, statistic, literature, link;

@@ -12,7 +12,7 @@ public class DataBaseConnectionFactory {
     private static final String DATA_BASE_URL = "jdbc:postgresql://localhost/postgres";
 
     private static final String USERNAME = "postgres";
-    private static final String PASSWORD = "741AzxY321963";
+    private static final String PASSWORD = "stas";
 
     private static Properties properties = null;
 
