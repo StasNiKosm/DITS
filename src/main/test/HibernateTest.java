@@ -1,13 +1,14 @@
-import dao.HibernateSessionFactory;
-import dao.entities.Literature;
-import dao.entities.Question;
-import dao.entities.Topic;
+import dao.*;
+import dao.entities.*;
+import dao.repository.eager.*;
 import dao.services.*;
 import org.hibernate.Session;
 import org.junit.Test;
 import provider.AppContextProvider;
 
 import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 public class HibernateTest {
 
@@ -41,7 +42,7 @@ public class HibernateTest {
     @Test
     public void saveTest() {
 
-        RepositoryService<Topic> topicService = AppContextProvider.getAppContext().getBean(TopicService.class);
+        RepositoryService<Topic> topicService = (RepositoryService<Topic>) AppContextProvider.getAppContext().getBean("topicService");
 
         Topic topic = AppContextProvider.getAppContext().getBean(Topic.class);
         dao.entities.Test test = AppContextProvider.getAppContext().getBean(dao.entities.Test.class);
@@ -98,7 +99,7 @@ public class HibernateTest {
 
     @Test
     public void deepRelTest() {
-        RepositoryService<Topic> topicService = AppContextProvider.getAppContext().getBean(TopicService.class);
+        RepositoryService<Topic> topicService = (RepositoryService<Topic>) AppContextProvider.getAppContext().getBean("topicService");
 
         Topic topic = AppContextProvider.getAppContext().getBean(Topic.class);
         dao.entities.Test test = AppContextProvider.getAppContext().getBean(dao.entities.Test.class);
@@ -138,10 +139,10 @@ public class HibernateTest {
     @Test
     public void servicesTest() {
 
-        RepositoryService<Topic> topicService = AppContextProvider.getAppContext().getBean(TopicService.class);
-        RepositoryService<dao.entities.Test> testService = AppContextProvider.getAppContext().getBean(TestService.class);
-        RepositoryService<Question> questionService = AppContextProvider.getAppContext().getBean(QuestionService.class);
-        RepositoryService<Literature> literatureService = AppContextProvider.getAppContext().getBean(LiteratureService.class);
+        RepositoryService<Topic> topicService = (RepositoryService<Topic>) AppContextProvider.getAppContext().getBean("topicService");
+        RepositoryService<dao.entities.Test> testService = (RepositoryService<dao.entities.Test>) AppContextProvider.getAppContext().getBean("testService");
+        RepositoryService<Question> questionService = (RepositoryService<Question>) AppContextProvider.getAppContext().getBean("questionService");
+        RepositoryService<Literature> literatureService = (RepositoryService<Literature>) AppContextProvider.getAppContext().getBean("literatureService");
 
         Topic topic = AppContextProvider.getAppContext().getBean(Topic.class);
         dao.entities.Test test = AppContextProvider.getAppContext().getBean(dao.entities.Test.class);
@@ -212,6 +213,13 @@ public class HibernateTest {
         assert (readTopic == null);
 
         System.out.println("Deleting: ok");
+    }
+
+    @Test
+    public void LazyInitialize() {
+        EagerRepositoryLoader<Topic> topicService = AppContextProvider.getAppContext().getBean(TopicEagerRepository.class);
+        Set<Topic> set = topicService.loadAll();
+        set.forEach(topic -> printTopic(topic.getName() + ":", topic));
     }
 
 }

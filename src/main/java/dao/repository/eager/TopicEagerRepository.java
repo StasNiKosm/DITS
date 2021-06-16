@@ -26,7 +26,7 @@ public class TopicEagerRepository extends TopicService implements EagerRepositor
     public Topic load(Topic topic, Session session) {
         topic = getRepository().findById(getRepository().getTemplatedClass(), topic.getTopicId(), session);
         Hibernate.initialize(topic.getTests());
-        testEagerRepository.loadAll(topic.getTests());
+        testEagerRepository.loadAll(topic.getTests(), session);
         return topic;
     }
 

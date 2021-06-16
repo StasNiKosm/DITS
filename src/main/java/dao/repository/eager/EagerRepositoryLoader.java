@@ -51,4 +51,14 @@ public interface EagerRepositoryLoader<T> extends RepositoryService<T> {
             return load(getRepository().findById(getRepository().getTemplatedClass(), id, session), session);
         }
     }
+
+    @Override
+    default List<T> getAll() {
+        return new ArrayList<>(loadAll());
+    }
+
+    @Override
+    default List<T> getAll(Session session) {
+        return new ArrayList<>(loadAll(session));
+    }
 }

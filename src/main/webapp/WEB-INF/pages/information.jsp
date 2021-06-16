@@ -13,16 +13,28 @@
             </div>
             <c:forEach items="${topic_list}" var="topic">
                 <div class="row" style="border: 2px solid black;">
-                    <div class="col" style="width:400px">
+                    <div class="col">
                         <p style="margin: 0;"><b>Topic:</b> ${topic.name}</p>
                         <p style="margin: 0;"><b>Description:</b> ${topic.description}</p>
                     </div>
                     <div class="col">
-                        <p style="margin: 0;">Tests:</p>
+                        <p style="margin: 10px;"><b>Tests: </b><c:if test="${topic.tests.size() == 0}">Нет тестов</c:if></p>
                         <c:forEach items="${topic.tests}" var="test">
-                            <div class="row">
+                            <div class="row" style="border: 2px solid black;">
                                 <p style="margin: 0;"><b>Name:</b> <i>${test.name}</i></p>
                                 <p style="margin: 0;"><b>Description:</b> <i>${test.description}</i></p>
+                                <p style="margin: 0;"><b>Questions: </b><c:if test="${test.questions.size() == 0}">Нет вопросов</c:if></p>
+                                <div class="row">
+                                    <c:forEach items="${test.questions}" var="question">
+                                        <p style="margin: 0 0 0 20px;"><b>Description:</b> <i>${question.description}</i></p>
+                                        <p style="margin: 0 0 0 20px;"><b>Literature: </b><c:if test="${question.literature.size() == 0}">Нет литературы</c:if></p>
+                                        <c:forEach items="${question.literature}" var="literature">
+                                            <div class="row">
+                                                <p style="margin: 0 0 0 40px;"><b>Name:</b> <i>${literature.description}</i></p>
+                                            </div>
+                                        </c:forEach>
+                                    </c:forEach>
+                                </div>
                             </div>
                             <br>
                         </c:forEach>
