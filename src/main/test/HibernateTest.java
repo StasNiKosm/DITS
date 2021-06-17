@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.junit.Test;
 import providers.AppContextProvider;
 import repository.connection.HibernateSessionFactory;
+import services.UserService;
 
 import java.util.Collections;
 import java.util.Set;
@@ -220,6 +221,13 @@ public class HibernateTest {
         EagerManager<Topic> topicService = AppContextProvider.getAppContext().getBean(TopicEagerManager.class);
         Set<Topic> set = topicService.loadAll();
         set.forEach(topic -> printTopic(topic.getName() + ":", topic));
+    }
+
+    @Test
+    public void UserServiceTest() {
+        UserService userService = AppContextProvider.getAppContext().getBean(UserService.class);
+        User user = userService.getUserFromLogin("Vlad");
+        assert (user != null);
     }
 
 }

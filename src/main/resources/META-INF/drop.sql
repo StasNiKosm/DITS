@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS topic, test, question, answer, role, tuser, statistic, literature, link;
+DROP TABLE IF EXISTS topic, test, question, answer, tuser, statistic, literature, link;

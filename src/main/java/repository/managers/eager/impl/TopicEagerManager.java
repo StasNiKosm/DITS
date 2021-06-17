@@ -1,5 +1,6 @@
 package repository.managers.eager.impl;
 
+import org.springframework.stereotype.Service;
 import repository.dao.entities.Test;
 import repository.dao.entities.Topic;
 import repository.dao.DaoRepository;
@@ -9,9 +10,8 @@ import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 
-@Repository
+@Service
 public class TopicEagerManager extends TopicLazyManager implements EagerManager<Topic> {
 
     @Autowired

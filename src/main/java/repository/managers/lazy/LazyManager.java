@@ -50,6 +50,16 @@ public interface LazyManager<T> {
         }
     }
 
+    default List<T> executeSql(String sql) {
+        try(Session session = getSessionFactory().openSession()) {
+            return getRepository().executeSql(sql, session);
+        }
+    }
+
+    default List<T> executeSql(String sql, Session session) {
+        return getRepository().executeSql(sql, session);
+    }
+
     /**
      * Метод используется для получения прокси объекта с "живой" сессией. Используйте этот метод, когда нужно получить доступ к полям объекта,
      * которые помечены "{@code fetch = FetchType.LAZY}". Ответственность за состояние сессии ложится на пользователя.
@@ -63,12 +73,12 @@ public interface LazyManager<T> {
 
     default List<T> getAll() {
         try(Session session = getSessionFactory().openSession()){
-            return getRepository().findAll(getRepository().getTemplatedClass(), session);
+            return getRepository().findAll(session);
         }
     }
 
     default List<T> getAll(Session session) {
-        return getRepository().findAll(getRepository().getTemplatedClass(), session);
+        return getRepository().findAll(session);
     }
 
 }

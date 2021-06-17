@@ -1,5 +1,6 @@
 package repository.managers.eager.impl;
 
+import org.springframework.stereotype.Service;
 import repository.dao.entities.Literature;
 import repository.dao.entities.Question;
 import repository.dao.DaoRepository;
@@ -10,6 +11,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+@Service
 public class QuestionEagerManager extends QuestionLazyManager implements EagerManager<Question> {
 
     @Autowired

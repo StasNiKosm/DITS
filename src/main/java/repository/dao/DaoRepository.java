@@ -30,8 +30,12 @@ public interface DaoRepository<T> {
         return session.get(tClass, id);
     }
 
-    default List<T> findAll(Class<T> tClass, Session session) {
-        return session.createQuery("From " + tClass.getSimpleName(), tClass).list();
+    default List<T> findAll(Session session) {
+        return session.createQuery("From " + getTemplatedClass().getSimpleName(), getTemplatedClass()).list();
+    }
+
+    default List<T> executeSql(String sql, Session session) {
+        return session.createQuery(sql, getTemplatedClass()).list();
     }
 
     Class<T> getTemplatedClass();

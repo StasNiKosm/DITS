@@ -11,6 +11,7 @@
         <class>repository.dao.entities.Test</class>
         <class>repository.dao.entities.Question</class>
         <class>repository.dao.entities.Literature</class>
+        <class>repository.dao.entities.User</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
         <properties>

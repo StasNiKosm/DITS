@@ -25,7 +25,7 @@ public abstract class AbstractRepository<T> implements DaoRepository<T> {
     }
 
     public List<T> findAll(Session session) {
-        return DaoRepository.super.findAll(clazz, session);
+        return DaoRepository.super.findAll(session);
     }
 
     @Override
