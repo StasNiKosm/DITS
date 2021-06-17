@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class QuestionEagerRepository extends QuestionService implements EagerRepositoryService<Question> {
 
     @Autowired
-    private EagerRepositoryService<Literature> literatureEagerRepository;
+    private final EagerRepositoryService<Literature> literatureEagerRepository;
 
     public QuestionEagerRepository(@Autowired EagerRepositoryService<Literature> literatureEagerRepository, DaoRepository<Question> repository, SessionFactory sessionFactory) {
         super(repository, sessionFactory);

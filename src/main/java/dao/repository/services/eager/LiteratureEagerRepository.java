@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class LiteratureEagerRepository extends LiteratureService implements EagerRepositoryService<Literature> {
 
     @Autowired
-    private EagerRepositoryService<Literature> literatureEagerRepository;
+    private final EagerRepositoryService<Literature> literatureEagerRepository;
 
     public LiteratureEagerRepository(@Autowired EagerRepositoryService<Literature> literatureEagerRepository, DaoRepository<Literature> repository, SessionFactory sessionFactory) {
         super(repository, sessionFactory);

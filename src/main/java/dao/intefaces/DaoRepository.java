@@ -5,6 +5,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Интрфейс реализующий CRUD для БД.
+ * @param <T>
+ */
+
 @Repository
 public interface DaoRepository<T> {
 

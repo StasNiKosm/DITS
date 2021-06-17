@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 public class TopicEagerRepository extends TopicService implements EagerRepositoryService<Topic> {
 
     @Autowired
-    private EagerRepositoryService<Test> testEagerRepository;
+    private final EagerRepositoryService<Test> testEagerRepository;
 
     public TopicEagerRepository(@Autowired EagerRepositoryService<Test> testEagerRepository, @Autowired DaoRepository<Topic> repository, @Autowired SessionFactory sessionFactory) {
         super(repository, sessionFactory);

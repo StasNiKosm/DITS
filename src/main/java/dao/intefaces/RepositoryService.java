@@ -3,9 +3,16 @@ package dao.intefaces;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Предназначен для упрощения контроля сессий и транзакций при взаимодействии с БД.
+ * @param <T> Entity
+ */
+
+@Repository
 public interface RepositoryService<T> {
 
     SessionFactory getSessionFactory();

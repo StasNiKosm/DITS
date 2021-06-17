@@ -1,9 +1,6 @@
 package dao;
 
-import dao.entities.*;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManagerFactory;

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 public class TestEagerRepository extends TestService implements EagerRepositoryService<Test> {
 
     @Autowired
-    private EagerRepositoryService<Question> questionEagerRepository;
+    private final EagerRepositoryService<Question> questionEagerRepository;
 
     public TestEagerRepository(@Autowired EagerRepositoryService<Question> questionEagerRepository, @Autowired DaoRepository<Test> repository, @Autowired SessionFactory sessionFactory) {
         super(repository, sessionFactory);
