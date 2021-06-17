@@ -7,10 +7,10 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <!--    Our entities    -->
-        <class>dao.entities.Topic</class>
-        <class>dao.entities.Test</class>
-        <class>dao.entities.Question</class>
-        <class>dao.entities.Literature</class>
+        <class>repository.dao.entities.Topic</class>
+        <class>repository.dao.entities.Test</class>
+        <class>repository.dao.entities.Question</class>
+        <class>repository.dao.entities.Literature</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
         <properties>

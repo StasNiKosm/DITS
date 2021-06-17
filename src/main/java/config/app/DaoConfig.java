@@ -1,14 +1,23 @@
 package config.app;
 
-import dao.*;
-import dao.entities.*;
-import dao.repository.*;
-import dao.repository.services.*;
-import dao.repository.services.eager.*;
+import repository.dao.entities.*;
+import repository.dao.impl.LiteratureRepository;
+import repository.dao.impl.QuestionRepository;
+import repository.dao.impl.TestRepository;
+import repository.dao.impl.TopicRepository;
+import repository.managers.eager.impl.LiteratureEagerManager;
+import repository.managers.eager.impl.QuestionEagerManager;
+import repository.managers.eager.impl.TestEagerManager;
+import repository.managers.eager.impl.TopicEagerManager;
+import repository.managers.lazy.impl.LiteratureLazyManager;
+import repository.managers.lazy.impl.QuestionLazyManager;
+import repository.managers.lazy.impl.TestLazyManager;
+import repository.managers.lazy.impl.TopicLazyManager;
 import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+import repository.connection.HibernateSessionFactory;
 
 @Configuration
 public class DaoConfig {
@@ -48,8 +57,8 @@ public class DaoConfig {
     }
 
     @Bean
-    public TopicService topicService() {
-        return new TopicService(topicRepository(), sessionFactory());
+    public TopicLazyManager topicLazyManager() {
+        return new TopicLazyManager(topicRepository(), sessionFactory());
     }
 
     @Bean
@@ -58,8 +67,8 @@ public class DaoConfig {
     }
 
     @Bean
-    public TestService testService() {
-        return new TestService(testRepository(), sessionFactory());
+    public TestLazyManager testLazyManager() {
+        return new TestLazyManager(testRepository(), sessionFactory());
     }
 
     @Bean
@@ -68,8 +77,8 @@ public class DaoConfig {
     }
 
     @Bean
-    public QuestionService questionService() {
-        return new QuestionService(questionRepository(), sessionFactory());
+    public QuestionLazyManager questionLazyManager() {
+        return new QuestionLazyManager(questionRepository(), sessionFactory());
     }
 
     @Bean
@@ -78,28 +87,28 @@ public class DaoConfig {
     }
 
     @Bean
-    public LiteratureService literatureService() {
-        return new LiteratureService(literatureRepository(), sessionFactory());
+    public LiteratureLazyManager literatureLazyManager() {
+        return new LiteratureLazyManager(literatureRepository(), sessionFactory());
     }
 
     @Bean
-    public LiteratureEagerRepository literatureEagerRepository() {
-        return new LiteratureEagerRepository(null, literatureRepository(), sessionFactory());
+    public LiteratureEagerManager literatureEagerRepository() {
+        return new LiteratureEagerManager(null, literatureRepository(), sessionFactory());
     }
 
     @Bean
-    public QuestionEagerRepository questionEagerRepository() {
-        return new QuestionEagerRepository(literatureEagerRepository(), questionRepository(), sessionFactory());
+    public QuestionEagerManager questionEagerManager() {
+        return new QuestionEagerManager(literatureEagerRepository(), questionRepository(), sessionFactory());
     }
 
     @Bean
-    public TestEagerRepository testEagerRepository() {
-        return new TestEagerRepository(questionEagerRepository(), testRepository(), sessionFactory());
+    public TestEagerManager testEagerManager() {
+        return new TestEagerManager(questionEagerManager(), testRepository(), sessionFactory());
     }
 
     @Bean
-    public TopicEagerRepository topicEagerRepository() {
-        return new TopicEagerRepository(testEagerRepository(), topicRepository(), sessionFactory());
+    public TopicEagerManager topicEagerManager() {
+        return new TopicEagerManager(testEagerManager(), topicRepository(), sessionFactory());
     }
 
 }

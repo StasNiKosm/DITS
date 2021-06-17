@@ -1,24 +1,37 @@
 package controllers;
 
-import dao.entities.Topic;
-import dao.intefaces.EagerRepositoryService;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.*;
+import repository.dao.entities.Topic;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
+import repository.managers.eager.EagerManager;
+import repository.managers.lazy.LazyManager;
+
+import java.util.Collections;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/debug")
 public class WelcomeController {
 
     @Autowired
-    private EagerRepositoryService<Topic> topicService;
+    @Qualifier("topicEagerManager")
+    private EagerManager<Topic> topicEagerManager;
 
-    @GetMapping(name="/all_test")
+    @GetMapping("/see_all")
     public ModelAndView getAllTestView(ModelAndView model) {
         model.setViewName("information");
-        model.addObject("topic_list", topicService.loadAll());
+        model.addObject("topic_list", topicEagerManager.getAll());
+        return model;
+    }
+
+    @GetMapping("/topic")
+    public ModelAndView getAllTestView(ModelAndView model, @RequestParam(name="id") Integer id) {
+        model.setViewName("information");
+        model.addObject("topic_list", Collections.singleton(topicEagerManager.read(id)));
         return model;
     }
 

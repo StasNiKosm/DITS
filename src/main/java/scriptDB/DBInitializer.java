@@ -1,6 +1,6 @@
 package scriptDB;
 
-import dao.DataBaseConnectionFactory;
+import repository.connection.DataBaseConnectionFactory;
 
 import java.sql.SQLException;
 import java.sql.Statement;

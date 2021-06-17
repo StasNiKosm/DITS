@@ -14,6 +14,7 @@
             <c:forEach items="${topic_list}" var="topic">
                 <div class="row" style="border: 2px solid black;">
                     <div class="col">
+                        <p style="margin: 0;"><b>ID:</b> ${topic.topicId}</p>
                         <p style="margin: 0;"><b>Topic:</b> ${topic.name}</p>
                         <p style="margin: 0;"><b>Description:</b> ${topic.description}</p>
                     </div>

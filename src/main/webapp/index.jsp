@@ -5,6 +5,7 @@
 <html>
     <body>
         <h2>List menu:</h2>
-        <h3>Try to click <a href="<c:url value="/all_test"/>">this</a> to check list of topics.</h3>
+        <h3>Try to click <a href="<c:url value="/debug/see_all"/>">this</a> to check list of topics.</h3>
+        <h3>Try to click <a href="<c:url value="/debug/topic?id=2"/>">this</a> to check "/debug/topic?id=2"</h3>
     </body>
 </html>
