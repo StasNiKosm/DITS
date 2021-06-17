@@ -1,6 +1,5 @@
-package dao.services;
+package dao.intefaces;
 
-import dao.repository.DaoRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;

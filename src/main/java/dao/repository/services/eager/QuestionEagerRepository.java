@@ -1,20 +1,21 @@
-package dao.repository.eager;
+package dao.repository.services.eager;
 
 import dao.entities.Literature;
 import dao.entities.Question;
-import dao.repository.DaoRepository;
-import dao.services.QuestionService;
+import dao.intefaces.DaoRepository;
+import dao.intefaces.EagerRepositoryService;
+import dao.repository.services.QuestionService;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class QuestionEagerRepository extends QuestionService implements EagerRepositoryLoader<Question> {
+public class QuestionEagerRepository extends QuestionService implements EagerRepositoryService<Question> {
 
     @Autowired
-    private EagerRepositoryLoader<Literature> literatureEagerRepository;
+    private EagerRepositoryService<Literature> literatureEagerRepository;
 
-    public QuestionEagerRepository(@Autowired EagerRepositoryLoader<Literature> literatureEagerRepository, DaoRepository<Question> repository, SessionFactory sessionFactory) {
+    public QuestionEagerRepository(@Autowired EagerRepositoryService<Literature> literatureEagerRepository, DaoRepository<Question> repository, SessionFactory sessionFactory) {
         super(repository, sessionFactory);
         this.literatureEagerRepository = literatureEagerRepository;
     }

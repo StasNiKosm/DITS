@@ -1,11 +1,11 @@
-package dao.services;
+package dao.repository.services;
 
-import dao.repository.DaoRepository;
+import dao.intefaces.DaoRepository;
 import dao.entities.Topic;
+import dao.intefaces.RepositoryService;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service

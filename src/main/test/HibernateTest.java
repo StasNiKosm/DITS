@@ -1,13 +1,13 @@
 import dao.*;
 import dao.entities.*;
-import dao.repository.eager.*;
-import dao.services.*;
+import dao.intefaces.EagerRepositoryService;
+import dao.intefaces.RepositoryService;
+import dao.repository.services.eager.*;
 import org.hibernate.Session;
 import org.junit.Test;
 import provider.AppContextProvider;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 public class HibernateTest {
@@ -217,7 +217,7 @@ public class HibernateTest {
 
     @Test
     public void LazyInitialize() {
-        EagerRepositoryLoader<Topic> topicService = AppContextProvider.getAppContext().getBean(TopicEagerRepository.class);
+        EagerRepositoryService<Topic> topicService = AppContextProvider.getAppContext().getBean(TopicEagerRepository.class);
         Set<Topic> set = topicService.loadAll();
         set.forEach(topic -> printTopic(topic.getName() + ":", topic));
     }

@@ -1,7 +1,7 @@
 package controllers;
 
 import dao.entities.Topic;
-import dao.repository.eager.EagerRepositoryLoader;
+import dao.intefaces.EagerRepositoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class WelcomeController {
 
     @Autowired
-    private EagerRepositoryLoader<Topic> topicService;
+    private EagerRepositoryService<Topic> topicService;
 
     @GetMapping(name="/all_test")
     public ModelAndView getAllTestView(ModelAndView model) {

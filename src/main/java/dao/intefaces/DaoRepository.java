@@ -1,4 +1,4 @@
-package dao.repository;
+package dao.intefaces;
 
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;

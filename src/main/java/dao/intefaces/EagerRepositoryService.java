@@ -1,6 +1,6 @@
-package dao.repository.eager;
+package dao.intefaces;
 
-import dao.services.RepositoryService;
+import dao.intefaces.RepositoryService;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +12,7 @@ import java.util.*;
  */
 
 @Repository
-public interface EagerRepositoryLoader<T> extends RepositoryService<T> {
+public interface EagerRepositoryService<T> extends RepositoryService<T> {
 
     T load(T t, Session session);
 
