@@ -1,6 +1,8 @@
 package services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import repository.dao.entities.User;
@@ -17,7 +19,16 @@ public class UserService {
     }
 
     public User getUserFromLogin(String login) throws UsernameNotFoundException {
-        return userLazyManager.executeSql("From User").get(0);
+        return userLazyManager.executeSql("FROM User where login = '" + login + "'")
+                .stream()
+                .filter(user -> user.getLogin().equals(login))
+                .findFirst()
+                .orElseThrow(() -> new UsernameNotFoundException("No user with name " + login));
     };
+
+    public UserDetails getPrincipal() {
+        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return principal;
+    }
 
 }

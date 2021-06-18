@@ -1,8 +1,6 @@
 package config.app;
 
 import config.CustomSuccessHandler;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import repository.dao.entities.*;
@@ -14,9 +12,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import repository.connection.HibernateSessionFactory;
-import services.MemberServiceImpl;
+import services.UserSecurityService;
 import services.UserService;
-
 
 @Configuration
 public class DaoConfig {
@@ -127,18 +124,8 @@ public class DaoConfig {
     }
 
     @Bean
-    public UserService userService() {
-        return new UserService();
-    }
-
-    @Bean
     public CustomSuccessHandler customSuccessHandler() {
         return new CustomSuccessHandler();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new MemberServiceImpl();
     }
 
     @Bean
@@ -147,10 +134,13 @@ public class DaoConfig {
     }
 
     @Bean
-    public DaoAuthenticationProvider authProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
+    public UserSecurityService userSecurityService() {
+        return new UserSecurityService();
     }
+
+    @Bean
+    public UserService userService() {
+        return new UserService();
+    }
+
 }

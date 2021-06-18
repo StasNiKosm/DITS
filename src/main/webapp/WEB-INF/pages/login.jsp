@@ -11,6 +11,16 @@
         <div class="d-flex justify-content-center" style="width:100%">
             <c:url var="loginUrl" value="/login" />
             <form action="${loginUrl}" method="post">
+                <c:if test="${param.error != null}">
+                    <div class="alert alert-danger" role="alert">
+                        Incorrect login or password
+                    </div>
+                </c:if>
+                <c:if test="${param.logout != null}">
+                    <div class="alert alert-primary" role="alert">
+                        Successfully logout
+                    </div>
+                </c:if>
                 <div class="mb-3">
                     <label for="loginInput" class="form-label">Login</label>
                     <input name="ssoId" type="text" class="form-control" id="loginInput" aria-describedby="emailHelp" required>
@@ -19,7 +29,9 @@
                     <label for="passwordInput" class="form-label">Password</label>
                     <input name="password" type="password" class="form-control" id="passwordInput" required>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+
+                <input id="submit-btn" type="submit" class="btn btn-primary" value="Submit"></in>
             </form>
         </div>
     </div>

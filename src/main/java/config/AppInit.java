@@ -1,9 +1,14 @@
 package config;
 
 import config.app.DaoConfig;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+@Configuration
+@ComponentScan( { "config", "services", "controllers" })
 public class AppInit extends AbstractAnnotationConfigDispatcherServletInitializer {
+
     // Этот метод должен содержать конфигурации которые инициализируют Beans
     // для инициализации бинов у нас использовалась аннотация @Bean
     @Override

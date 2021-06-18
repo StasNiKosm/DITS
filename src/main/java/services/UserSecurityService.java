@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,10 +15,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Service("userDetailsService")
-public class MemberServiceImpl implements UserDetailsService {
+@Service
+public class UserSecurityService implements UserDetailsService {
 
     private UserService userService;
+
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -31,13 +39,14 @@ public class MemberServiceImpl implements UserDetailsService {
     }
 
     private User buildUserForAuthentication(repository.dao.entities.User user, List<GrantedAuthority> authorities) {
-        System.out.println("try login" + user);
-        return new User(user.getLogin(), user.getPassword(), authorities);
+        System.out.println("try login " + user);
+        //FIXME passwordEncoder.encode(user.getPassword())
+        return new User(user.getLogin(), passwordEncoder.encode(user.getPassword()), authorities);
     }
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        System.out.println("try login" + login);
+        System.out.println("try login " + login);
         repository.dao.entities.User user = userService.getUserFromLogin(login);
         List<GrantedAuthority> authorities = buildUserAuthority(user.getRole());
         return buildUserForAuthentication(user, authorities);

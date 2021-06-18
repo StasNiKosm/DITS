@@ -1,27 +1,31 @@
 package config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private DaoAuthenticationProvider daoAuthenticationProvider;
-
     private CustomSuccessHandler customSuccessHandler;
 
+    private UserDetailsService userDetailsService;
+
+    private PasswordEncoder passwordEncoder;
+
     @Autowired
-    public void setDaoAuthenticationProvider(DaoAuthenticationProvider daoAuthenticationProvider) {
-        System.out.println("set dao prov");
-        this.daoAuthenticationProvider = daoAuthenticationProvider;
+    public void setUserDetailsService(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Autowired
@@ -31,8 +35,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(AuthenticationManagerBuilder authentication) throws Exception {
-        System.out.println("set conf prov");
-        authentication.authenticationProvider(daoAuthenticationProvider);
+        System.out.println("configure " + userDetailsService + " " + passwordEncoder);
+        authentication.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
 
     /*@Autowired
@@ -49,9 +53,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/", "/home").access("hasRole('USER')")
                 .antMatchers("/admin/**").access("hasRole('ADMIN')")
-                .and().formLogin().loginPage("/login").successHandler(customSuccessHandler)
-                .usernameParameter("ssoId").passwordParameter("password")
-                .and().csrf()
-                .and().exceptionHandling().accessDeniedPage("/Access_Denied");
+                .and()
+                    .formLogin()
+                        .loginPage("/login")
+                            .successHandler(customSuccessHandler)
+                .usernameParameter("ssoId")
+                    .passwordParameter("password")
+                .and()
+                    .csrf()
+                .and()
+                    .exceptionHandling()
+                        .accessDeniedPage("/Access_Denied");
     }
 }

@@ -11,9 +11,11 @@
         <div class="d-flex justify-content-center" style="width:100%">
             <c:url var="loginUrl" value="/login" />
             <div class="mb-3">
-                <h5>Access Denied 😥</h5>
-                <c:url var="loginUrl" value="/login" />
-                <a href="${loginUrl}">Try again</a>
+                <div class="alert alert-danger" role="alert">
+                    <h5>Access Denied 😥</h5>
+                    <c:url var="loginUrl" value="/login" />
+                    <a href="${loginUrl}">Try again</a>
+                </div>
             </div>
         </div>
     </div>
