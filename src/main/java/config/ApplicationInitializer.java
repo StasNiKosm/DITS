@@ -1,14 +1,12 @@
 package config;
 
-import config.app.RepositoryConfiguration;
-import config.app.SecurityConfiguration;
-import config.app.WebConfiguration;
+import config.app.BeansConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 @Configuration
-@ComponentScan( { "config", "services", "controllers", "repository" })
+@ComponentScan( { "config", "config.app", "services", "controllers", "repository" })
 public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     // Этот метод должен содержать конфигурации которые инициализируют Beans
@@ -16,7 +14,7 @@ public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherSe
     @Override
     protected Class<?>[] getRootConfigClasses() {
         return new Class<?>[]{
-                RepositoryConfiguration.class,
+                BeansConfiguration.class,
                 SecurityConfiguration.class
         };
     }

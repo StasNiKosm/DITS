@@ -13,6 +13,10 @@
         <class>repository.dao.entities.Question</class>
         <class>repository.dao.entities.Literature</class>
         <class>repository.dao.entities.User</class>
+        <class>repository.dao.entities.Statistic</class>
+        <class>repository.dao.entities.Link</class>
+        <class>repository.dao.entities.Answer</class>
+
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
         <properties>
@@ -47,7 +51,6 @@
 
             <!--    INITIALIZE   provides the path to the SQL script for initializing the db    -->
             <property name="javax.persistence.sql-load-script-source" value="META-INF/data.sql"/>
-
 
         </properties>
 

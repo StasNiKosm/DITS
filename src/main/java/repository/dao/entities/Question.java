@@ -14,16 +14,22 @@ public class Question {
     @Column(name = "questionid")
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
-    int questionId;
+    private int questionId;
 
     @Column(name = "description", length = 100)
-    String description;
+    private String description;
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "testid")
-    Test test;
+    private  Test test;
 
     @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude private Set<Literature> literature = Collections.emptySet();
+
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude private Set<Answer> answers = Collections.emptySet();
+
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude private Set<Statistic> statistic = Collections.emptySet();
 
 }

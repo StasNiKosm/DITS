@@ -1,19 +1,19 @@
 package repository.managers.lazy.impl;
 
-import repository.dao.entities.Question;
-import repository.dao.DaoRepository;
-import repository.managers.lazy.LazyManager;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import repository.dao.DaoRepository;
+import repository.dao.entities.Statistic;
+import repository.managers.lazy.LazyManager;
 
 @Service
 @RequiredArgsConstructor
-public class QuestionLazyManager implements LazyManager<Question> {
+public class StatisticLazyManager implements LazyManager<Statistic> {
 
     @Autowired
-    private final DaoRepository<Question> repository;
+    private final DaoRepository<Statistic> repository;
 
     @Autowired
     private final SessionFactory sessionFactory;
@@ -24,7 +24,7 @@ public class QuestionLazyManager implements LazyManager<Question> {
     }
 
     @Override
-    public DaoRepository<Question> getRepository() {
+    public DaoRepository<Statistic> getRepository() {
         return repository;
     }
 

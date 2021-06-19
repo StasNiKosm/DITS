@@ -14,17 +14,17 @@ public class Test {
     @Column(name = "testid")
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
-    int testId;
+    private int testId;
 
     @Column(name = "description", length = 100)
-    String description;
+    private String description;
 
     @Column(name = "name", length = 20)
-    String name;
+    private String name;
 
     @ManyToOne(optional = false, fetch=FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "topicid")
-    Topic topic;
+    private Topic topic;
 
     @OneToMany(mappedBy = "test", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude private Set<Question> questions = Collections.emptySet();

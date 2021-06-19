@@ -27,4 +27,5 @@ public class LiteratureLazyManager implements LazyManager<Literature> {
     public DaoRepository<Literature> getRepository() {
         return repository;
     }
+
 }

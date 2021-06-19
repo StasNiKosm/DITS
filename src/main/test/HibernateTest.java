@@ -35,6 +35,11 @@ public class HibernateTest {
                         if (question.getLiterature() != null)
                             question.getLiterature().forEach(literature -> {
                                 System.out.println("\t\t\t| literature : " + literature);
+                                if (literature.getLinks() != null) {
+                                    literature.getLinks().forEach(link -> {
+                                        System.out.println("\t\t\t\t| link : " + link);
+                                    });
+                                }
                             });
                     });
             });
@@ -226,8 +231,14 @@ public class HibernateTest {
     @Test
     public void UserServiceTest() {
         UserService userService = AppContextProvider.getAppContext().getBean(UserService.class);
-        User user = userService.getUserFromLogin("Vlad");
+        User user = userService.getUserFromLogin("user");
         assert (user != null);
+    }
+
+    @Test
+    public void topicService() {
+        TopicEagerManager topicEagerManager = AppContextProvider.getAppContext().getBean(TopicEagerManager.class);
+        printTopic("topic id=1", topicEagerManager.read(1));
     }
 
 }

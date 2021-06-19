@@ -16,20 +16,21 @@ public class User {
     @Column(name = "userid")
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
-    int userId;
+    private int userId;
 
     @Column(name = "firstName", length = 30)
-    String firstName;
+    private String firstName;
 
     @Column(name = "lastName", length = 30)
-    String lastName;
+    private String lastName;
 
     @Column(name = "login", length = 30)
-    String login;
+    private String login;
 
     @Column(name = "password", length = 255)
-    String password;
+    private String password;
 
     @Column(name = "role", length = 255)
-    String role;
+    private String role;
+
 }

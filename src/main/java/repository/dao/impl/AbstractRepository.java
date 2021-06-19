@@ -32,4 +32,5 @@ public abstract class AbstractRepository<T> implements DaoRepository<T> {
     public Class<T> getTemplatedClass() {
         return clazz;
     }
+
 }

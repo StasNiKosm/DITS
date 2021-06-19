@@ -3,6 +3,8 @@ package repository.dao.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Collections;
+import java.util.Set;
 
 @Entity
 @Table(name = "literature")
@@ -12,13 +14,16 @@ public class Literature {
     @Column(name = "literatureid")
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
-    int literatureId;
+    private int literatureId;
 
     @Column(name = "description", length = 100)
-    String description;
+    private String description;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "questionid")
-    Question question;
+    private Question question;
+
+    @OneToMany(mappedBy = "literature", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude private Set<Link> links = Collections.emptySet();
 
 }

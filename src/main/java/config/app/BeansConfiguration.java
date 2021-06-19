@@ -16,7 +16,7 @@ import services.UserSecurityService;
 import services.UserService;
 
 @Configuration
-public class RepositoryConfiguration {
+public class BeansConfiguration {
 
     @Bean
     @Scope(value = "prototype")
@@ -46,6 +46,24 @@ public class RepositoryConfiguration {
     @Scope(value = "prototype")
     public User user() {
         return new User();
+    }
+
+    @Bean
+    @Scope(value = "prototype")
+    public Answer answer() {
+        return new Answer();
+    }
+
+    @Bean
+    @Scope(value = "prototype")
+    public Link link() {
+        return new Link();
+    }
+
+    @Bean
+    @Scope(value = "prototype")
+    public Statistic statistic() {
+        return new Statistic();
     }
 
     @Bean
@@ -104,18 +122,63 @@ public class RepositoryConfiguration {
     }
 
     @Bean
+    public AnswerLazyManager answerLazyManager() {
+        return new AnswerLazyManager(answerRepository(), sessionFactory());
+    }
+
+    @Bean
+    public LinkLazyManager linkLazyManager() {
+        return new LinkLazyManager(linkRepository(), sessionFactory());
+    }
+
+    @Bean
+    public StatisticLazyManager statisticLazyManager() {
+        return new StatisticLazyManager(statisticRepository(), sessionFactory());
+    }
+
+    @Bean
     public LiteratureEagerManager literatureEagerRepository() {
-        return new LiteratureEagerManager(null, literatureRepository(), sessionFactory());
+        return new LiteratureEagerManager(linkEagerManager(), literatureRepository(), sessionFactory());
     }
 
     @Bean
     public QuestionEagerManager questionEagerManager() {
-        return new QuestionEagerManager(literatureEagerRepository(), questionRepository(), sessionFactory());
+        return new QuestionEagerManager(literatureEagerRepository(), statisticEagerManager(), questionRepository(), sessionFactory());
+    }
+
+    @Bean
+    public LinkRepository linkRepository() {
+        return new LinkRepository();
+    }
+
+    @Bean
+    public StatisticRepository statisticRepository() {
+        return new StatisticRepository();
+    }
+
+    @Bean
+    public AnswerRepository answerRepository() {
+        return new AnswerRepository();
     }
 
     @Bean
     public TestEagerManager testEagerManager() {
         return new TestEagerManager(questionEagerManager(), testRepository(), sessionFactory());
+    }
+
+    @Bean
+    public LinkEagerManager linkEagerManager() {
+        return new LinkEagerManager(linkRepository(), sessionFactory());
+    }
+
+    @Bean
+    public AnswerEagerManager answerEagerManager() {
+        return new AnswerEagerManager(answerRepository(), sessionFactory());
+    }
+
+    @Bean
+    public StatisticEagerManager statisticEagerManager() {
+        return new StatisticEagerManager(statisticRepository(), sessionFactory());
     }
 
     @Bean

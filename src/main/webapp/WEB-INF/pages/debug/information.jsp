@@ -32,8 +32,23 @@
                                         <c:forEach items="${question.literature}" var="literature">
                                             <div class="row">
                                                 <p style="margin: 0 0 0 40px;"><b>Name:</b> <i>${literature.description}</i></p>
+                                                <p style="margin: 0 0 0 40px;"><b>Links: </b><c:if test="${literature.links.size() == 0}">Нет ссылок</c:if></p>
+                                                <c:forEach items="${literature.links}" var="url">
+                                                    <p style="margin: 0 0 0 60px;">${url.link}</p>
+                                                </c:forEach>
                                             </div>
                                         </c:forEach>
+                                        <p style="margin: 0 0 0 20px;"><b>Statistics: </b><c:if test="${question.statistic.size() == 0}">Нет статистики</c:if></p>
+                                        <c:forEach items="${question.statistic}" var="statistic">
+                                            <div class="row">
+                                                <p style="margin: 0 0 0 40px;"><b>user:</b> <i>${statistic.user.login}</i></p>
+                                                <p style="margin: 0 0 0 40px;"><b>correct: </b>
+                                                    <c:if test="${statistic.correct == 0}">false</c:if>
+                                                    <c:if test="${statistic.correct == 1}">true</c:if>
+                                                </p>
+                                            </div>
+                                        </c:forEach>
+                                        <br/>
                                     </c:forEach>
                                 </div>
                             </div>

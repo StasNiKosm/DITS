@@ -3,3 +3,6 @@ INSERT INTO test (testid, description, name, topicid) values (1, 'desc_test_1' ,
 INSERT INTO question (questionid, description, testid) values (1, 'desc_question_1' , 2), (2, 'desc_question_2' , 2), (3, 'desc_question_3' , 1), (4, 'desc_question_4' , 1), (5, 'desc_question_5' , 3), (6, 'desc_question_6' , 5);
 INSERT INTO literature (literatureid, description, questionid) values (1, 'desc_literature_1' , 1), (2, 'desc_literature_2' , 3), (3, 'desc_literature_3' , 2), (4, 'desc_literature_4' , 4), (5, 'desc_literature_5' , 5);
 INSERT INTO tuser (userid, firstName, lastName, login, password, role) values (1, 'Vlad', 'Polhovsky', 'user', 'user', 'ROLE_USER'), (2, 'Vlad', 'Polhovsky', 'admin', 'admin', 'ROLE_ADMIN');
+INSERT INTO link (linkid, link, literatureid) values (1, 'www.google.com', 1);
+INSERT INTO answer (answerid, description, correct, questionid) values (1, 'Is truth', 1, 1), (2, 'Is not truth', 0, 1);
+INSERT INTO statistic (statisticid, date, correct, questionid, userid) values (1, '2013-06-01', 1, 1, 1);

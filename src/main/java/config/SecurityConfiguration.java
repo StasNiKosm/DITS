@@ -1,4 +1,4 @@
-package config.app;
+package config;
 
 import config.CustomSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,4 +56,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .exceptionHandling()
                         .accessDeniedPage("/Access_Denied");
     }
+
 }

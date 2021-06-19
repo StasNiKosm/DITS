@@ -10,7 +10,9 @@ public class AppContextProvider {
     private static AbstractApplicationContext context;
 
     private static void init() {
-        context = new AnnotationConfigApplicationContext("config.app");
+        context = new AnnotationConfigApplicationContext(
+                "config.app"
+        );
     }
 
     public static AbstractApplicationContext getAppContext() {
