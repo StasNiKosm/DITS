@@ -16,7 +16,7 @@ import services.UserSecurityService;
 import services.UserService;
 
 @Configuration
-public class DaoConfig {
+public class RepositoryConfiguration {
 
     @Bean
     @Scope(value = "prototype")

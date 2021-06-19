@@ -11,8 +11,7 @@
         <div class="col-5">
             <div class="container-sm">
                 <div class="display-6">
-                    Администратор:
-                    <small class="text-muted">${user.username}</small>
+                    <p class="text-center">Привет, ${user.user.firstName} ${user.user.lastName}!</p>
                 </div>
                 <div class="d-grid gap- d-md-flex justify-content-sm-start">
                     <a href="/logout" class="btn btn-outline-primary btn-sm" tabindex="-1" role="button" aria-disabled="true">/logout</a>

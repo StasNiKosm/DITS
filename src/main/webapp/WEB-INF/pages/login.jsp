@@ -10,28 +10,27 @@
     <div class="d-flex align-items-center" style="height:100%;">
         <div class="d-flex justify-content-center" style="width:100%">
             <c:url var="loginUrl" value="/login" />
-            <form action="${loginUrl}" method="post">
+            <form action="${loginUrl}" method="post" class="col-3">
                 <c:if test="${param.error != null}">
                     <div class="alert alert-danger" role="alert">
-                        Incorrect login or password
+                        Неправильный логин или пароль
                     </div>
                 </c:if>
                 <c:if test="${param.logout != null}">
                     <div class="alert alert-primary" role="alert">
-                        Successfully logout
+                        Выход выполнен успешно
                     </div>
                 </c:if>
                 <div class="mb-3">
-                    <label for="loginInput" class="form-label">Login</label>
+                    <label for="loginInput" class="form-label">Логин</label>
                     <input name="ssoId" type="text" class="form-control" id="loginInput" aria-describedby="emailHelp" required>
                 </div>
                 <div class="mb-3">
-                    <label for="passwordInput" class="form-label">Password</label>
+                    <label for="passwordInput" class="form-label">Пароль</label>
                     <input name="password" type="password" class="form-control" id="passwordInput" required>
                 </div>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-
-                <input id="submit-btn" type="submit" class="btn btn-primary" value="Submit"></in>
+                <input id="submit-btn" type="submit" class="btn btn-primary" value="Отправить"></in>
             </form>
         </div>
     </div>

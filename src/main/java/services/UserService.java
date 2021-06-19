@@ -26,9 +26,12 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("No user with name " + login));
     };
 
-    public UserDetails getPrincipal() {
+    public UserSecurityService.AuthorizedUser getPrincipal() {
         UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return principal;
+        if (principal instanceof  UserSecurityService.AuthorizedUser) {
+            return (UserSecurityService.AuthorizedUser)principal;
+        }
+        return new UserSecurityService.AuthorizedUser(getUserFromLogin(principal.getUsername()), principal.getAuthorities());
     }
 
 }

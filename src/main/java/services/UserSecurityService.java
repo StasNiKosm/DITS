@@ -1,5 +1,7 @@
 package services;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,21 +12,18 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserSecurityService implements UserDetailsService {
 
     private UserService userService;
 
-    private PasswordEncoder passwordEncoder;
+    private static PasswordEncoder passwordEncoder;
 
     @Autowired
     public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
+        UserSecurityService.passwordEncoder = passwordEncoder;
     }
 
     @Autowired
@@ -38,10 +37,9 @@ public class UserSecurityService implements UserDetailsService {
         return new ArrayList<>(setAuths);
     }
 
-    private User buildUserForAuthentication(repository.dao.entities.User user, List<GrantedAuthority> authorities) {
+    private AuthorizedUser buildUserForAuthentication(repository.dao.entities.User user, List<GrantedAuthority> authorities) {
         System.out.println("try login " + user);
-        //FIXME passwordEncoder.encode(user.getPassword())
-        return new User(user.getLogin(), passwordEncoder.encode(user.getPassword()), authorities);
+        return new AuthorizedUser(user, authorities);
     }
 
     @Override
@@ -50,6 +48,19 @@ public class UserSecurityService implements UserDetailsService {
         repository.dao.entities.User user = userService.getUserFromLogin(login);
         List<GrantedAuthority> authorities = buildUserAuthority(user.getRole());
         return buildUserForAuthentication(user, authorities);
+    }
+
+    @Getter
+    @Setter
+    public static class AuthorizedUser extends User {
+
+        private final repository.dao.entities.User user;
+
+        public AuthorizedUser(repository.dao.entities.User user, Collection<? extends GrantedAuthority> authorities) {
+            super(user.getLogin(), passwordEncoder.encode(user.getPassword()), authorities);
+            this.user = user;
+        }
+
     }
 
 }

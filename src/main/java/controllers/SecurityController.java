@@ -20,7 +20,12 @@ public class SecurityController {
     }
 
     @PostMapping("/Access_Denied")
-    public String accessDenied() {
+    public String accessDeniedPost() {
+        return "Access_Denied";
+    }
+
+    @GetMapping("/Access_Denied")
+    public String accessDeniedGet() {
         return "Access_Denied";
     }
 

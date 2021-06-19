@@ -1,5 +1,6 @@
-package config;
+package config.app;
 
+import config.CustomSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -35,23 +36,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(AuthenticationManagerBuilder authentication) throws Exception {
-        System.out.println("configure " + userDetailsService + " " + passwordEncoder);
         authentication.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
-
-    /*@Autowired
-    public void configureGlobalSecurity(AuthenticationManagerBuilder authentication) throws Exception {
-        authentication.inMemoryAuthentication()
-                .passwordEncoder(passwordEncoder)
-                .withUser("user").password(passwordEncoder.encode("user")).roles("USER")
-                .and()
-                .withUser("admin").password(passwordEncoder.encode("admin")).roles("ADMIN");
-    }*/
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/", "/home").access("hasRole('USER')")
+                .antMatchers("/user/**").access("hasRole('USER') or hasRole('ADMIN')")
                 .antMatchers("/admin/**").access("hasRole('ADMIN')")
                 .and()
                     .formLogin()

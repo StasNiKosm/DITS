@@ -5,6 +5,9 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 @Component
 public class HibernateSessionFactory {

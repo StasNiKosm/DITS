@@ -10,11 +10,15 @@
     <div class="d-flex align-items-center" style="height:100%;">
         <div class="d-flex justify-content-center" style="width:100%">
             <c:url var="loginUrl" value="/login" />
-            <div class="mb-3">
+            <div class=".container">
                 <div class="alert alert-danger" role="alert">
-                    <h5>Access Denied 😥</h5>
+                    <h5 class="mb-3">Доступ запрещён 😥</h5>
                     <c:url var="loginUrl" value="/login" />
-                    <a href="${loginUrl}">Try again</a>
+                    <div class="row">
+                        <div class="d-grid gap-1 col-8 mx-auto">
+                            <a class="btn btn-primary" role="button" href="${loginUrl}">Войти снова</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
