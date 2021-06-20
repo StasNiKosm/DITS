@@ -21,13 +21,15 @@
                         Выход выполнен успешно
                     </div>
                 </c:if>
-                <div class="alert alert-success" role="alert">
-                    <p class="text-center">Окно отладки</p>
-                    <div class="d-grid gap-1 col-8 mx-auto">
-                        <a class="btn btn-primary" role="button" href="/debug/see_all">Список всех топиков</a>
-                        <a class="btn btn-primary" role="button" href="/debug/topic?id=1">Topic id=1</a>
+                <c:if test="${param.debug != null}">
+                    <div class="alert alert-success" role="alert">
+                        <p class="text-center">Окно отладки</p>
+                        <div class="d-grid gap-1 col-8 mx-auto">
+                            <a class="btn btn-primary" role="button" href="/debug/see_all">Список всех топиков</a>
+                            <a class="btn btn-primary" role="button" href="/debug/topic?id=1">Topic id=1</a>
+                        </div>
                     </div>
-                </div>
+                </c:if>
                 <div class="mb-3">
                     <label for="loginInput" class="form-label">Логин</label>
                     <input name="ssoId" type="text" class="form-control" id="loginInput" aria-describedby="emailHelp" required>

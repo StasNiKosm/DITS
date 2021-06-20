@@ -1,3 +1,4 @@
+import org.springframework.beans.factory.annotation.Autowired;
 import repository.dao.entities.*;
 import repository.managers.eager.*;
 import repository.managers.eager.impl.*;
@@ -6,6 +7,7 @@ import org.hibernate.Session;
 import org.junit.Test;
 import providers.AppContextProvider;
 import repository.connection.HibernateSessionFactory;
+import services.TopicService;
 import services.UserService;
 
 import java.util.Collections;
@@ -231,14 +233,40 @@ public class HibernateTest {
     @Test
     public void UserServiceTest() {
         UserService userService = AppContextProvider.getAppContext().getBean(UserService.class);
-        User user = userService.getUserFromLogin("user");
+        User user = userService.getEagerInstance().getUserByLogin("user");
         assert (user != null);
     }
 
     @Test
     public void topicService() {
+        TopicService topicService = AppContextProvider.getAppContext().getBean(TopicService.class);
         TopicEagerManager topicEagerManager = AppContextProvider.getAppContext().getBean(TopicEagerManager.class);
-        printTopic("topic id=1", topicEagerManager.read(1));
+        Topic topic = topicEagerManager.read(1);
+        printTopic("topic", topic);
+
+        boolean ex = false;
+
+        try {
+            printTopic("lazy:", topicService.getLazyInstance().getTopicById(1));
+        } catch (Exception ignored) {
+            System.out.println("error -> " + ignored);
+            ex = true;
+        }
+
+        assert ex;
+
+        printTopic("eager:", topicService.getEagerInstance().getTopicById(1));
+
+        assert(topicService.getLazyInstance().getTopicByName(topic.getName()).getName().equals(topicService.getEagerInstance().getTopicByName(topic.getName()).getName()));
+
+        ex = false;
+        try {
+            topicService.getLazyInstance().getTopicByName("name123123");
+        } catch (Exception ignored) {
+            ex = true;
+        }
+
+        assert (ex);
     }
 
 }

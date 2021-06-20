@@ -45,7 +45,7 @@ public class UserSecurityService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         System.out.println("try login " + login);
-        repository.dao.entities.User user = userService.getUserFromLogin(login);
+        repository.dao.entities.User user = userService.getLazyInstance().getUserByLogin(login);
         List<GrantedAuthority> authorities = buildUserAuthority(user.getRole());
         return buildUserForAuthentication(user, authorities);
     }

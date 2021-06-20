@@ -1,4 +1,4 @@
-package controllers;
+package controllers.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -7,7 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 import services.UserService;
 
 @Controller
-public class UserController {
+public class AdminController {
 
     private UserService userService;
 
@@ -16,10 +16,10 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user")
+    @GetMapping("/admin")
     public ModelAndView userHomePage(ModelAndView modelAndView) {
-        modelAndView.setViewName("user/user");
-        modelAndView.addObject("user", userService.getPrincipal());
+        modelAndView.setViewName("admin/admin");
+        modelAndView.addObject("user", userService.getUserFromSession());
         return modelAndView;
     }
 

@@ -1,9 +1,8 @@
-package controllers;
+package controllers.debug;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 import repository.dao.entities.Topic;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
@@ -13,7 +12,7 @@ import java.util.Collections;
 
 @Controller
 @RequestMapping("/debug")
-public class WelcomeController {
+public class DebugController {
 
     private EagerManager<Topic> topicEagerManager;
 
