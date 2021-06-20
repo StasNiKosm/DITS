@@ -18,7 +18,7 @@ public class UserIndexPageController {
 
     @GetMapping("/user")
     public ModelAndView userIndexPage(ModelAndView modelAndView) {
-        modelAndView.setViewName("user/user");
+        modelAndView.setViewName("user/indexPage");
         modelAndView.addObject("user", userService.getUserFromSession());
         return modelAndView;
     }

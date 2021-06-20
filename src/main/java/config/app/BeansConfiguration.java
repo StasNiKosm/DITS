@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import repository.connection.HibernateSessionFactory;
+import services.TestService;
 import services.TopicService;
 import services.UserSecurityService;
 import services.UserService;
@@ -217,5 +218,9 @@ public class BeansConfiguration {
         return new TopicService();
     }
 
+    @Bean
+    public TestService testService() {
+        return new TestService();
+    }
 
 }

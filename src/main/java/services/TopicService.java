@@ -1,10 +1,17 @@
 package services;
 
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import repository.connection.HibernateSessionFactory;
+import repository.dao.entities.Test;
 import repository.dao.entities.Topic;
 import repository.managers.eager.EagerManager;
 import repository.managers.lazy.LazyManager;
+
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class TopicService {
@@ -48,6 +55,22 @@ public class TopicService {
                     .stream()
                     .findFirst()
                     .orElseThrow(() -> new IllegalArgumentException("No topic with name '" + topicName + "'"));
+        }
+
+        public Set<Test> getTestFromTopicByName(String topicName) {
+            return getTestFromTopicById(getTopicByName(topicName).getTopicId());
+        }
+
+        public Set<Test> getTestFromTopicById(int id) {
+            try(Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
+                Topic topic = manager.read(id, session);
+                Hibernate.initialize(topic.getTests());
+                return topic.getTests();
+            }
+        }
+
+        public List<Topic> getAllTopics() {
+            return manager.getAll();
         }
 
     }

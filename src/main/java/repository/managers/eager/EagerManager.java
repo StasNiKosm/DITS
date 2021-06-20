@@ -46,6 +46,11 @@ public interface EagerManager<T> extends LazyManager<T> {
     }
 
     @Override
+    default T read(int id, Session session) {
+        return load(getRepository().findById(getRepository().getTemplatedClass(), id, session), session);
+    }
+
+    @Override
     default T read(int id) {
         try (Session session = getSessionFactory().openSession()) {
             return load(getRepository().findById(getRepository().getTemplatedClass(), id, session), session);

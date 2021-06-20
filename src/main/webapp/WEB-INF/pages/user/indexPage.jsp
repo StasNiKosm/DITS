@@ -2,7 +2,7 @@
 
 <html>
 <head>
-    <title>User Page</title>
+    <title>Выбор раздела</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 </head>
 <body>
@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div class="d-grid gap-2 col-8 mx-auto">
-                <a href="#" class="btn btn-primary" type="button">Выбор темы и теста</a>
+                <a href="/user/test-chooser" class="btn btn-primary" type="button">Выбор темы и теста</a>
                 <a href="#" class="btn btn-primary" type="button">Личная статистика</a>
             </div>
         </div>
