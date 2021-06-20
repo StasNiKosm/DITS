@@ -203,6 +203,11 @@ public class BeansConfiguration {
     }
 
     @Bean
+    public UserEagerManager userEagerManager() {
+        return new UserEagerManager(userRepository(), sessionFactory());
+    }
+
+    @Bean
     public UserService userService() {
         return new UserService();
     }
