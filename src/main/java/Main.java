@@ -1,7 +1,5 @@
 
 import providers.AppContextProvider;
-import repository.dao.entities.Literature;
-import repository.managers.eager.impl.LiteratureEagerManager;
 import services.TestService;
 import services.TopicService;
 

@@ -20,39 +20,82 @@
     <div class="d-flex align-items-center" style="height:100%;">
         <div class="d-flex justify-content-center" style="width:100%">
             <div class="container" style="max-width: 600px">
-                <div class="display-6 mb-3">Выберите тему и тест:</div>
-                <form method="post" action="/user/test-chooser">
-                    <select id="topic" name="topicId" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                        <c:forEach items="${topics}" var="topic" varStatus="status">
-                            <option value="${topic.topicId}" <c:if test="${status.index == 0}">select</c:if> >
-                                [${topic.topicId}] : ${topic.name}
-                            </option>
-                        </c:forEach>
-                    </select>
-                    <select id="test" name="testId" class="form-select form-select-sm mb-3" aria-label=".form-select-sm example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
+                <form method="post" action="/user/testStart">
+
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+
+                    <div class="mb-3 row">
+                        <label for="topic" class="col-sm-1 col-form-label">Тема</label>
+                        <div class="col-sm-11">
+                            <select id="topic" name="topicId" class="form-control" aria-label=".form-select-lg example">
+                                <c:forEach items="${topics}" var="topic" varStatus="status">
+                                    <option value="${topic.topicId}" <c:if test="${status.index == 0}">select</c:if> >
+                                        [${topic.topicId}] : ${topic.name}
+                                    </option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        <div id="spinner" class="spinner-border text-primary mb-3" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+
+                    <div id="testDiv" class="mb-3 row">
+                        <label for="test" class="col-sm-1 col-form-label">Тест</label>
+                        <div class="col-sm-11">
+                            <select id="test" name="testId" class="form-control" aria-label=".form-select-sm example">
+
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="d-flex justify-content-between">
-                        <a class="btn btn-secondary" role="button" href="/user/test-chooser" style="min-width:200px">Назад</a>
+                        <a class="btn btn-secondary" role="button" href="/user" style="min-width:200px">Назад</a>
                         <button class="btn btn-primary" type="submit" style="min-width:200px">Выбрать</button>
                     </div>
+
                 </form>
             </div>
         </div>
     </div>
     <script>
 
+        function enable(element) {
+            element.removeAttr("disabled");
+        }
+
+        function disable(element) {
+            element.attr("disabled", "disabled");
+        }
+
         function fillTestSelection(testList) {
-            for (let i = 0; i < testList.tests.length; i++) {
-                alert(testList.tests[i].name + testList.tests[i].id);
+            $("#test").find('option').remove().end();
+
+            testList.tests.forEach(function (test) {
+                $("#test").append(new Option(test.name, test.id));
+            })
+
+            enable($("#test"));
+
+            if (testList.tests.length === 0) {
+                $("#test").append(new Option("В этой теме ещё нет тестов"));
+                disable($("#test"));
             }
+
+            $("#spinner").hide();
+            $("#testDiv").show();
         }
 
         $().ready(function() {
+
             $("#topic").change(function(event) {
+
+                $("#testDiv").hide();
+                $("#spinner").show();
+
                 $.ajax({
                     url: "/user/test-chooser",
                     type: "POST",
@@ -63,13 +106,16 @@
                     },
                 })
                 .done(function (data) {
-                  //alert('OK|\n' + data);
                     fillTestSelection(data);
                 })
                 .fail(function (xhr, status, error) {
-                    alert('Error|\n' + xhr.responseText + '|\n' + status + '|\n' + error);
+                    alert('Error\n' + xhr.responseText + '\n' + status + '\n' + error);
                 });
+
             });
+
+            $("#topic").trigger("change");
+
         });
     </script>
 </body>

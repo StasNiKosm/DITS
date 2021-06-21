@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 import services.TestService;
 import services.TopicService;
 
@@ -34,12 +35,17 @@ public class TestChooserPageController {
         return modelAndView;
     }
 
-
     @PostMapping("/user/test-chooser")
     @ResponseBody
-    public String getTestByTopic(@RequestParam(value = "topicId", required = false, defaultValue = "undefined") String topicId) {
-        System.out.println(topicId);
-        return testService.getTestsAsJson(topicService.getLazyInstance().getTestFromTopicById(1)).toString();
+    public String getTestByTopic(@RequestParam(value = "topicId", required = false, defaultValue = "undefined") Integer topicId) {
+        return testService.getTestsAsJson(
+                topicService.getLazyInstance().getTestFromTopicById(topicId)
+        ).toString();
+    }
+
+    @PostMapping("user/testStart")
+    public RedirectView startTest(@RequestParam(value = "topicId") Integer topicId, @RequestParam(value = "testId") Integer testId) {
+        return new RedirectView("/debug/topic?id="+topicId+"&testId="+testId);
     }
 
 }

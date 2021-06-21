@@ -21,7 +21,7 @@
                     <div class="col">
                         <p style="margin: 10px;"><b>Tests: </b><c:if test="${topic.tests.size() == 0}">Нет тестов</c:if></p>
                         <c:forEach items="${topic.tests}" var="test">
-                            <div class="row" style="border: 2px solid black;">
+                            <div class="row" style="border: 2px solid black;<c:if test="${param.testId != null}"><c:if test="${param.testId == test.testId}">color: blue;</c:if></c:if>;">
                                 <p style="margin: 0;"><b>Name:</b> <i>${test.name}</i></p>
                                 <p style="margin: 0;"><b>Description:</b> <i>${test.description}</i></p>
                                 <p style="margin: 0;"><b>Questions: </b><c:if test="${test.questions.size() == 0}">Нет вопросов</c:if></p>
