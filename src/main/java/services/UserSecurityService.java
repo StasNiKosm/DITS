@@ -57,7 +57,8 @@ public class UserSecurityService implements UserDetailsService {
         private final repository.dao.entities.User user;
 
         public AuthorizedUser(repository.dao.entities.User user, Collection<? extends GrantedAuthority> authorities) {
-            super(user.getLogin(), passwordEncoder.encode(user.getPassword()), authorities);
+            //super(user.getLogin(), passwordEncoder.encode(user.getPassword()), authorities);
+            super(user.getLogin(), user.getPassword(), authorities);
             this.user = user;
         }
 

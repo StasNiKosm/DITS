@@ -37,7 +37,8 @@ public class TestChooserPageController {
 
     @PostMapping("/user/test-chooser")
     @ResponseBody
-    public String getTestByTopic(@RequestParam(value = "topicId", required = false, defaultValue = "undefined") Integer topicId) {
+    public String getTestByTopic(@RequestParam(value = "topicId", required = false, defaultValue = "undefined") Integer topicId) throws InterruptedException {
+        Thread.sleep(1500);
         return testService.getTestsAsJson(
                 topicService.getLazyInstance().getTestFromTopicById(topicId)
         ).toString();
