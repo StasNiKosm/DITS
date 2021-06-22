@@ -32,7 +32,7 @@
             <!--    for using method getCurrentSession()    -->
             <property name="hibernate.current_session_context_class" value="thread"/>
             <!--    for watching sql in logs    -->
-            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.show_sql" value="true"/>
             <!--    for hibernate updating db    -->
             <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
 

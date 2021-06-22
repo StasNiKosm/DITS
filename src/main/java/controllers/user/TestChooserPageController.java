@@ -46,7 +46,8 @@ public class TestChooserPageController {
 
     @PostMapping("user/testStart")
     public RedirectView startTest(@RequestParam(value = "topicId" , required = false, defaultValue = "-1") Integer topicId,
-                                  @RequestParam(value = "testId", required = false, defaultValue = "-1") Integer testId) {
+                                  @RequestParam(value = "testId", required = false, defaultValue = "-1") Integer testId
+    ) {
         if (topicId == -1 || testId == -1)
             return new RedirectView("/user/test-chooser?error");
         return new RedirectView("/debug/topic?id="+topicId+"&testId="+testId);

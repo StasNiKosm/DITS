@@ -2,8 +2,10 @@ package controllers;
 
 import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,9 +23,16 @@ public class SecurityController {
 
     UserService userService;
 
+    PasswordEncoder passwordEncoder;
+
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
+    }
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/login")
@@ -52,6 +61,16 @@ public class SecurityController {
     @GetMapping("/registration")
     public String registration() {
         return "registration";
+    }
+
+    @PostMapping(value = "/registration")
+    public String registerNewUser(@RequestParam("login") String login,
+                                  @RequestParam("firstName") String firstName,
+                                  @RequestParam("secondName") String secondName,
+                                  @RequestParam("password") String password
+    ) {
+        userService.registerNewUser(login, firstName, secondName, passwordEncoder.encode(password));
+        return "/login";
     }
 
     @PostMapping("/checkLogin")

@@ -5,6 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import providers.AppContextProvider;
 import repository.dao.entities.User;
 import repository.managers.eager.EagerManager;
 import repository.managers.lazy.LazyManager;
@@ -63,6 +64,21 @@ public class UserService {
         } catch (UsernameNotFoundException ex) {
             return false;
         }
+    }
+
+    public void registerNewUser(String login, String firstName, String lastName, String password) {
+        User user = AppContextProvider.getAppContext().getBean(User.class);
+
+
+        user.setLogin(login);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setPassword(password);
+        user.setRole("ROLE_USER");
+
+        System.out.println(user);
+
+        getLazyInstance().manager.create(user);
     }
 
     public UserSecurityService.AuthorizedUser getUserFromSession() {
