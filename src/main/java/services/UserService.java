@@ -56,6 +56,15 @@ public class UserService {
 
     }
 
+    public boolean isLoginRegistered(String login) {
+        try {
+            getLazyInstance().getUserByLogin(login);
+            return true;
+        } catch (UsernameNotFoundException ex) {
+            return false;
+        }
+    }
+
     public UserSecurityService.AuthorizedUser getUserFromSession() {
         UserDetails principal = (UserDetails) SecurityContextHolder
                 .getContext().getAuthentication().getPrincipal();

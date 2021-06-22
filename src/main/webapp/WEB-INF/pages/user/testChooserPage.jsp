@@ -1,11 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: halkg
-  Date: 20.06.2021
-  Time: 23:20
-  To change this template use File | Settings | File Templates.
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -20,20 +12,25 @@
     <div class="d-flex align-items-center" style="height:100%;">
         <div class="d-flex justify-content-center" style="width:100%">
             <div class="container" style="max-width: 600px">
+                <c:if test="${param.error != null}">
+                    <div class="alert alert-primary" role="alert">
+                        Что-то пошло не так. Повторите попытку.
+                    </div>
+                </c:if>
                 <form method="post" action="/user/testStart">
 
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 
                     <div class="mb-3 row">
-                        <label for="topic" class="col-sm-1 col-form-label">Тема</label>
-                        <div class="col-sm-11">
-                            <select id="topic" name="topicId" class="form-control" aria-label=".form-select-lg example">
+                        <div class="col-sm form-floating">
+                            <select id="topic" name="topicId" class="form-select form-select-sm">
                                 <c:forEach items="${topics}" var="topic" varStatus="status">
                                     <option value="${topic.topicId}" <c:if test="${status.index == 0}">select</c:if> >
                                         [${topic.topicId}] : ${topic.name}
                                     </option>
                                 </c:forEach>
                             </select>
+                            <label for="test" style="margin-left: 10px">Выберите тему из списка</label>
                         </div>
                     </div>
 
@@ -44,17 +41,17 @@
                     </div>
 
                     <div id="testDiv" class="mb-3 row">
-                        <label for="test" class="col-sm-1 col-form-label">Тест</label>
-                        <div class="col-sm-11">
-                            <select id="test" name="testId" class="form-control" aria-label=".form-select-sm example">
+                        <div class="col-sm form-floating">
+                            <select id="test" name="testId" class="form-select form-select-sm">
 
                             </select>
+                            <label for="test" style="margin-left: 10px">Выберите тест из списка</label>
                         </div>
                     </div>
 
-                    <div class="d-flex justify-content-between">
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-between">
                         <a class="btn btn-secondary" role="button" href="/user" style="min-width:200px">Назад</a>
-                        <button class="btn btn-primary" type="submit" style="min-width:200px">Выбрать</button>
+                        <button id="submit-button" class="btn btn-primary" type="submit" style="min-width:200px">Выбрать</button>
                     </div>
 
                 </form>
@@ -72,6 +69,7 @@
         }
 
         function fillTestSelection(testList) {
+
             $("#test").find('option').remove().end();
 
             testList.tests.forEach(function (test) {
@@ -79,10 +77,12 @@
             })
 
             enable($("#test"));
+            enable($("#submit-button"));
 
             if (testList.tests.length === 0) {
                 $("#test").append(new Option("В этой теме ещё нет тестов"));
-                disable($("#test"));
+                disable($("#submit-button"))
+                disable($("#test"))
             }
 
             $("#spinner").hide();
@@ -93,6 +93,7 @@
 
             $("#topic").change(function(event) {
 
+                disable($("#submit-button"));
                 $("#testDiv").hide();
                 $("#spinner").show();
 

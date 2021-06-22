@@ -4,11 +4,44 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.springframework.stereotype.Service;
 import repository.dao.entities.Test;
+import repository.dao.entities.Topic;
+import repository.managers.eager.EagerManager;
+import repository.managers.lazy.LazyManager;
 
 import java.util.Set;
 
 @Service
 public class TestService {
+
+    private TopicServiceFacade lazyInstance;
+
+    private TopicServiceFacade eagerInstance;
+
+    public void setLazyInstance(LazyManager<Test> testLazyManager) {
+        this.lazyInstance = new TopicServiceFacade(testLazyManager);
+    }
+
+    public void setEagerInstance(EagerManager<Test> testEagerManager) {
+        this.eagerInstance = new TopicServiceFacade(testEagerManager);
+    }
+
+    public TopicServiceFacade getEagerInstance() {
+        return eagerInstance;
+    }
+
+    public TopicServiceFacade getLazyInstance() {
+        return lazyInstance;
+    }
+
+    public static class TopicServiceFacade {
+
+        private final LazyManager<Test> manager;
+
+        public TopicServiceFacade(LazyManager<Test> manager) {
+            this.manager = manager;
+        }
+
+    }
 
     public JsonObject getTestsAsJson(Set<Test> tests) {
         JsonObject result = new JsonObject();

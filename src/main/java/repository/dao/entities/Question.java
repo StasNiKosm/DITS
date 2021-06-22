@@ -21,7 +21,7 @@ public class Question {
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "testid")
-    private  Test test;
+    private Test test;
 
     @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude private Set<Literature> literature = Collections.emptySet();

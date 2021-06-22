@@ -37,15 +37,18 @@ public class TestChooserPageController {
 
     @PostMapping("/user/test-chooser")
     @ResponseBody
-    public String getTestByTopic(@RequestParam(value = "topicId", required = false, defaultValue = "undefined") Integer topicId) throws InterruptedException {
-        Thread.sleep(1500);
+    public String getTestByTopic(@RequestParam(value = "topicId", required = false, defaultValue = "undefined") Integer topicId) {
+        //Thread.sleep(1500);
         return testService.getTestsAsJson(
                 topicService.getLazyInstance().getTestFromTopicById(topicId)
         ).toString();
     }
 
     @PostMapping("user/testStart")
-    public RedirectView startTest(@RequestParam(value = "topicId") Integer topicId, @RequestParam(value = "testId") Integer testId) {
+    public RedirectView startTest(@RequestParam(value = "topicId" , required = false, defaultValue = "-1") Integer topicId,
+                                  @RequestParam(value = "testId", required = false, defaultValue = "-1") Integer testId) {
+        if (topicId == -1 || testId == -1)
+            return new RedirectView("/user/test-chooser?error");
         return new RedirectView("/debug/topic?id="+topicId+"&testId="+testId);
     }
 
