@@ -3,8 +3,11 @@ package services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.dao.entities.Answer;
+import repository.dao.entities.Literature;
 import repository.managers.eager.EagerManager;
 import repository.managers.lazy.LazyManager;
+
+import java.util.List;
 
 @Service
 public class AnswerService {
@@ -20,7 +23,7 @@ public class AnswerService {
 
     @Autowired
     public void setEagerInstance(EagerManager<Answer> answerEagerManager) {
-        this.lazyInstance = new AnswerServiceFacade(answerEagerManager);
+        this.eagerInstance = new AnswerServiceFacade(answerEagerManager);
     }
 
     public AnswerServiceFacade getEagerInstance() {
@@ -37,6 +40,14 @@ public class AnswerService {
 
         private AnswerServiceFacade(LazyManager<Answer> manager) {
             this.manager = manager;
+        }
+
+        public Answer getAnswerById(int id) {
+            return manager.read(id);
+        }
+
+        public List<Answer> getCorrectAnswerFromQuestion(int id) {
+            return manager.executeSql("From Answer where questionid = " + id + " and correct = 1");
         }
 
     }

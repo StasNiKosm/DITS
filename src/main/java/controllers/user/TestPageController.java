@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import repository.dao.entities.Question;
+import repository.dao.entities.Test;
 import services.TestService;
 
 import java.util.Set;
@@ -32,14 +33,11 @@ public class TestPageController {
             return new ModelAndView("redirect:/user/test-chooser?error");
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("user/testPage");
-        modelAndView.addObject("testName", questions.iterator().next().getTest().getName());
+        Test test = questions.iterator().next().getTest();
+        modelAndView.addObject("testName", test.getName());
         modelAndView.addObject("questions", questions);
+        modelAndView.addObject("testId", ((Test) test).getTestId());
         return modelAndView;
-    }
-
-    @PostMapping("user/test")
-    public String resultPage() {
-        return "redirect:/user/test-chooser";
     }
 
 }

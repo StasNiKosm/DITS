@@ -18,7 +18,7 @@
                     <div class="h4 mb-3">
                         ${testName}
                     </div>
-                    <form method="post" action="/user/test">
+                    <form method="post" action="/user/test?testId=${testId}">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                         <c:forEach items="${questions}" var="question" varStatus="status">
                             <div id="question-${status.index}" class="mb-3" style="display: none;">
@@ -28,7 +28,7 @@
                                 <c:forEach items="${question.answers}" var="answer">
                                     <c:set var="answerId" value="answer-id-${answer.answerid}" />
                                     <div class="form-check mb-3">
-                                        <input class="form-check-input" type="checkbox" value="" name="${answer.answerid}" id="${answerId}">
+                                        <input class="form-check-input" type="checkbox" name="${answerId}" id="${answerId}" />
                                         <label class="form-check-label" for="${answerId}">
                                             ${answer.description}
                                         </label>

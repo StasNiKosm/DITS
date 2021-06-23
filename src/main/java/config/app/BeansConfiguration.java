@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import repository.connection.HibernateSessionFactory;
 import services.*;
+import services.user.TestResultCheckerService;
 
 @Configuration
 public class BeansConfiguration {
@@ -238,6 +239,16 @@ public class BeansConfiguration {
     @Bean
     public StatisticService statisticService() {
         return new StatisticService();
+    }
+
+    @Bean
+    public TestResultCheckerService testResultCheckerService() {
+        return new TestResultCheckerService();
+    }
+
+    @Bean
+    public LiteratureService literatureService() {
+        return new LiteratureService();
     }
 
 }

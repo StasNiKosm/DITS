@@ -55,6 +55,10 @@ public class TestService {
             }
         }
 
+        public Test getTestById(int id) {
+            return manager.read(id);
+        }
+
         public Set<Question> getQuestionsFromTest(Test test) {
             return getQuestionsFromTest(test.getTestId());
         }

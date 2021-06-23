@@ -6,6 +6,8 @@ import repository.dao.entities.Literature;
 import repository.managers.eager.EagerManager;
 import repository.managers.lazy.LazyManager;
 
+import java.util.List;
+
 @Service
 public class LiteratureService {
 
@@ -20,7 +22,7 @@ public class LiteratureService {
 
     @Autowired
     public void setEagerInstance(EagerManager<Literature> literatureEagerManager) {
-        this.lazyInstance = new LiteratureServiceFacade(literatureEagerManager);
+        this.eagerInstance = new LiteratureServiceFacade(literatureEagerManager);
     }
 
     public LiteratureServiceFacade getEagerInstance() {
@@ -39,6 +41,9 @@ public class LiteratureService {
             this.manager = manager;
         }
 
+        public List<Literature> getLiteratureByQuestionId(int questionId) {
+            return manager.executeSql("From Literature where questionid = " + questionId);
+        }
     }
 
 }

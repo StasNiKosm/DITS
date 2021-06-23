@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "statistic")
@@ -32,4 +33,16 @@ public class Statistic {
     @JoinColumn(name = "userid")
     private User user;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Statistic)) return false;
+        Statistic statistic = (Statistic) o;
+        return correct == statistic.correct && date.equals(statistic.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(date, correct);
+    }
 }
