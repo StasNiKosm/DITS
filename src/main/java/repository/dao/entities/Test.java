@@ -19,7 +19,7 @@ public class Test {
     @Column(name = "description", length = 100)
     private String description;
 
-    @Column(name = "name", length = 20)
+    @Column(name = "name", length = 50)
     private String name;
 
     @ManyToOne(optional = false, fetch=FetchType.EAGER, cascade = CascadeType.MERGE)

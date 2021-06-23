@@ -9,6 +9,9 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
     <body>
+        <script>
+            const count_of_questions = ${questions.size()};
+        </script>
         <div class="d-flex align-items-center" style="height:100%;">
             <div class="d-flex justify-content-center mt-5" style="width:100%">
                 <div class="container" style="max-width: 600px">
@@ -16,14 +19,14 @@
                         ${testName}
                     </div>
                     <c:forEach items="${questions}" var="question" varStatus="status">
-                        <div id="question-${status.index}">
+                        <div id="question-${status.index}" style="display: none;">
                             <div class="blockquote mb-3">
                                 ${question.description}
                             </div>
                             <c:forEach items="${question.answers}" var="answer">
                                 <c:set var="answerId" value="answer-id-${answer.answerid}" />
                                 <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" value="" id="${answerId}">
+                                    <input class="form-check-input" type="checkbox" value="" name="${answer.answerid}" id="${answerId}">
                                     <label class="form-check-label" for="${answerId}">
                                         ${answer.description}
                                     </label>
@@ -40,4 +43,22 @@
             </div>
         </div>
     </body>
+    <script>
+
+        let cIndex = 0;
+
+        $().ready(function() {
+
+            $("#next-question").click(function(event) {
+                $("#question-"+cIndex).show();
+                if (cIndex != 0)
+                    $("#question-"+(cIndex-1)).hide();
+                cIndex++;
+            });
+
+            $("#next-question").trigger("click");
+
+        });
+
+    </script>
 </html>
