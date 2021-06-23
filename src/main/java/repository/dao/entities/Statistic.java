@@ -38,7 +38,7 @@ public class Statistic {
         if (this == o) return true;
         if (!(o instanceof Statistic)) return false;
         Statistic statistic = (Statistic) o;
-        return correct == statistic.correct && date.equals(statistic.date);
+        return correct == statistic.correct && Objects.equals(date, statistic.date);
     }
 
     @Override

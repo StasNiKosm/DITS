@@ -31,7 +31,7 @@ public class Topic {
         if (this == o) return true;
         if (!(o instanceof Topic)) return false;
         Topic topic = (Topic) o;
-        return description.equals(topic.description) && name.equals(topic.name);
+        return Objects.equals(description, topic.description) && Objects.equals(name, topic.name);
     }
 
     @Override

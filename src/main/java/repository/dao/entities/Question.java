@@ -38,7 +38,7 @@ public class Question {
         if (this == o) return true;
         if (!(o instanceof Question)) return false;
         Question question = (Question) o;
-        return description.equals(question.description);
+        return Objects.equals(description, question.description);
     }
 
     @Override

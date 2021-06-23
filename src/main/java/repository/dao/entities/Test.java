@@ -35,7 +35,7 @@ public class Test {
         if (this == o) return true;
         if (!(o instanceof Test)) return false;
         Test test = (Test) o;
-        return description.equals(test.description) && name.equals(test.name);
+        return Objects.equals(description, test.description) && Objects.equals(name, test.name);
     }
 
     @Override

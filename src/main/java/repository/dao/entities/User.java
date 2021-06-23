@@ -39,7 +39,7 @@ public class User {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return userId == user.userId && firstName.equals(user.firstName) && lastName.equals(user.lastName) && login.equals(user.login) && password.equals(user.password) && role.equals(user.role);
+        return userId == user.userId && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(login, user.login) && Objects.equals(password, user.password) && Objects.equals(role, user.role);
     }
 
     @Override

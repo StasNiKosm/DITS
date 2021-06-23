@@ -27,7 +27,7 @@ public class Link {
         if (this == o) return true;
         if (!(o instanceof Link)) return false;
         Link link1 = (Link) o;
-        return link.equals(link1.link);
+        return Objects.equals(link, link1.link);
     }
 
     @Override

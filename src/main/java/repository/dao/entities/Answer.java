@@ -33,11 +33,11 @@ public class Answer {
         if (this == o) return true;
         if (!(o instanceof Answer)) return false;
         Answer answer = (Answer) o;
-        return answerid == answer.answerid && correct == answer.correct && description.equals(answer.description);
+        return correct == answer.correct && Objects.equals(description, answer.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(answerid, description, correct);
+        return Objects.hash(description, correct);
     }
 }

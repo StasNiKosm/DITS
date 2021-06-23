@@ -32,7 +32,7 @@ public class Literature {
         if (this == o) return true;
         if (!(o instanceof Literature)) return false;
         Literature that = (Literature) o;
-        return description.equals(that.description);
+        return Objects.equals(description, that.description);
     }
 
     @Override
