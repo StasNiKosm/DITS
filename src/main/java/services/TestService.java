@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.springframework.stereotype.Service;
 import repository.dao.entities.Test;
-import repository.dao.entities.Topic;
 import repository.managers.eager.EagerManager;
 import repository.managers.lazy.LazyManager;
 
@@ -37,7 +36,7 @@ public class TestService {
 
         private final LazyManager<Test> manager;
 
-        public TopicServiceFacade(LazyManager<Test> manager) {
+        private TopicServiceFacade(LazyManager<Test> manager) {
             this.manager = manager;
         }
 

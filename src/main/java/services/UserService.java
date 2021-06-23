@@ -39,7 +39,7 @@ public class UserService {
 
         private final LazyManager<User> manager;
 
-        public UserServiceFacade(LazyManager<User> manager) {
+        private UserServiceFacade(LazyManager<User> manager) {
             this.manager = manager;
         }
 

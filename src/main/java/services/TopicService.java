@@ -42,7 +42,7 @@ public class TopicService {
 
         private final LazyManager<Topic> manager;
 
-        public TopicServiceFacade(LazyManager<Topic> manager) {
+        private TopicServiceFacade(LazyManager<Topic> manager) {
             this.manager = manager;
         }
 
