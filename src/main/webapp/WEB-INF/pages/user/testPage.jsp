@@ -18,27 +18,31 @@
                     <div class="h4 mb-3">
                         ${testName}
                     </div>
-                    <c:forEach items="${questions}" var="question" varStatus="status">
-                        <div id="question-${status.index}" style="display: none;">
-                            <div class="blockquote mb-3">
-                                ${question.description}
-                            </div>
-                            <c:forEach items="${question.answers}" var="answer">
-                                <c:set var="answerId" value="answer-id-${answer.answerid}" />
-                                <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" value="" name="${answer.answerid}" id="${answerId}">
-                                    <label class="form-check-label" for="${answerId}">
-                                        ${answer.description}
-                                    </label>
+                    <form method="post" action="/user/test">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                        <c:forEach items="${questions}" var="question" varStatus="status">
+                            <div id="question-${status.index}" class="mb-3" style="display: none;">
+                                <div class="blockquote mb-3">
+                                    ${question.description}
                                 </div>
-                            </c:forEach>
+                                <c:forEach items="${question.answers}" var="answer">
+                                    <c:set var="answerId" value="answer-id-${answer.answerid}" />
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" value="" name="${answer.answerid}" id="${answerId}">
+                                        <label class="form-check-label" for="${answerId}">
+                                            ${answer.description}
+                                        </label>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </c:forEach>
+                        <div class="row">
+                            <div class="col-sm d-flex justify-content-end">
+                                <button id="next-question" class="btn btn-primary" type="button" style="max-width:200px">Следующий</button>
+                                <button id="submit" class="btn btn-primary" type="submit" style="max-width:200px; display: none;">Зкончить</button>
+                            </div>
                         </div>
-                    </c:forEach>
-                    <div class="row">
-                        <div class="col-sm d-flex justify-content-end">
-                            <button id="next-question" class="btn btn-primary" type="submit" style="max-width:200px">Следующий</button>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -47,13 +51,17 @@
 
         let cIndex = 0;
 
-        $().ready(function() {
+        jQuery(function() {
 
-            $("#next-question").click(function(event) {
+            $("#next-question").on("click", function (event) {
                 $("#question-"+cIndex).show();
-                if (cIndex != 0)
+                if (cIndex !== 0)
                     $("#question-"+(cIndex-1)).hide();
                 cIndex++;
+                if (cIndex === count_of_questions) {
+                    $("#next-question").hide();
+                    $("#submit").show();
+                }
             });
 
             $("#next-question").trigger("click");

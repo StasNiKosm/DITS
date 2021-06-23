@@ -19,11 +19,9 @@
                 </c:if>
                 <form method="get" action="/user/test">
 
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-
                     <div class="mb-3 row">
                         <div class="col-sm form-floating">
-                            <select id="topic" name="topicId" class="form-select form-select-sm">
+                            <select id="topic" class="form-select form-select-sm">
                                 <c:forEach items="${topics}" var="topic" varStatus="status">
                                     <option value="${topic.topicId}" <c:if test="${status.index == 0}">select</c:if> >
                                         [${topic.topicId}] : ${topic.name}

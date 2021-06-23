@@ -3,6 +3,7 @@ package controllers.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import repository.dao.entities.Question;
@@ -34,6 +35,11 @@ public class TestPageController {
         modelAndView.addObject("testName", questions.iterator().next().getTest().getName());
         modelAndView.addObject("questions", questions);
         return modelAndView;
+    }
+
+    @PostMapping("user/test")
+    public String resultPage() {
+        return "redirect:/user/test-chooser";
     }
 
 }

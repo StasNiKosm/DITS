@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.view.RedirectView;
+import scriptDB.DBInitializer;
 import services.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,8 +36,14 @@ public class SecurityController {
         this.passwordEncoder = passwordEncoder;
     }
 
+    volatile boolean inited = false;
+
     @GetMapping("/login")
     public String login() {
+        if (!inited) {
+            DBInitializer.createNewTest();
+            inited = true;
+        }
         return "login";
     }
 
