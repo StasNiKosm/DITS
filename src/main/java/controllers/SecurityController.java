@@ -73,11 +73,12 @@ public class SecurityController {
         return "/login";
     }
 
-    @PostMapping("/checkLogin")
+    @PostMapping(value = "/checkLogin", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String checkLogin(@RequestParam(value = "login", required = false, defaultValue = "undefined") String login) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("unique", !userService.isLoginRegistered(login));
+        jsonObject.addProperty("prop", "Неправильно!");
         return jsonObject.toString();
     }
 

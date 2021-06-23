@@ -38,7 +38,6 @@ public class UserSecurityService implements UserDetailsService {
     }
 
     private AuthorizedUser buildUserForAuthentication(repository.dao.entities.User user, List<GrantedAuthority> authorities) {
-        System.out.println("try login " + user);
         return new AuthorizedUser(user, authorities);
     }
 
