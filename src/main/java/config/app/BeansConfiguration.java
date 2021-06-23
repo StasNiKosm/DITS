@@ -142,7 +142,7 @@ public class BeansConfiguration {
 
     @Bean
     public QuestionEagerManager questionEagerManager() {
-        return new QuestionEagerManager(literatureEagerRepository(), statisticEagerManager(), questionRepository(), sessionFactory());
+        return new QuestionEagerManager(literatureEagerRepository(), statisticEagerManager(), answerEagerManager(), questionRepository(), sessionFactory());
     }
 
     @Bean

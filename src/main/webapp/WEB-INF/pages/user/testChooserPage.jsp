@@ -17,7 +17,7 @@
                         Что-то пошло не так. Повторите попытку.
                     </div>
                 </c:if>
-                <form method="post" action="/user/testStart">
+                <form method="get" action="/user/test">
 
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 

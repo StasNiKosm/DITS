@@ -2,7 +2,12 @@ package services;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import repository.connection.HibernateSessionFactory;
+import repository.dao.entities.Question;
 import repository.dao.entities.Test;
 import repository.managers.eager.EagerManager;
 import repository.managers.lazy.LazyManager;
@@ -16,10 +21,12 @@ public class TestService {
 
     private TopicServiceFacade eagerInstance;
 
+    @Autowired
     public void setLazyInstance(LazyManager<Test> testLazyManager) {
         this.lazyInstance = new TopicServiceFacade(testLazyManager);
     }
 
+    @Autowired
     public void setEagerInstance(EagerManager<Test> testEagerManager) {
         this.eagerInstance = new TopicServiceFacade(testEagerManager);
     }
@@ -40,6 +47,27 @@ public class TestService {
             this.manager = manager;
         }
 
+        public Set<Question> getQuestionsFromTest(int id) {
+            try(Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
+                Test test = manager.read(id, session);
+                Hibernate.initialize(test.getQuestions());
+                return test.getQuestions();
+            }
+        }
+
+        public Set<Question> getQuestionsFromTest(Test test) {
+            return getQuestionsFromTest(test.getTestId());
+        }
+
+    }
+
+    public boolean isTestExist(int id) {
+        try {
+            getLazyInstance().manager.read(id);
+            return true;
+        } catch (Exception ignored) {
+            return false;
+        }
     }
 
     public JsonObject getTestsAsJson(Set<Test> tests) {
