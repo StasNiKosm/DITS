@@ -1,16 +1,14 @@
 package services.user;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.dao.entities.Answer;
 import repository.dao.entities.Literature;
 import repository.dao.entities.Question;
 import repository.dao.entities.Test;
-import services.AnswerService;
-import services.LiteratureService;
-import services.QuestionService;
-import services.UserSecurityService;
+import services.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,25 +16,32 @@ import java.util.stream.Collectors;
 @Service
 public class TestResultCheckerService {
 
-    AnswerService answerService;
+    private static AnswerService answerService;
 
-    QuestionService questionService;
+    private static QuestionService questionService;
 
-    LiteratureService literatureService;
+    private static LiteratureService literatureService;
+
+    private static TestService testService;
 
     @Autowired
     public void setAnswerService(AnswerService answerService) {
-        this.answerService = answerService;
+        TestResultCheckerService.answerService = answerService;
     }
 
     @Autowired
     public void setQuestionService(QuestionService questionService) {
-        this.questionService = questionService;
+        TestResultCheckerService.questionService = questionService;
     }
 
     @Autowired
     public void setLiteratureService(LiteratureService literatureService) {
-        this.literatureService = literatureService;
+        TestResultCheckerService.literatureService = literatureService;
+    }
+
+    @Autowired
+    public void setTestService(TestService testService) {
+        TestResultCheckerService.testService = testService;
     }
 
     public Result createReport(Map<String, String[]> parameterMap, Test test, UserSecurityService.AuthorizedUser user, Date date) {
@@ -56,10 +61,12 @@ public class TestResultCheckerService {
         List<Answer> incorrectAnswers = new ArrayList<>();
 
         answersFromParameterMap.forEach(answer -> {
-           if (answer.getCorrect() == 0)
+           if (answer.getCorrect() == 0) {
                incorrectAnswers.add(answer);
-           if (answer.getCorrect() == 1)
+           }
+           if (answer.getCorrect() == 1) {
                correctAnswer.remove(answer);
+           }
         });
 
         incorrectAnswers.addAll(correctAnswer);
@@ -72,7 +79,7 @@ public class TestResultCheckerService {
 
         System.out.println(correctAnswer);
 
-        return new Result(incorrectAnswers, new ArrayList<>(literature));
+        return new Result(test, incorrectAnswers, new ArrayList<>(literature));
     }
 
     private List<Answer> getCorrectAnswersFromTest(Test test) {
@@ -94,15 +101,19 @@ public class TestResultCheckerService {
     }
 
     @Getter
+    @Setter
     public static class Result {
 
-        List<Answer> incorrectAnswers;
+        private Test test;
 
-        List<Literature> literature;
+        private List<Answer> incorrectAnswers;
 
-        private Result(List<Answer> incorrectAnswers, List<Literature> literature) {
+        private List<Literature> literature;
+
+        private Result(Test test, List<Answer> incorrectAnswers, List<Literature> literature) {
             this.incorrectAnswers = incorrectAnswers;
-            this.literature = literature;
+            this.literature = literatureService.getEagerInstance().load(literature);
+            this.test = test;
         }
 
     }
