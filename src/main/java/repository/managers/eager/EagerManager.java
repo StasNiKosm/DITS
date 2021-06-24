@@ -46,6 +46,11 @@ public interface EagerManager<T> extends LazyManager<T> {
     }
 
     @Override
+    default List<T> executeSql(String sql) {
+        return new ArrayList<>(loadAll(LazyManager.super.executeSql(sql)));
+    }
+
+    @Override
     default T read(int id, Session session) {
         return load(getRepository().findById(getRepository().getTemplatedClass(), id, session), session);
     }

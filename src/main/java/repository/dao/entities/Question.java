@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -32,4 +33,16 @@ public class Question {
     @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude private Set<Statistic> statistic = Collections.emptySet();
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Question)) return false;
+        Question question = (Question) o;
+        return Objects.equals(description, question.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(description);
+    }
 }

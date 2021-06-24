@@ -39,7 +39,7 @@ public class UserService {
 
         private final LazyManager<User> manager;
 
-        public UserServiceFacade(LazyManager<User> manager) {
+        private UserServiceFacade(LazyManager<User> manager) {
             this.manager = manager;
         }
 
@@ -68,7 +68,6 @@ public class UserService {
 
     public void registerNewUser(String login, String firstName, String lastName, String password) {
         User user = AppContextProvider.getAppContext().getBean(User.class);
-
 
         user.setLogin(login);
         user.setFirstName(firstName);

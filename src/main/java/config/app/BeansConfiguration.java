@@ -12,10 +12,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import repository.connection.HibernateSessionFactory;
-import services.TestService;
-import services.TopicService;
-import services.UserSecurityService;
-import services.UserService;
+import services.*;
+import services.user.TestResultCheckerService;
 
 @Configuration
 public class BeansConfiguration {
@@ -145,7 +143,7 @@ public class BeansConfiguration {
 
     @Bean
     public QuestionEagerManager questionEagerManager() {
-        return new QuestionEagerManager(literatureEagerRepository(), statisticEagerManager(), questionRepository(), sessionFactory());
+        return new QuestionEagerManager(literatureEagerRepository(), statisticEagerManager(), answerEagerManager(), questionRepository(), sessionFactory());
     }
 
     @Bean
@@ -221,6 +219,36 @@ public class BeansConfiguration {
     @Bean
     public TestService testService() {
         return new TestService();
+    }
+
+    @Bean
+    public AnswerService answerService() {
+        return new AnswerService();
+    }
+
+    @Bean
+    public LinkService linkService() {
+        return new LinkService();
+    }
+
+    @Bean
+    public QuestionService questionService() {
+        return new QuestionService();
+    }
+
+    @Bean
+    public StatisticService statisticService() {
+        return new StatisticService();
+    }
+
+    @Bean
+    public TestResultCheckerService testResultCheckerService() {
+        return new TestResultCheckerService();
+    }
+
+    @Bean
+    public LiteratureService literatureService() {
+        return new LiteratureService();
     }
 
 }

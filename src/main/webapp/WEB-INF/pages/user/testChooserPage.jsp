@@ -17,13 +17,11 @@
                         Что-то пошло не так. Повторите попытку.
                     </div>
                 </c:if>
-                <form method="post" action="/user/testStart">
-
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                <form method="get" action="/user/test">
 
                     <div class="mb-3 row">
                         <div class="col-sm form-floating">
-                            <select id="topic" name="topicId" class="form-select form-select-sm">
+                            <select id="topic" class="form-select form-select-sm">
                                 <c:forEach items="${topics}" var="topic" varStatus="status">
                                     <option value="${topic.topicId}" <c:if test="${status.index == 0}">select</c:if> >
                                         [${topic.topicId}] : ${topic.name}

@@ -4,7 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
+import scriptDB.DBInitializer;
 import services.UserService;
+
+import java.sql.SQLException;
 
 @Controller
 public class AdminController {
@@ -17,9 +20,10 @@ public class AdminController {
     }
 
     @GetMapping("/admin")
-    public ModelAndView userHomePage(ModelAndView modelAndView) {
+    public ModelAndView userHomePage(ModelAndView modelAndView) throws SQLException {
         modelAndView.setViewName("admin/admin");
         modelAndView.addObject("user", userService.getUserFromSession());
+        DBInitializer.main(null);
         return modelAndView;
     }
 

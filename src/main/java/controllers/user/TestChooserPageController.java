@@ -1,6 +1,7 @@
 package controllers.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,10 +36,9 @@ public class TestChooserPageController {
         return modelAndView;
     }
 
-    @PostMapping("/user/test-chooser")
+    @PostMapping(value = "/user/test-chooser", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String getTestByTopic(@RequestParam(value = "topicId", required = false, defaultValue = "undefined") Integer topicId) {
-        //Thread.sleep(1500);
         return testService.getTestsAsJson(
                 topicService.getLazyInstance().getTestFromTopicById(topicId)
         ).toString();
