@@ -71,15 +71,9 @@ public class TestResultCheckerService {
 
         incorrectAnswers.addAll(correctAnswer);
 
-        Set<Literature> literature = new HashSet<>();
-        incorrectAnswers.forEach(answer -> literature.addAll(
-                literatureService.getEagerInstance().getLiteratureByQuestionId(answer.getQuestion().getQuestionId())
-            )
-        );
-
         System.out.println(correctAnswer);
 
-        return new Result(test, incorrectAnswers, new ArrayList<>(literature));
+        return new Result(test, incorrectAnswers, markedAnswers);
     }
 
     private List<Answer> getCorrectAnswersFromTest(Test test) {
@@ -106,16 +100,53 @@ public class TestResultCheckerService {
 
         private Test test;
 
-        private List<Answer> incorrectAnswers;
+        private Set<Integer> markedAnswers = new HashSet<>();
 
-        private List<Literature> literature;
+        private Set<Answer> incorrectAnswers = new TreeSet<>((a, b) -> Integer.compare(a.getAnswerid(), b.getAnswerid()));
 
-        private Result(Test test, List<Answer> incorrectAnswers, List<Literature> literature) {
-            this.incorrectAnswers = incorrectAnswers;
-            this.literature = literatureService.getEagerInstance().load(literature);
-            this.test = test;
+        private int correctQuestionsCount;
+
+        private Set<Integer> correct = new HashSet<>();
+
+        private static int calcCorrectQCount(List<Answer> incorrectAnswers, Test test, Set<Integer> correct) {
+            test.getQuestions().forEach(e -> correct.add(e.getQuestionId()));
+            incorrectAnswers.forEach(e -> correct.remove(e.getQuestion().getQuestionId()));
+            return correct.size();
         }
 
+        private Result(Test test, List<Answer> incorrectAnswers, List<Answer> markedAnswers) {
+            this.incorrectAnswers.addAll(incorrectAnswers);
+            markedAnswers.forEach(e -> this.markedAnswers.add(e.getAnswerid()));
+            this.test = test;
+            this.correctQuestionsCount = calcCorrectQCount(incorrectAnswers, test, correct);
+        }
+
+        public int getCorrectQuestionsCount() {
+            return correctQuestionsCount;
+        }
+
+        public int getTotalQuestionsCount() {
+            return test.getQuestions().size();
+        }
+
+        public String getPercentString() {
+            double total = getTotalQuestionsCount() == 0 ? 1 : getTotalQuestionsCount();
+            return String.format(Locale.US,"%3.1f", 100 * getCorrectQuestionsCount() / total);
+        }
+
+        public boolean isQuestionCorrect(int id) {
+            return correct.contains(id);
+        }
+
+        public String getColor() {
+            double total = getTotalQuestionsCount() == 0 ? 1 : getTotalQuestionsCount();
+            double result = getCorrectQuestionsCount() / total;
+            if (result < 0.5)
+                return "red";
+            if (result < 0.8)
+                return "orange";
+            return "green";
+        }
     }
 
 }

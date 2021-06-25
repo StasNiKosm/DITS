@@ -18,12 +18,13 @@
                     <div class="h4 mb-3">
                         ${testName}
                     </div>
+                    <hr />
                     <form method="post" action="/user/test?testId=${testId}">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                         <c:forEach items="${questions}" var="question" varStatus="status">
                             <div id="question-${status.index}" class="mb-3" style="display: none;">
                                 <div class="blockquote mb-3">
-                                    ${question.description}
+                                    <em>${question.description}</em>
                                 </div>
                                 <c:forEach items="${question.answers}" var="answer">
                                     <c:set var="answerId" value="answer-id-${answer.answerid}" />
