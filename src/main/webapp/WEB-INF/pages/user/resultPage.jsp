@@ -12,17 +12,14 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="container mt-1">
+    <div class="container mt-5" style="max-width: 1000px">
         <div class="h3 row mb-3">
-            <div class="display-6 col-sm-9">
+            <div class="display-6 col-sm">
                 Тест: ${result.test.name}.
-            </div>
-            <div class="col-sm-3 row align-items-center justify-content-end">
-                <a href="/user/test-chooser" class="btn btn-primary btn-lg active mx-auto" role="button" style="max-width: 150px">На главную</a>
             </div>
         </div>
         <div class="display-6 mb-3">
-            Результат: <b>${result.correctQuestionsCount}</b> из <b>${result.totalQuestionsCount}</b> : <b style="color: ${result.color};"><i>${result.percentString}%</i></b>
+            Результат: <b>${result.correctQuestionsCount}</b> из <b>${result.totalQuestionsCount}</b> : <b style="color: ${result.color};">${result.percentString}%</b>
         </div>
         <c:forEach items="${result.test.questions}" var="question">
             <div class="row mb-3">
@@ -41,10 +38,34 @@
                                 <label class="form-check-label" style="<c:out value="${ result.incorrectAnswers.contains(answers) ? (answers.correct == 1 ? 'color: green;' : 'color: red') : (answers.correct == 1 ? 'color: green;' : '') }" />" for="${answers.answerid}">${answers.description}</label>
                             </div>
                         </c:forEach>
+                        <c:if test="${!result.isQuestionCorrect(question.questionId)}">
+                            <hr/>
+                            <p>Информация по вопросу:</p>
+                            <ol>
+                                <c:forEach items="${question.literature}" var="literature">
+                                    <li>
+                                        <c:if test="${literature.links.size() == 1}">
+                                            <a href="${literature.links.iterator().next().link}" target="_blank">${literature.description}</a>
+                                        </c:if>
+                                        <c:if test="${literature.links.size() > 1}">
+                                            <ul>
+                                                <c:forEach items="${literature.links}" var="link" varStatus="status">
+                                                    <li><a href="${link.link}" target="_blank">Ссылка №${status.index + 1}</a></li>
+                                                </c:forEach>
+                                            </ul>
+                                        </c:if>
+                                    </li>
+                                </c:forEach>
+                            </li>
+                        </c:if>
                     </div>
                 </div>
             </div>
         </c:forEach>
+        <div class="row">
+            <a href="/user/test-chooser" class="btn btn-primary btn-lg btn-block mx-auto" role="button" style="max-width: 150px">На главную</a>
+        </div>
     </div>
+
 </body>
 </html>

@@ -5,7 +5,6 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.dao.entities.Answer;
-import repository.dao.entities.Literature;
 import repository.dao.entities.Question;
 import repository.dao.entities.Test;
 import services.*;

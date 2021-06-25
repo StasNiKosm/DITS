@@ -82,6 +82,7 @@ public class TestService {
             JsonObject currentTestObject = new JsonObject();
             currentTestObject.addProperty("id", test.getTestId());
             currentTestObject.addProperty("name", test.getName());
+            currentTestObject.addProperty("description", test.getDescription());
             testArray.add(currentTestObject);
         });
         return result;

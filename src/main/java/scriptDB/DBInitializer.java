@@ -32,6 +32,7 @@ public class DBInitializer {
             topic.setTests(Collections.singleton(test_1));
 
             test_1.setName("Операционные системы - общая теория");
+            test_1.setDescription("Тест направлен на закрепление знаний по теме Операционные системы.");
             test_1.setQuestions(questions);
 
             {
