@@ -115,9 +115,9 @@
             <div>
                 <h2>Topics</h2>
                 <p>Расширяй ситему тестирования! Можете создать новую тему для тестов, изменить уже имеющиеся, либо его удалить. Но будь внимателен при удалении!</p>
-                <a href="#" class="btn btn-outline-primary btn-lg" style="min-width: 90px;">Create</a>
-                <a href="#" class="btn btn-outline-warning btn-lg" style="min-width: 90px">Edit</a>
-                <a href="#" class="btn btn-outline-danger btn-lg" style="min-width: 90px">Delete</a>
+                <a href="/admin/createTopic" class="btn btn-outline-primary btn-lg" style="min-width: 90px;">Create</a>
+                <a href="/admin/editTopic" class="btn btn-outline-warning btn-lg" style="min-width: 90px">Edit</a>
+                <a href="/admin/deleteTopic" class="btn btn-outline-danger btn-lg" style="min-width: 90px">Delete</a>
             </div>
         </div>
         <div class="col d-flex align-items-start">

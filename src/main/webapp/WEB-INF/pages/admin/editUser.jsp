@@ -45,7 +45,7 @@
     <div class="container col-xl-10 col-xxl-10 py-5">
         <div class="row align-items-center g-lg-5 py-5">
             <div class="col-lg-4 text-center text-lg-start">
-                <h1 class="display-4 fw-bold lh-1 mb-3">Change</h1>
+                <h1 class="display-4 fw-bold lh-1 mb-3">Changing</h1>
                 <p class="col-lg-10 fs-4">У тебя есть возвожность создавать нового уникального пользователя. Сделав это, убедись, что права на пользование аккаутном передал физическому пользователю без ошибок.</p>
 
                 <div class="alert alert-success" role="alert">
