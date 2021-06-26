@@ -32,17 +32,17 @@
                         </div>
                     </c:if>
                     <div class="mb-3">
-                        <label for="loginInput" class="form-label">Логин</label>
-                        <input name="ssoId" type="text" class="form-control" id="loginInput" aria-describedby="emailHelp" required>
+                        <label for="loginInput" class="form-label" style="font-size: 20px">Логин</label>
+                        <input name="ssoId" type="text" class="form-control form-control-lg" id="loginInput" aria-describedby="emailHelp" required>
                     </div>
                     <div class="mb-3">
-                        <label for="passwordInput" class="form-label">Пароль</label>
-                        <input name="password" type="password" class="form-control" id="passwordInput" required>
+                        <label for="passwordInput" class="form-label" style="font-size: 20px">Пароль</label>
+                        <input name="password" type="password" class="form-control form-control-lg" id="passwordInput" required>
                     </div>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                     <div class="d-grid gap-2 d-md-flex justify-content-md-between">
-                        <a class="btn btn-secondary me-md-2" role="button" href="/registration">Зарегистрироваться</a>
-                        <button class="btn btn-primary" type="submit">Войти</button>
+                        <a class="btn btn-lg btn-secondary me-md-2" role="button" href="/registration">Зарегистрироваться</a>
+                        <button class="btn btn-lg btn-primary" type="submit">Войти</button>
                     </div>
                 </form>
             </div>

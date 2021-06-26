@@ -15,15 +15,16 @@
         <div class="d-flex align-items-center" style="height:100%;">
             <div class="d-flex justify-content-center mt-5" style="width:100%">
                 <div class="container" style="max-width: 600px">
-                    <div class="h4 mb-3">
-                        ${testName}
+                    <div class="mb-3">
+                        <span class="h3">§ ${testName}</span>
+                        <hr>
                     </div>
                     <form method="post" action="/user/test?testId=${testId}">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                         <c:forEach items="${questions}" var="question" varStatus="status">
                             <div id="question-${status.index}" class="mb-3" style="display: none;">
                                 <div class="blockquote mb-3">
-                                    ${question.description}
+                                    <p>№${status.index + 1}. <em>${question.description}</em></p>
                                 </div>
                                 <c:forEach items="${question.answers}" var="answer">
                                     <c:set var="answerId" value="answer-id-${answer.answerid}" />
@@ -37,7 +38,7 @@
                             </div>
                         </c:forEach>
                         <div class="row">
-                            <div class="col-sm d-flex justify-content-end">
+                            <div class="col d-flex justify-content-end">
                                 <button id="next-question" class="btn btn-primary" type="button" style="max-width:200px">Следующий</button>
                                 <button id="submit" class="btn btn-primary" type="submit" style="max-width:200px; display: none;">Зкончить</button>
                             </div>
@@ -58,6 +59,7 @@
                 if (cIndex !== 0)
                     $("#question-"+(cIndex-1)).hide();
                 cIndex++;
+                $("#qNumber-"+cIndex).text(cIndex);
                 if (cIndex === count_of_questions) {
                     $("#next-question").hide();
                     $("#submit").show();
