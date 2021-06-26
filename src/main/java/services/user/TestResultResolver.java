@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repository.dao.entities.Answer;
 import repository.dao.entities.Question;
+import repository.dao.entities.Statistic;
 import repository.dao.entities.Test;
 import services.*;
 
@@ -13,34 +14,20 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class TestResultCheckerService {
+public class TestResultResolver {
 
     private static AnswerService answerService;
 
-    private static QuestionService questionService;
+    private static StatisticService statisticService;
 
-    private static LiteratureService literatureService;
-
-    private static TestService testService;
+    @Autowired
+    public static void setStatisticService(StatisticService statisticService) {
+        TestResultResolver.statisticService = statisticService;
+    }
 
     @Autowired
     public void setAnswerService(AnswerService answerService) {
-        TestResultCheckerService.answerService = answerService;
-    }
-
-    @Autowired
-    public void setQuestionService(QuestionService questionService) {
-        TestResultCheckerService.questionService = questionService;
-    }
-
-    @Autowired
-    public void setLiteratureService(LiteratureService literatureService) {
-        TestResultCheckerService.literatureService = literatureService;
-    }
-
-    @Autowired
-    public void setTestService(TestService testService) {
-        TestResultCheckerService.testService = testService;
+        TestResultResolver.answerService = answerService;
     }
 
     public Result createReport(Map<String, String[]> parameterMap, Test test, UserSecurityService.AuthorizedUser user, Date date) {
@@ -72,7 +59,7 @@ public class TestResultCheckerService {
 
         System.out.println(correctAnswer);
 
-        return new Result(test, incorrectAnswers, markedAnswers);
+        return new Result(test, incorrectAnswers, markedAnswers, user, date);
     }
 
     private List<Answer> getCorrectAnswersFromTest(Test test) {
@@ -107,13 +94,17 @@ public class TestResultCheckerService {
 
         private Set<Integer> correct = new HashSet<>();
 
+        private Date date;
+
+        private UserSecurityService.AuthorizedUser user;
+
         private static int calcCorrectQCount(List<Answer> incorrectAnswers, Test test, Set<Integer> correct) {
             test.getQuestions().forEach(e -> correct.add(e.getQuestionId()));
             incorrectAnswers.forEach(e -> correct.remove(e.getQuestion().getQuestionId()));
             return correct.size();
         }
 
-        private Result(Test test, List<Answer> incorrectAnswers, List<Answer> markedAnswers) {
+        private Result(Test test, List<Answer> incorrectAnswers, List<Answer> markedAnswers, UserSecurityService.AuthorizedUser user, Date date) {
             this.incorrectAnswers.addAll(incorrectAnswers);
             markedAnswers.forEach(e -> this.markedAnswers.add(e.getAnswerid()));
             this.test = test;
@@ -146,6 +137,29 @@ public class TestResultCheckerService {
                 return "orange";
             return "green";
         }
+    }
+
+    public void saveResult(Result result) {
+
+        Test test = result.test;
+
+        List<Statistic> statistics = new ArrayList<>(test.getQuestions().size());
+
+        for (Question question : test.getQuestions()) {
+            Statistic statistic = new Statistic();
+
+            statistic.setDate(result.getDate());
+            statistic.setUser(result.user.getUser());
+            statistic.setQuestion(question);
+
+            if (result.isQuestionCorrect(question.getQuestionId()))
+                statistic.setCorrect(1);
+            else
+                statistic.setCorrect(0);
+
+            statisticService.saveStatistic(statistic);
+        }
+
     }
 
 }

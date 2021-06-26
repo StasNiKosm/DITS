@@ -8,7 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 import repository.dao.entities.Test;
 import services.TestService;
 import services.UserService;
-import services.user.TestResultCheckerService;
+import services.user.TestResultResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -18,7 +18,7 @@ public class ResultPageController {
 
     private TestService testService;
 
-    private TestResultCheckerService testResultCheckerService;
+    private TestResultResolver testResultResolver;
 
     private UserService userService;
 
@@ -28,8 +28,8 @@ public class ResultPageController {
     }
 
     @Autowired
-    public void setTestResultCheckerService(TestResultCheckerService testResultCheckerService) {
-        this.testResultCheckerService = testResultCheckerService;
+    public void setTestResultCheckerService(TestResultResolver testResultResolver) {
+        this.testResultResolver = testResultResolver;
     }
 
     @Autowired
@@ -41,7 +41,7 @@ public class ResultPageController {
     public ModelAndView resultPage(@RequestParam("testId") Integer testId, HttpServletRequest request) {
         System.out.println(request.getParameterMap());
         Test test = testService.getEagerInstance().getTestById(testId);
-        TestResultCheckerService.Result result = testResultCheckerService.createReport(request.getParameterMap(), test, userService.getUserFromSession(), new Date());
+        TestResultResolver.Result result = testResultResolver.createReport(request.getParameterMap(), test, userService.getUserFromSession(), new Date());
         return new ModelAndView("user/resultPage", "result", result);
     }
 

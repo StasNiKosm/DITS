@@ -39,4 +39,8 @@ public class StatisticService {
 
     }
 
+    public void saveStatistic(Statistic statistic) {
+        getLazyInstance().manager.create(statistic);
+    }
+
 }
