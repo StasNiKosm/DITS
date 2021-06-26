@@ -100,7 +100,7 @@
                                         <td><div style="overflow: auto;">Egor_Sushchenko</div></td>
                                     </tr>
                                     <tr сlass="write" style="cursor: pointer;">
-                                        <td><div style="overflow: auto;">1</div></td>
+                                        <td><div style="overflow: auto;">3</div></td>
                                         <td><div style="overflow: auto;">Tutor</div></td>
                                         <td><div style="overflow: auto;">Vlad</div></td>
                                         <td><div style="overflow: auto;">Polkovsky</div></td>
@@ -170,7 +170,7 @@
                 <script>
                     $("#table tr").click(function(){
                         $(this).addClass('selected').siblings().removeClass('selected');
-                        var id=$(this).find('td').eq(0).text();
+                        // var id=$(this).find('td').eq(0).text();
                         var role=$(this).find('td').eq(1).text();
                         var firstName=$(this).find('td').eq(2).text();
                         var lastName=$(this).find('td').eq(3).text();

@@ -3,6 +3,7 @@ package controllers.admin;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
+import repository.dao.emuns.RoleEnum;
 
 @Controller
 public class HomePageAdminController {
@@ -10,6 +11,7 @@ public class HomePageAdminController {
     @GetMapping(value = "/admin/createUser")
     public ModelAndView createUser(ModelAndView modelAndView){
         modelAndView.setViewName("admin/createUser");
+        modelAndView.addObject("roles", RoleEnum.getAllRules());
         return modelAndView;
     }
 
