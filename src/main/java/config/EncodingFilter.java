@@ -16,4 +16,5 @@ public class EncodingFilter extends GenericFilterBean {
         response.setCharacterEncoding("UTF-8");
         chain.doFilter(request, response);
     }
+
 }
