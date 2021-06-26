@@ -2,7 +2,7 @@
 
 <html>
 <head>
-    <title>Статистика</title>
+    <title>Создание теста</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- CSS only -->
@@ -29,34 +29,6 @@
         </div>
     </header>
 
-    <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="row">
-                <div class="col-md-8">
-                    <h2>Общая статистика</h2>
-                    <p>Смотри любую статистику по всей базе данных</p>
-                </div>
-                <div class="col-md-4">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4"></div>
-                <div class="col-md-4 gap-3">
-                    <div class="row justify-content-md-center">
-                        <a href="/goHomeAdmin" type="button" class="btn btn-outline-primary btn-lg">Статистика по тестам</a>
-                    </div>
-                    <div class="row justify-content-md-center">
-                        <a href="/goHomeAdmin" type="button" class="btn btn-outline-primary btn-lg">Статистика по вопросам</a>
-                    </div>
-                    <div class="row justify-content-md-center">
-                        <a href="/goHomeAdmin" type="button" class="btn btn-outline-primary btn-lg">Статистика пользователей</a>
-                    </div>
-                </div>
-                <div class="col-md-4"></div>
-            </div>
-        </div>
-    </div>
-</div>
+
 </body>
 </html>

@@ -24,8 +24,9 @@
             <!-- db connection -->
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost/postgres"/>
+<!--            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost/postgres?useUnicode=true&amp;characterEncoding=utf8"/>-->
             <property name="javax.persistence.jdbc.user" value="postgres"/>
-            <property name="javax.persistence.jdbc.password" value="741AzxY321963"/>
+            <property name="javax.persistence.jdbc.password" value="stas"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL10Dialect"/>
 
             <!--    PARAMETERS ?   -->
@@ -34,7 +35,7 @@
             <!--    for watching sql in logs    -->
             <property name="hibernate.show_sql" value="true"/>
             <!--    for hibernate updating db    -->
-            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
 
             <!--    DROP -> CREAT -> INITIALIZE (all tables with his test data)   -->
 

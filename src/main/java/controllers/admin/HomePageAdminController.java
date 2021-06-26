@@ -7,15 +7,27 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class HomePageAdminController {
 
-    @GetMapping(value = "/admin/creatTest")
+    @GetMapping(value = "/admin/createTest")
     public ModelAndView createTest(ModelAndView modelAndView){
-        modelAndView.setViewName("admin/creatTestAdmin");
+        modelAndView.setViewName("admin/createTestAdmin");
         return modelAndView;
     }
 
-    @GetMapping(value = "/admin/creatUser")
+    @GetMapping(value = "/admin/editUser")
+    public ModelAndView editUser(ModelAndView modelAndView){
+        modelAndView.setViewName("admin/editUser");
+        return modelAndView;
+    }
+
+    @GetMapping(value = "/admin/deleteUser")
+    public ModelAndView deleteUser(ModelAndView modelAndView){
+        modelAndView.setViewName("admin/deleteUser");
+        return modelAndView;
+    }
+
+    @GetMapping(value = "/admin/createUser")
     public ModelAndView createUser(ModelAndView modelAndView){
-        modelAndView.setViewName("admin/creatUser");
+        modelAndView.setViewName("admin/createUser");
         return modelAndView;
     }
 
