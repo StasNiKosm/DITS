@@ -20,7 +20,7 @@
             </div>
             <div class="d-grid gap-2 col-lg-3 mx-auto">
                 <a href="/user/test-chooser" class="btn btn-lg btn-primary row" type="button"><span class="col-2"><img style="max-height: 30px" src="https://img.icons8.com/ios/452/test-passed.png" /></span><span class="col-10">Выбор темы и теста</span></a>
-                <a href="#" class="btn btn-lg btn-primary row " type="button"><span class="col-2"><img style="max-height: 30px" src="https://icon-library.com/images/statistic-icon-png/statistic-icon-png-22.jpg" /></span><span class="col-10">Личная статистика</span></a>
+                <a href="/user/statistic?page=0" class="btn btn-lg btn-primary row " type="button"><span class="col-2"><img style="max-height: 30px" src="https://icon-library.com/images/statistic-icon-png/statistic-icon-png-22.jpg" /></span><span class="col-10">Личная статистика</span></a>
                 <a href="/logout" class="btn btn-secondary btn-lg" role="button" aria-pressed="true">Выход</a>
             </div>
         </div>

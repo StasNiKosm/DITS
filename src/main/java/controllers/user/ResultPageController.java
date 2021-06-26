@@ -11,6 +11,7 @@ import services.UserService;
 import services.user.TestResultResolver;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Calendar;
 import java.util.Date;
 
 @Controller
@@ -39,9 +40,11 @@ public class ResultPageController {
 
     @PostMapping("user/test")
     public ModelAndView resultPage(@RequestParam("testId") Integer testId, HttpServletRequest request) {
-        System.out.println(request.getParameterMap());
         Test test = testService.getEagerInstance().getTestById(testId);
-        TestResultResolver.Result result = testResultResolver.createReport(request.getParameterMap(), test, userService.getUserFromSession(), new Date());
+
+        TestResultResolver.Result result = testResultResolver.createReport(request.getParameterMap(), test, userService.getUserFromSession(), new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+        testResultResolver.saveResult(result);
+
         return new ModelAndView("user/resultPage", "result", result);
     }
 

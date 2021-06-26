@@ -21,7 +21,7 @@ public class TestResultResolver {
     private static StatisticService statisticService;
 
     @Autowired
-    public static void setStatisticService(StatisticService statisticService) {
+    public void setStatisticService(StatisticService statisticService) {
         TestResultResolver.statisticService = statisticService;
     }
 
@@ -30,7 +30,7 @@ public class TestResultResolver {
         TestResultResolver.answerService = answerService;
     }
 
-    public Result createReport(Map<String, String[]> parameterMap, Test test, UserSecurityService.AuthorizedUser user, Date date) {
+    public Result createReport(Map<String, String[]> parameterMap, Test test, UserSecurityService.AuthorizedUser user, java.sql.Date date) {
 
         parameterMap.entrySet().forEach(entry -> {
             System.out.print(entry.getKey() + " -> ");
@@ -94,7 +94,7 @@ public class TestResultResolver {
 
         private Set<Integer> correct = new HashSet<>();
 
-        private Date date;
+        private java.sql.Date date;
 
         private UserSecurityService.AuthorizedUser user;
 
@@ -104,11 +104,13 @@ public class TestResultResolver {
             return correct.size();
         }
 
-        private Result(Test test, List<Answer> incorrectAnswers, List<Answer> markedAnswers, UserSecurityService.AuthorizedUser user, Date date) {
+        private Result(Test test, List<Answer> incorrectAnswers, List<Answer> markedAnswers, UserSecurityService.AuthorizedUser user, java.sql.Date date) {
             this.incorrectAnswers.addAll(incorrectAnswers);
             markedAnswers.forEach(e -> this.markedAnswers.add(e.getAnswerid()));
             this.test = test;
             this.correctQuestionsCount = calcCorrectQCount(incorrectAnswers, test, correct);
+            this.date = date;
+            this.user = user;
         }
 
         public int getCorrectQuestionsCount() {
@@ -142,8 +144,6 @@ public class TestResultResolver {
     public void saveResult(Result result) {
 
         Test test = result.test;
-
-        List<Statistic> statistics = new ArrayList<>(test.getQuestions().size());
 
         for (Question question : test.getQuestions()) {
             Statistic statistic = new Statistic();
