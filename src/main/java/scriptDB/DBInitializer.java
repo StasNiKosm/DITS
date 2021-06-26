@@ -15,7 +15,7 @@ import java.util.Set;
 public class DBInitializer {
 
     public static void main(String[] args) throws SQLException {
-            init();
+            //init();
     }
 
     public static void createNewTest() {
