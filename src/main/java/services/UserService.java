@@ -6,9 +6,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import providers.AppContextProvider;
+import repository.dao.emuns.RoleEnum;
 import repository.dao.entities.User;
 import repository.managers.eager.EagerManager;
 import repository.managers.lazy.LazyManager;
+
+import java.util.List;
 
 @Service
 public class UserService {
@@ -53,7 +56,11 @@ public class UserService {
                     .filter(user -> user.getLogin().equals(login))
                     .findFirst()
                     .orElseThrow(() -> new UsernameNotFoundException("No user with name '" + login + "'"));
-        };
+        }
+
+        public List<User> getAllUser(){
+            return manager.getAll();
+        }
 
     }
 
@@ -66,14 +73,14 @@ public class UserService {
         }
     }
 
-    public void registerNewUser(String login, String firstName, String lastName, String password) {
+    public void registerNewUser(String login, String firstName, String lastName, String password, RoleEnum role) {
         User user = AppContextProvider.getAppContext().getBean(User.class);
 
         user.setLogin(login);
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setPassword(password);
-        user.setRole("ROLE_USER");
+        user.setRole(role.getName());
 
         System.out.println(user);
 

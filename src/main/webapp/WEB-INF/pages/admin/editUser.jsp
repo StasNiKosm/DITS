@@ -124,9 +124,9 @@
 
                     <div class="form-floating mb-3">
                         <select class="form-select  mb-3 role select-role" id="select-role" aria-label=".form-select-lg example">
-                            <option value="1">User</option>
-                            <option value="2">Tutor</option>
-                            <option value="3">Amdin</option>
+                            <c:forEach items="${roles}" var="role">
+                                <option value="${role}">${role}</option>
+                            </c:forEach>
                         </select>
                         <label for="select-role">Role</label>
                     </div>

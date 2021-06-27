@@ -2,15 +2,19 @@ package controllers.admin;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import repository.dao.emuns.RoleEnum;
+import repository.dao.entities.User;
 
 @Controller
 public class HomePageAdminController {
 
     @GetMapping(value = "/admin/createUser")
-    public ModelAndView createUser(ModelAndView modelAndView){
+    public ModelAndView createUser(ModelAndView modelAndView) {
         modelAndView.setViewName("admin/createUser");
+        modelAndView.addObject("successCreation", null);
+        modelAndView.addObject("user", new User());
         modelAndView.addObject("roles", RoleEnum.getAllRules());
         return modelAndView;
     }
@@ -18,6 +22,7 @@ public class HomePageAdminController {
     @GetMapping(value = "/admin/editUser")
     public ModelAndView editUser(ModelAndView modelAndView){
         modelAndView.setViewName("admin/editUser");
+        modelAndView.addObject("roles", RoleEnum.getAllRules());
         return modelAndView;
     }
 

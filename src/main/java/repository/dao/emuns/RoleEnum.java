@@ -3,12 +3,13 @@ package repository.dao.emuns;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public enum RoleEnum {
-    ROLE_USER ("User"),
-    ROLE_TUTOR ("Tutor"),
-    ROLE_ADMIN ("Admin");
+    User("ROLE_USER"),
+    Tutor("ROLE_TUTOR"),
+    Admin("ROLE_ADMIN");
 
     private final String name;
 
@@ -21,7 +22,11 @@ public enum RoleEnum {
     }
 
     public static List<String> getAllRules(){
-        return Arrays.stream(RoleEnum.values()).map(RoleEnum::getName).collect(Collectors.toList());
+        return Arrays.stream(RoleEnum.values()).map(Objects::toString).collect(Collectors.toList());
+    }
+
+    public static void main(String[] args) {
+        System.out.println(RoleEnum.User);
     }
 
 }

@@ -46,58 +46,72 @@
         <div class="row align-items-center g-lg-5 py-5">
             <div class="col-lg-6 text-center text-lg-start">
                 <h1 class="display-4 fw-bold lh-1 mb-3">Creating</h1>
-                <p class="col-lg-10 fs-4">У тебя есть возвожность создавать нового уникального пользователя. Сделав это, убедись, что права на пользование аккаутном передал физическому пользователю без ошибок.</p>
+                <p class="col-lg-10 fs-4">У тебя есть возвожность создавать нового уникального пользователя. Сделав это, убедись, что логин и пароль аккаунта физическому пользователю будет передан без ошибок.</p>
 
-                <div class="alert alert-success" role="alert">
+                <c:if test="${successCreation != null}">
+                <div id="successfulCreating" class="alert alert-success" role="alert">
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
                     <h4 class="alert-heading">Well done!</h4>
-                    <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                    <p>Новый пользователь с логином: ${successCreation}.</p>
                     <hr>
-                    <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+                    <p class="mb-0">Создание нового пользователя прошло успешно. Молодец!</p>
                 </div>
-                <div class="alert alert-danger" role="alert">
+                </c:if>
+                <div id="unsuccessfulCreating" class="alert alert-danger" role="alert">
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                    <h4 class="alert-heading">Error!</h4>
-                    <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                    <h4 class="alert-heading">Fail!</h4>
+                    <p>Создавай юзера внимательно! Ни одно поле не может оставаться пустым. Пароль и логин должны иметь 4 или больше символа.</p>
                     <hr>
-                    <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+                    <p class="mb-0">Создание нового позователя, похоже что, вызвало у тебя затруднение.</p>
                 </div>
 
             </div>
             <div class="col-md-10 mx-auto col-lg-6">
-                <form class="p-4 p-md-5 border rounded-3 bg-light">
+                <form:form id="creatingUserForm" class="p-4 p-md-5 border rounded-3 bg-light" method="post" action="/admin/createUser" modelAttribute="user">
+                    <%--                <form class="p-4 p-md-5 border rounded-3 bg-light" method="post" action="/admin/createUser" modelAttribute="user">--%>
+                    <div id="formNotCorrect" class="alert alert-secondary" role="alert">
+                        Ошибка заполнения формы
+                    </div>
                     <div class="form-floating mb-3">
-                        <select class="form-select  mb-3" id="floatingInput" aria-label=".form-select-lg example">
+                        <form:select path="role" class="form-select  mb-3" id="floatingInput" aria-label=".form-select-lg example">
                             <c:forEach items="${roles}" var="role">
                                 <option value="${role}">${role}</option>
                             </c:forEach>
-                        </select>
+                        </form:select>
                         <label for="floatingInput">Role</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input  class="form-control" id="floatingInput1" placeholder="First name" required="true">
-                        <label for="floatingInput1">First name</label>
+                        <form:input path="firstName" class="form-control" id="firstName" placeholder="First name" required="true"/>
+                            <%--                        <input  class="form-control" id="firstName" placeholder="First name" required="true">--%>
+                        <label for="firstName">First name</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input  class="form-control" id="floatingInput2" placeholder="Last name" required="true">
-                        <label for="floatingInput2">Last name</label>
+                        <form:input path="lastName" class="form-control" id="secondName" placeholder="Last name" required="true"/>
+                            <%--                        <input  class="form-control" id="secondName" placeholder="Last name" required="true">--%>
+                        <label for="secondName">Last name</label>
+                    </div>
+                    <div id="notUniqueLogin" class="alert alert-secondary" role="alert">
+                        Учётная запись с таким логином уже существует
                     </div>
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="floatingInput3" placeholder="Login" required="true">
-                        <label for="floatingInput3">Login</label>
+                        <form:input path="login" class="form-control" id="inputUsername" placeholder="Login" required="true"/>
+                            <%--                        <input class="form-control" id="inputUsername" placeholder="Login" required="true">--%>
+                        <label for="inputUsername">Login</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="password" class="form-control" id="floatingPassword" placeholder="Password" required="true">
-                        <label for="floatingPassword">Password</label>
+                        <form:password path="password" class="form-control" id="inputPassword" placeholder="password" required="true"/>
+                            <%--                        <input type="password" class="form-control" id="inputPassword" placeholder="Password" required="true">--%>
+                        <label for="inputPassword">Password</label>
                     </div>
 
-                    <button class="w-100 btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button">Create</button>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+
+                    <button class="w-100 btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#modal" type="button">Create</button>
                     <hr class="my-4">
                     <small class="text-muted">By clicking Create, you must show to the user the login and password.</small>
 
-
                     <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div id="modal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -108,16 +122,76 @@
                                     ...
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                    <button type="submit" class="btn btn-primary">Create</button>
+                                    <button id="closeModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                </form>
+                    <%--                </form>--%>
+                </form:form>
             </div>
         </div>
     </div>
+
+    <script>
+        $("#notUniqueLogin").hide();
+        $("#unsuccessfulCreating").hide();
+        $("#formNotCorrect").hide();
+        $("#passwordsNotEquals").hide();
+
+        let usernameIsUnique = false;
+
+        function checkUserName(isUnique) {
+            if (isUnique) {
+                $("#notUniqueLogin").hide();
+                usernameIsUnique = true;
+            } else {
+                $("#notUniqueLogin").show();
+                usernameIsUnique = false
+            }
+        }
+        
+        $().ready(function () {
+        
+            $("#inputUsername").change(function (event) {
+        
+                console.log($(event.target).val());
+        
+                $.ajax({
+                    url: "/admin/creatUser/isUniqueLogin",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        login: $(event.target).val(),
+                        "${_csrf.parameterName}" : "${_csrf.token}"
+                    },
+                })
+                    .done(function (data) {
+                        console.log( data);
+                        checkUserName(data.unique);
+                    })
+                    .fail(function (xhr, status, error) {
+                        alert('Error\n' + xhr.responseText + '\n' + status + '\n' + error);
+                    });
+        
+            });
+        
+            $("#creatingUserForm").submit(function (event) {
+                if ( ! (
+                    $("#inputUsername").val().length >= 4 && usernameIsUnique &&
+                    $("#firstName").val().length > 0 &&
+                    $("#secondName").val().length > 0 &&
+                    $("#inputPassword").val().length >= 4))
+                {
+                    $("#successfulCreating").hide();
+                    $("#closeModal").click();
+                    $("#unsuccessfulCreating").show();
+                    $("#formNotCorrect").show();
+                    event.preventDefault();
+                }
+            })
+        });
+    </script>
 </body>
 </html>
