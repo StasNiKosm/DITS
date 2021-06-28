@@ -62,6 +62,11 @@ public class UserService {
             return manager.getAll();
         }
 
+        public void updateUser(User user){
+            manager.update(user);
+        }
+
+
     }
 
     public boolean isLoginRegistered(String login) {

@@ -21,7 +21,7 @@ public enum RoleEnum {
         return name;
     }
 
-    public static List<String> getAllRules(){
+    public static List<String> getAllRoles(){
         return Arrays.stream(RoleEnum.values()).map(Objects::toString).collect(Collectors.toList());
     }
 

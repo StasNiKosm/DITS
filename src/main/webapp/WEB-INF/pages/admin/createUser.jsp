@@ -64,8 +64,8 @@
                     <hr>
                     <p class="mb-0">Создание нового позователя, похоже что, вызвало у тебя затруднение.</p>
                 </div>
-
             </div>
+
             <div class="col-md-10 mx-auto col-lg-6">
                 <form:form id="creatingUserForm" class="p-4 p-md-5 border rounded-3 bg-light" method="post" action="/admin/createUser" modelAttribute="user">
                     <%--                <form class="p-4 p-md-5 border rounded-3 bg-light" method="post" action="/admin/createUser" modelAttribute="user">--%>
@@ -159,7 +159,7 @@
                 console.log($(event.target).val());
         
                 $.ajax({
-                    url: "/admin/creatUser/isUniqueLogin",
+                    url: "/admin/isUniqueLogin",
                     type: "POST",
                     dataType: "json",
                     data: {

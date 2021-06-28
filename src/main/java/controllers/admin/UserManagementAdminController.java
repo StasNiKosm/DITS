@@ -15,6 +15,9 @@ import services.UserSecurityService;
 import services.UserService;
 import services.user.TestResultResolver;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Controller
 public class UserManagementAdminController {
 
@@ -49,25 +52,36 @@ public class UserManagementAdminController {
     }*/
     @PostMapping(value = "/admin/createUser")
     public ModelAndView addUser(ModelAndView modelAndView, User user) {
+
         this.userService.registerNewUser(user.getLogin(), user.getFirstName(), user.getLastName(), passwordEncoder.encode(user.getPassword()), RoleEnum.valueOf(user.getRole()));
+
         modelAndView.setViewName("admin/createUser");
         modelAndView.addObject("successCreation", user.getLogin());
         modelAndView.addObject("user", new User());
-        modelAndView.addObject("roles", RoleEnum.getAllRules());
+        modelAndView.addObject("roles", RoleEnum.getAllRoles());
         return modelAndView;
     }
 
-    @PostMapping(value = "/admin/createUser")
+    @PostMapping(value = "/admin/updateUser")
     public ModelAndView updateUser(ModelAndView modelAndView, User user) {
 
-        modelAndView.setViewName("admin/createUser");
-        modelAndView.addObject("successCreation", user.getLogin());
-        modelAndView.addObject("users", this.userService.getLazyInstance().getAllUser());
-        modelAndView.addObject("roles", RoleEnum.getAllRules());
+        System.out.println("             \n \n ->USER"+user + "\n \n ");
+
+        user.setPassword(this.userService.getLazyInstance().getUserById(user.getUserId()).getPassword());
+        user.setRole(RoleEnum.valueOf(user.getRole()).getName());
+        this.userService.getLazyInstance().updateUser(user);
+
+        List<User> users = this.userService.getLazyInstance().getAllUser();
+
+        modelAndView.setViewName("admin/updateUser");
+        modelAndView.addObject("successEdition", user.getFirstName() + " " + user.getLastName() + " login: " + user.getLogin() + " role: " + user.getRole());
+        modelAndView.addObject("users", users);
+        modelAndView.addObject("userJSP", new User());
+        modelAndView.addObject("roles", RoleEnum.getAllRoles());
         return modelAndView;
     }
 
-    @PostMapping(value = "/admin/creatUser/isUniqueLogin")
+    @PostMapping(value = "/admin/isUniqueLogin")
     @ResponseBody
     public String checkLogin(@RequestParam(value = "login", required = false, defaultValue = "undefined") String login) {
         JsonObject jsonObject = new JsonObject();
