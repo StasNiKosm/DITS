@@ -17,7 +17,7 @@ public class Question {
     @Id
     private int questionId;
 
-    @Column(name = "description", length = 100)
+    @Column(name = "description", length = 255)
     private String description;
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.MERGE)

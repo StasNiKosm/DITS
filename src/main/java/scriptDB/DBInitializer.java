@@ -41,14 +41,63 @@ public class DBInitializer {
 
                 firstQuestion.setTest(test_1);
                 firstQuestion.setStatistic(Collections.emptySet());
-                firstQuestion.setDescription("Физические устройства, из которых состоит компьютер, называются");
+                firstQuestion.setDescription("Если операционная система может работать только на компьютере с одним процессором, то такая операционная система называется:");
 
                 Literature literature_1 = new Literature();
                 literature_1.setQuestion(firstQuestion);
-                literature_1.setDescription("Статья \"Аппаратное обеспечение\"");
+                literature_1.setDescription("Статья \"Операционная система\"");
 
                 Link link = new Link();
-                link.setLink("https://ru.wikipedia.org/wiki/%D0%90%D0%BF%D0%BF%D0%B0%D1%80%D0%B0%D1%82%D0%BD%D0%BE%D0%B5_%D0%BE%D0%B1%D0%B5%D1%81%D0%BF%D0%B5%D1%87%D0%B5%D0%BD%D0%B8%D0%B5");
+                link.setLink("https://ru.wikipedia.org/wiki/%D0%9E%D0%BF%D0%B5%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D0%B0%D1%8F_%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0");
+                link.setLiterature(literature_1);
+
+                literature_1.setLinks(Collections.singleton(link));
+                firstQuestion.setLiterature(Collections.singleton(literature_1));
+
+                {
+                    Answer answer_1 = new Answer();
+                    answer_1.setDescription("Реального времени");
+                    answer_1.setCorrect(0);
+                    answer_1.setQuestion(firstQuestion);
+
+                    Answer answer_2 = new Answer();
+                    answer_2.setDescription("Однооконной");
+                    answer_2.setCorrect(0);
+                    answer_2.setQuestion(firstQuestion);
+
+                    Answer answer_3 = new Answer();
+                    answer_3.setDescription("Однопроцессорной");
+                    answer_3.setCorrect(0);
+                    answer_3.setQuestion(firstQuestion);
+
+                    Answer answer_4 = new Answer();
+                    answer_4.setDescription("Однопроцессорной");
+                    answer_4.setCorrect(0);
+                    answer_4.setQuestion(firstQuestion);
+
+                    Answer answer_5 = new Answer();
+                    answer_5.setDescription("Однопроцессорной");
+                    answer_5.setCorrect(1);
+                    answer_5.setQuestion(firstQuestion);
+
+                    firstQuestion.setAnswers(new HashSet<>(Arrays.asList(answer_1, answer_2, answer_3, answer_4, answer_5)));
+                }
+            }
+
+            {
+                Question firstQuestion = new Question();
+                questions.add(firstQuestion);
+
+                firstQuestion.setTest(test_1);
+                firstQuestion.setStatistic(Collections.emptySet());
+                firstQuestion.setDescription("Физические устройства, из которых состоит компьютер, называются:");
+
+                Literature literature_1 = new Literature();
+                literature_1.setQuestion(firstQuestion);
+                literature_1.setDescription("Статья \"Персональный компьютер\"");
+
+                Link link = new Link();
+                link.setLink("https://ru.wikipedia.org/wiki/%D0%9F%D0%B5%D1%80%D1%81%D0%BE%D0%BD%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9_%D0%BA%D0%BE%D0%BC%D0%BF%D1%8C%D1%8E%D1%82%D0%B5%D1%80");
                 link.setLiterature(literature_1);
 
                 literature_1.setLinks(Collections.singleton(link));
@@ -80,7 +129,12 @@ public class DBInitializer {
                     answer_5.setCorrect(1);
                     answer_5.setQuestion(firstQuestion);
 
-                    firstQuestion.setAnswers(new HashSet<>(Arrays.asList(answer_1, answer_2, answer_3, answer_4, answer_5)));
+                    Answer answer_6 = new Answer();
+                    answer_6.setDescription("Информационными или логическими ресурсами");
+                    answer_6.setCorrect(0);
+                    answer_6.setQuestion(firstQuestion);
+
+                    firstQuestion.setAnswers(new HashSet<>(Arrays.asList(answer_1, answer_2, answer_3, answer_4, answer_5, answer_6)));
                 }
             }
 
@@ -90,66 +144,21 @@ public class DBInitializer {
 
                 firstQuestion.setTest(test_1);
                 firstQuestion.setStatistic(Collections.emptySet());
-                firstQuestion.setDescription("Физические устройства, из которых состоит компьютер, называются");
+                firstQuestion.setDescription("Программы и данные, которые хранятся в памяти компьютера, называются:");
 
                 Literature literature_1 = new Literature();
                 literature_1.setQuestion(firstQuestion);
-                literature_1.setDescription("Статья \"Обеспечение\"");
+                literature_1.setDescription("Статья \"Администрирование данных\"");
 
-                Link link = new Link();
-                link.setLink("https://ru.wikipedia.org/wiki/%D0%90%D0%BF%D0%BF%D0%B0%D1%80%D0%B0%D1%82%D0%BD%D0%BE%D0%B5_%D0%BE%D0%B1%D0%B5%D1%81%D0%BF%D0%B5%D1%87%D0%B5%D0%BD%D0%B8%D0%B5");
-                link.setLiterature(literature_1);
+                Link link1 = new Link();
+                link1.setLink("https://ru.wikipedia.org/wiki/%D0%90%D0%B4%D0%BC%D0%B8%D0%BD%D0%B8%D1%81%D1%82%D1%80%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5_%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85");
+                link1.setLiterature(literature_1);
 
-                literature_1.setLinks(Collections.singleton(link));
-                firstQuestion.setLiterature(Collections.singleton(literature_1));
+                Link link2 = new Link();
+                link2.setLink("https://vk.cc/c3orks");
+                link2.setLiterature(literature_1);
 
-                {
-                    Answer answer_1 = new Answer();
-                    answer_1.setDescription("Потребляемыми ресурсами");
-                    answer_1.setCorrect(0);
-                    answer_1.setQuestion(firstQuestion);
-
-                    Answer answer_2 = new Answer();
-                    answer_2.setDescription("Логическими ресурсами");
-                    answer_2.setCorrect(0);
-                    answer_2.setQuestion(firstQuestion);
-
-                    Answer answer_3 = new Answer();
-                    answer_3.setDescription("Монопольными ресурсами");
-                    answer_3.setCorrect(0);
-                    answer_3.setQuestion(firstQuestion);
-
-                    Answer answer_4 = new Answer();
-                    answer_4.setDescription("Разделяемыми ресурсами.");
-                    answer_4.setCorrect(0);
-                    answer_4.setQuestion(firstQuestion);
-
-                    Answer answer_5 = new Answer();
-                    answer_5.setDescription("Аппаратными или физическими ресурсами");
-                    answer_5.setCorrect(1);
-                    answer_5.setQuestion(firstQuestion);
-
-                    firstQuestion.setAnswers(new HashSet<>(Arrays.asList(answer_1, answer_2, answer_3, answer_4, answer_5)));
-                }
-            }
-
-            {
-                Question firstQuestion = new Question();
-                questions.add(firstQuestion);
-
-                firstQuestion.setTest(test_1);
-                firstQuestion.setStatistic(Collections.emptySet());
-                firstQuestion.setDescription("Операционная система - это комплекс программ, которые обеспечивают");
-
-                Literature literature_1 = new Literature();
-                literature_1.setQuestion(firstQuestion);
-                literature_1.setDescription("Статья \"Аппаратное\"");
-
-                Link link = new Link();
-                link.setLink("https://ru.wikipedia.org/wiki/%D0%90%D0%BF%D0%BF%D0%B0%D1%80%D0%B0%D1%82%D0%BD%D0%BE%D0%B5_%D0%BE%D0%B1%D0%B5%D1%81%D0%BF%D0%B5%D1%87%D0%B5%D0%BD%D0%B8%D0%B5");
-                link.setLiterature(literature_1);
-
-                literature_1.setLinks(Collections.singleton(link));
+                literature_1.setLinks(new HashSet<>(Arrays.asList(link1, link2)));
                 firstQuestion.setLiterature(Collections.singleton(literature_1));
 
                 {
@@ -174,7 +183,56 @@ public class DBInitializer {
                     answer_4.setQuestion(firstQuestion);
 
                     Answer answer_5 = new Answer();
-                    answer_5.setDescription("Доступ пользователей к ресурсам компьютера");
+                    answer_5.setDescription("Информационными или логическими ресурсами");
+                    answer_5.setCorrect(1);
+                    answer_5.setQuestion(firstQuestion);
+
+                    firstQuestion.setAnswers(new HashSet<>(Arrays.asList(answer_1, answer_2, answer_3, answer_4, answer_5)));
+                }
+            }
+
+            {
+                Question firstQuestion = new Question();
+                questions.add(firstQuestion);
+
+                firstQuestion.setTest(test_1);
+                firstQuestion.setStatistic(Collections.emptySet());
+                firstQuestion.setDescription("Программа, которая работает под управлением операционной системы, называется:");
+
+                Literature literature_1 = new Literature();
+                literature_1.setQuestion(firstQuestion);
+                literature_1.setDescription("Статья \"Прикладное программное обеспечение\"");
+
+                Link link = new Link();
+                link.setLink("https://ru.wikipedia.org/wiki/%D0%9F%D1%80%D0%B8%D0%BA%D0%BB%D0%B0%D0%B4%D0%BD%D0%BE%D0%B5_%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D0%BD%D0%BE%D0%B5_%D0%BE%D0%B1%D0%B5%D1%81%D0%BF%D0%B5%D1%87%D0%B5%D0%BD%D0%B8%D0%B5");
+                link.setLiterature(literature_1);
+
+                literature_1.setLinks(Collections.singleton(link));
+                firstQuestion.setLiterature(Collections.singleton(literature_1));
+
+                {
+                    Answer answer_1 = new Answer();
+                    answer_1.setDescription("Исполняемым файлом");
+                    answer_1.setCorrect(0);
+                    answer_1.setQuestion(firstQuestion);
+
+                    Answer answer_2 = new Answer();
+                    answer_2.setDescription("Объектным файлом");
+                    answer_2.setCorrect(0);
+                    answer_2.setQuestion(firstQuestion);
+
+                    Answer answer_3 = new Answer();
+                    answer_3.setDescription("Загрузочным файлом");
+                    answer_3.setCorrect(0);
+                    answer_3.setQuestion(firstQuestion);
+
+                    Answer answer_4 = new Answer();
+                    answer_4.setDescription("Потоком");
+                    answer_4.setCorrect(0);
+                    answer_4.setQuestion(firstQuestion);
+
+                    Answer answer_5 = new Answer();
+                    answer_5.setDescription("Пользовательской программой");
                     answer_5.setCorrect(1);
                     answer_5.setQuestion(firstQuestion);
 

@@ -35,7 +35,7 @@
                                         <c:out value="${ result.markedAnswers.contains(answers.answerid) ? 'checked' : 'unchecked' }" />
                                         disabled
                                 />
-                                <label class="form-check-label" style="<c:out value="${ result.incorrectAnswers.contains(answers) ? (answers.correct == 1 ? 'color: green;' : 'color: red') : (answers.correct == 1 ? 'color: green;' : '') }" />" for="${answers.answerid}">${answers.description}</label>
+                                <label class="form-check-label" style="<c:out value="${ result.incorrectAnswers.contains(answers) ? (answers.correct == 1 ? 'color: green; font-weight: 600; text-decoration: underline' : 'color: red; font-weight: 600;') : (answers.correct == 1 ? 'color: green; font-weight: 600;' : '') }" />" for="${answers.answerid}">${answers.description}</label>
                             </div>
                         </c:forEach>
                         <c:if test="${!result.isQuestionCorrect(question.questionId)}">
@@ -48,6 +48,7 @@
                                             <a href="${literature.links.iterator().next().link}" target="_blank">${literature.description}</a>
                                         </c:if>
                                         <c:if test="${literature.links.size() > 1}">
+                                            <a target="_blank">${literature.description}</a>
                                             <ul>
                                                 <c:forEach items="${literature.links}" var="link" varStatus="status">
                                                     <li><a href="${link.link}" target="_blank">Ссылка №${status.index + 1}</a></li>

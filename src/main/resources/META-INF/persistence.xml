@@ -29,29 +29,29 @@
             <property name="javax.persistence.jdbc.password" value="741AzxY321963"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL10Dialect"/>
 
-            <!--    PARAMETERS ?   -->
-            <!--    for using method getCurrentSession()    -->
-            <property name="hibernate.current_session_context_class" value="thread"/>
-            <!--    for watching sql in logs    -->
-            <property name="hibernate.show_sql" value="true"/>
-            <!--    for hibernate updating db    -->
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
+<!--            &lt;!&ndash;    PARAMETERS ?   &ndash;&gt;-->
+<!--            &lt;!&ndash;    for using method getCurrentSession()    &ndash;&gt;-->
+<!--            <property name="hibernate.current_session_context_class" value="thread"/>-->
+<!--            &lt;!&ndash;    for watching sql in logs    &ndash;&gt;-->
+<!--            <property name="hibernate.show_sql" value="true"/>-->
+<!--            &lt;!&ndash;    for hibernate updating db    &ndash;&gt;-->
+<!--            <property name="hibernate.hbm2ddl.auto" value="update"/>-->
 
-            <!--    DROP -> CREAT -> INITIALIZE (all tables with his test data)   -->
+<!--            &lt;!&ndash;    DROP -> CREAT -> INITIALIZE (all tables with his test data)   &ndash;&gt;-->
 
-            <!--    Tells Hibernate to first drop and then create a new bd    -->
-            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+<!--            &lt;!&ndash;    Tells Hibernate to first drop and then create a new bd    &ndash;&gt;-->
+<!--            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>-->
 
-            <!--    DROP   defines that Hibernate will use a script in specify the location to drop the db    -->
-            <property name="javax.persistence.schema-generation.drop-source" value="script"/>
-            <property name="javax.persistence.schema-generation.drop-script-source" value="META-INF/drop.sql"/>
+<!--            &lt;!&ndash;    DROP   defines that Hibernate will use a script in specify the location to drop the db    &ndash;&gt;-->
+<!--            <property name="javax.persistence.schema-generation.drop-source" value="script"/>-->
+<!--            <property name="javax.persistence.schema-generation.drop-script-source" value="META-INF/drop.sql"/>-->
 
-            <!--    CREAT   defines that Hibernate will use a script in specify the location to create the db    -->
-            <property name="javax.persistence.schema-generation.create-source" value="script"/>
-            <property name="javax.persistence.schema-generation.create-script-source" value="META-INF/create.sql"/>
+<!--            &lt;!&ndash;    CREAT   defines that Hibernate will use a script in specify the location to create the db    &ndash;&gt;-->
+<!--            <property name="javax.persistence.schema-generation.create-source" value="script"/>-->
+<!--            <property name="javax.persistence.schema-generation.create-script-source" value="META-INF/create.sql"/>-->
 
-            <!--    INITIALIZE   provides the path to the SQL script for initializing the db    -->
-            <property name="javax.persistence.sql-load-script-source" value="META-INF/data.sql"/>
+<!--            &lt;!&ndash;    INITIALIZE   provides the path to the SQL script for initializing the db    &ndash;&gt;-->
+<!--            <property name="javax.persistence.sql-load-script-source" value="META-INF/data.sql"/>-->
 
         </properties>
 

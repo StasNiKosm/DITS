@@ -40,7 +40,8 @@ public class SecurityController {
 
     @GetMapping("/login")
     public String login() {
-        if (!inited) {
+        //if (!inited) {
+        if (false) {
             DBInitializer.createNewTest();
             inited = true;
         }
