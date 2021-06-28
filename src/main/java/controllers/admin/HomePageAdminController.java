@@ -1,21 +1,47 @@
 package controllers.admin;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+import repository.dao.emuns.RoleEnum;
+import repository.dao.entities.User;
+import services.UserService;
+
+import java.util.List;
 
 @Controller
 public class HomePageAdminController {
 
+    UserService userService;
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+
     @GetMapping(value = "/admin/createUser")
-    public ModelAndView createUser(ModelAndView modelAndView){
+    public ModelAndView createUser(ModelAndView modelAndView) {
         modelAndView.setViewName("admin/createUser");
+        modelAndView.addObject("successCreation", null);
+        modelAndView.addObject("user", new User());
+        modelAndView.addObject("roles", RoleEnum.getAllRoles());
         return modelAndView;
     }
 
-    @GetMapping(value = "/admin/editUser")
+    @GetMapping(value = "/admin/updateUser")
     public ModelAndView editUser(ModelAndView modelAndView){
-        modelAndView.setViewName("admin/editUser");
+
+        List<User> users = this.userService.getLazyInstance().getAllUser();
+
+        modelAndView.setViewName("admin/updateUser");
+        modelAndView.addObject("successEdition", null);
+        modelAndView.addObject("users", users);
+        modelAndView.addObject("user", new User());
+        modelAndView.addObject("roles", RoleEnum.getAllRoles());
         return modelAndView;
     }
 

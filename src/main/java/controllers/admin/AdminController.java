@@ -23,7 +23,6 @@ public class AdminController {
     public ModelAndView userHomePage(ModelAndView modelAndView) throws SQLException {
         modelAndView.setViewName("admin/admin");
         modelAndView.addObject("user", userService.getUserFromSession());
-        DBInitializer.main(null);
         return modelAndView;
     }
 

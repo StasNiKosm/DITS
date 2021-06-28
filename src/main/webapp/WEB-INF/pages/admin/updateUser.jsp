@@ -48,25 +48,30 @@
                 <h1 class="display-4 fw-bold lh-1 mb-3">Changing</h1>
                 <p class="col-lg-10 fs-4">У тебя есть возвожность создавать нового уникального пользователя. Сделав это, убедись, что права на пользование аккаутном передал физическому пользователю без ошибок.</p>
 
-                <div class="alert alert-success" role="alert">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-                    <h4 class="alert-heading">Well done!</h4>
-                    <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
-                    <hr>
-                    <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
-                </div>
-                <div class="alert alert-danger" role="alert">
+                <c:if test="${successEdition != null}">
+                    <div id="successfulCreating" class="alert alert-success" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                        <h4 class="alert-heading">Well done!</h4>
+                        <p>Пользователь: ${successEdition} успешно изменен.</p>
+                        <hr>
+                        <p class="mb-0">Коррекция пользователя прошла успешна. Молодец!</p>
+                    </div>
+                </c:if>
+                <div id="unsuccessfulCreating" class="alert alert-danger" role="alert">
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                    <h4 class="alert-heading">Error!</h4>
-                    <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                    <h4 class="alert-heading">Fail!</h4>
+                    <p>Создавай юзера внимательно! Ни одно поле не может оставаться пустым. Пароль и логин должны иметь 4 или больше символа.</p>
                     <hr>
-                    <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+                    <p class="mb-0">Создание нового позователя, похоже что, вызвало у тебя затруднение.</p>
                 </div>
             </div>
 
             <div class="col-md-10 mx-auto col-lg-8">
-                <form class="p-4 p-md-5 border rounded-3 bg-light">
+                <form:form method="post" action="/admin/editUser" modelAttribute="userJSP" id="creatingUserForm" class="p-4 p-md-5 border rounded-3 bg-light">
                     <div class="form-floating mb-3">
+                        <div id="formNotCorrect" class="alert alert-secondary" role="alert">
+                            Ошибка заполнения формы
+                        </div>
                         <button class="btn btn-outline-primary btn-lg dropdown-toggle " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
                             Select user
                         </button>
@@ -77,7 +82,7 @@
                                 <table class="table table-bordered table-striped" id="table" style="table-layout: fixed; overflow: scroll;">
                                     <thead>
                                     <tr>
-                                        <th width="70">Id</th>
+                                        <th width="65">Id</th>
                                         <th width="75">Role</th>
                                         <th >First name</th>
                                         <th >Last name</th>
@@ -85,27 +90,15 @@
                                     </tr>
                                     </thead>
                                     <tbody id="myTable">
-                                    <tr сlass="write" style="cursor: pointer;">
-                                        <td><div style="overflow: auto;">1</div></td>
-                                        <td><div style="overflow: auto;">Admin</div></td>
-                                        <td><div style="overflow: auto;">Stanislav</div></td>
-                                        <td><div style="overflow: auto;">Nikunenko</div></td>
-                                        <td><div style="overflow: auto;">Stanislav_Nikunenko</div></td>
+                                    <c:forEach  items="${users}" var="u">
+                                    <tr class="write" style="cursor: pointer;">
+                                        <td><div style="overflow: auto;">${u.userId}</div></td>
+                                        <td><div style="overflow: auto;">${u.role}</div></td>
+                                        <td><div style="overflow: auto;">${u.firstName}</div></td>
+                                        <td><div style="overflow: auto;">${u.lastName}</div></td>
+                                        <td><div style="overflow: auto;">${u.login}</div></td>
                                     </tr>
-                                    <tr сlass="write" style="cursor: pointer;">
-                                        <td><div style="overflow: auto;">2</div></td>
-                                        <td><div style="overflow: auto;">User</div></td>
-                                        <td><div style="overflow: auto;">Egor</div></td>
-                                        <td><div style="overflow: auto;">Sushchenko</div></td>
-                                        <td><div style="overflow: auto;">Egor_Sushchenko</div></td>
-                                    </tr>
-                                    <tr сlass="write" style="cursor: pointer;">
-                                        <td><div style="overflow: auto;">1</div></td>
-                                        <td><div style="overflow: auto;">Tutor</div></td>
-                                        <td><div style="overflow: auto;">Vlad</div></td>
-                                        <td><div style="overflow: auto;">Polkovsky</div></td>
-                                        <td><div style="overflow: auto;">Vlad_Polkovsky</div></td>
-                                    </tr>
+                                    </c:forEach>
                                     </tbody>
                                 </table>
                                 <script>
@@ -122,30 +115,39 @@
                         </ul>
                     </div>
 
-                    <div class="form-floating mb-3">
-                        <select class="form-select  mb-3 role select-role" id="select-role" aria-label=".form-select-lg example">
-                            <option value="1">User</option>
-                            <option value="2">Tutor</option>
-                            <option value="3">Amdin</option>
-                        </select>
-                        <label for="select-role">Role</label>
+                    <div hidden class="form-floating mb-3">
+<%--                        <form:input path="userId" class="form-control id" placeholder="Id" required="true"/>--%>
+                    </div>
+                    <div id="notUniqueLogin" class="alert alert-secondary" role="alert">
+                        Учётная запись с таким логином уже существует
                     </div>
                     <div class="form-floating mb-3">
-                        <input  class="form-control first-name" id="floatingInput1" placeholder="First name" required="true">
-                        <label for="floatingInput1">First name</label>
+                        <form:input path="login" class="form-control login" id="inputUsername" placeholder="Login" required="true"/>
+<%--                                            <input class="form-control login" id="floatingInput3"  placeholder="Login" required="true">--%>
+                        <label for="inputUsername">Login</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input  class="form-control last-name" id="floatingInput2"  placeholder="Last name" required="true">
-                        <label for="floatingInput2">Last name</label>
+                        <form:select path="role" class="form-select mb-3 select-role" id="floatingInput" aria-label=".form-select-lg example">
+<%--                                            <select class="form-select  mb-3 role select-role" id="select-role" aria-label=".form-select-lg example">--%>
+                            <c:forEach items="${roles}" var="role">
+                                <option value="${role}">${role}</option>
+                            </c:forEach>
+                        </form:select>
+                        <label for="floatingInput">Role</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input class="form-control login" id="floatingInput3"  placeholder="Login" required="true">
-                        <label for="floatingInput3">Login</label>
+                        <form:input path="firstName" class="form-control first-name" id="firstName" placeholder="First name" required="true"/>
+<%--                                            <input  class="form-control first-name" id="floatingInput1" placeholder="First name" required="true">--%>
+                        <label for="firstName">First name</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <form:input path="lastName" class="form-control last-name" id="secondName" placeholder="Last name" required="true"/>
+<%--                                            <input  class="form-control last-name" id="floatingInput2"  placeholder="Last name" required="true">--%>
+                        <label for="secondName">Last name</label>
                     </div>
                     <button class="w-100 btn btn-lg btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button">Edit</button>
                     <hr class="my-4">
                     <small class="text-muted">By clicking Edit, you must show to the user his new roles.</small>
-
 
                     <!-- Modal -->
                     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -159,14 +161,14 @@
                                     ...
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                    <button type="submit" class="btn btn-warning">Edit</button>
+                                    <button id="closeModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </form:form>
 
-                </form>
                 <script>
                     $("#table tr").click(function(){
                         $(this).addClass('selected').siblings().removeClass('selected');
@@ -175,18 +177,77 @@
                         var firstName=$(this).find('td').eq(2).text();
                         var lastName=$(this).find('td').eq(3).text();
                         var login=$(this).find('td').eq(4).text();
-                        if(role == 'User'){
+                        if(role == 'ROLE_USER'){
                             $('select.select-role').val(1);
                         }
-                        if (role == 'Tutor'){
+                        if (role == 'ROLE_TUTOR'){
                             $('select.select-role').val(2);
                         }
-                        if (role == 'Admin'){
+                        if (role == 'ROLE_ADMIN'){
                             $('select.select-role').val(3);
                         }
+                        $('input.id').val(id);
                         $('input.first-name').val(firstName);
                         $('input.last-name').val(lastName);
                         $('input.login').val(login);
+                    });
+
+                    $("#notUniqueLogin").hide();
+                    $("#unsuccessfulCreating").hide();
+                    $("#formNotCorrect").hide();
+                    $("#passwordsNotEquals").hide();
+
+                    let usernameIsUnique = false;
+
+                    function checkUserName(isUnique) {
+                        if (isUnique) {
+                            $("#notUniqueLogin").hide();
+                            usernameIsUnique = true;
+                        } else {
+                            $("#notUniqueLogin").show();
+                            usernameIsUnique = false
+                        }
+                    }
+
+                    $().ready(function () {
+
+                        $("#inputUsername").change(function (event) {
+
+                            console.log($(event.target).val());
+
+                            $.ajax({
+                                url: "/admin/isUniqueLogin",
+                                type: "POST",
+                                dataType: "json",
+                                data: {
+                                    login: $(event.target).val(),
+                                    "${_csrf.parameterName}" : "${_csrf.token}"
+                                },
+                            })
+                                .done(function (data) {
+                                    console.log( data);
+                                    checkUserName(data.unique);
+                                })
+                                .fail(function (xhr, status, error) {
+                                    alert('Error\n' + xhr.responseText + '\n' + status + '\n' + error);
+                                });
+
+                        });
+
+                        $("#creatingUserForm").submit(function (event) {
+                            if ( ! (
+                                $("#inputUsername").val().length >= 4 && usernameIsUnique &&
+                                $("#firstName").val().length > 0 &&
+                                $("#secondName").val().length > 0 &&
+                                $("#inputPassword").val().length >= 4))
+                            {
+                                $("#successfulCreating").hide();
+                                $("#closeModal").click();
+                                $("#unsuccessfulCreating").show();
+                                $("#formNotCorrect").show();
+                                event.preventDefault();
+                            }
+                        })
                     });
                 </script>
 

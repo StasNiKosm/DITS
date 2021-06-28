@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.view.RedirectView;
+import repository.dao.emuns.RoleEnum;
 import scriptDB.DBInitializer;
 import services.UserService;
 
@@ -77,7 +78,7 @@ public class SecurityController {
                                   @RequestParam("secondName") String secondName,
                                   @RequestParam("password") String password
     ) {
-        userService.registerNewUser(login, firstName, secondName, passwordEncoder.encode(password));
+        userService.registerNewUser(login, firstName, secondName, passwordEncoder.encode(password), RoleEnum.User);
         return "/login";
     }
 
