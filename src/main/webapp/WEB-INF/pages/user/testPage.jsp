@@ -16,7 +16,8 @@
             <div class="d-flex justify-content-center mt-5" style="width:100%">
                 <div class="container" style="max-width: 600px">
                     <div class="mb-3">
-                        <span class="h3">§ ${testName}</span>
+                        <p class="h3">§ ${testName}</p>
+                        <p>Вопросов - ${questions.size()}</p>
                         <hr>
                     </div>
                     <form method="post" action="/user/test?testId=${testId}">

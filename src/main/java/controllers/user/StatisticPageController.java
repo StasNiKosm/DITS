@@ -16,7 +16,7 @@ import java.util.List;
 @Controller
 public class StatisticPageController {
 
-    private final int onPageCount = 20;
+    private final int onPageCount = 5;
 
     private StatisticService statisticService;
 
