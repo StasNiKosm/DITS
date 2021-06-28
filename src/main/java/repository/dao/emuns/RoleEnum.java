@@ -21,6 +21,15 @@ public enum RoleEnum {
         return name;
     }
 
+    public static RoleEnum byName(String name){
+        switch (name){
+            case "ROLE_USER" : return User;
+            case "ROLE_TUTOR" : return Tutor;
+            case "ROLE_ADMIN" : return Admin;
+            default : return null;
+        }
+    }
+
     public static List<String> getAllRoles(){
         return Arrays.stream(RoleEnum.values()).map(Objects::toString).collect(Collectors.toList());
     }

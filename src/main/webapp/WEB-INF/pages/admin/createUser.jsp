@@ -115,11 +115,12 @@
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">Посмотрим-ка еще разок!</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    ...
+                                    <p>Ты уверен, что хочешь создать пользователя: </p>
+                                    <p></p>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary">Create</button>

@@ -65,16 +65,21 @@ public class UserManagementAdminController {
     @PostMapping(value = "/admin/updateUser")
     public ModelAndView updateUser(ModelAndView modelAndView, User user) {
 
-        System.out.println("             \n \n ->USER"+user + "\n \n ");
-
         user.setPassword(this.userService.getLazyInstance().getUserById(user.getUserId()).getPassword());
         user.setRole(RoleEnum.valueOf(user.getRole()).getName());
         this.userService.getLazyInstance().updateUser(user);
 
         List<User> users = this.userService.getLazyInstance().getAllUser();
+        User userSession = this.userService.getUserFromSession().getUser();
+        for (int i = 0; i < users.size(); i++) {
+            if(users.get(i).getUserId() == userSession.getUserId()){
+                users.remove(i);
+                break;
+            }
+        }
 
         modelAndView.setViewName("admin/updateUser");
-        modelAndView.addObject("successEdition", user.getFirstName() + " " + user.getLastName() + " login: " + user.getLogin() + " role: " + user.getRole());
+        modelAndView.addObject("successEdition", user.getFirstName() + " " + user.getLastName() + " login: " + user.getLogin() + " role: " + RoleEnum.byName(user.getRole()));
         modelAndView.addObject("users", users);
         modelAndView.addObject("userJSP", new User());
         modelAndView.addObject("roles", RoleEnum.getAllRoles());

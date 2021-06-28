@@ -52,7 +52,7 @@
                     <div id="successfulCreating" class="alert alert-success" role="alert">
                         <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
                         <h4 class="alert-heading">Well done!</h4>
-                        <p>Пользователь: ${successEdition} успешно изменен.</p>
+                        <p>Пользователь [новые данные]: ${successEdition} успешно изменен.</p>
                         <hr>
                         <p class="mb-0">Коррекция пользователя прошла успешна. Молодец!</p>
                     </div>
@@ -60,14 +60,14 @@
                 <div id="unsuccessfulCreating" class="alert alert-danger" role="alert">
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                     <h4 class="alert-heading">Fail!</h4>
-                    <p>Создавай юзера внимательно! Ни одно поле не может оставаться пустым. Пароль и логин должны иметь 4 или больше символа.</p>
+                    <p>Корректируй юзера внимательно! Ни одно поле не может оставаться пустым. Логин должен иметь 4 или больше символа и быть уникальным.</p>
                     <hr>
-                    <p class="mb-0">Создание нового позователя, похоже что, вызвало у тебя затруднение.</p>
+                    <p class="mb-0">Изменение позователя, похоже что, вызвало у тебя затруднение.</p>
                 </div>
             </div>
 
             <div class="col-md-10 mx-auto col-lg-8">
-                <form:form method="post" action="/admin/editUser" modelAttribute="userJSP" id="creatingUserForm" class="p-4 p-md-5 border rounded-3 bg-light">
+                <form:form method="post" action="/admin/updateUser" modelAttribute="userJSP" id="creatingUserForm" class="p-4 p-md-5 border rounded-3 bg-light">
                     <div class="form-floating mb-3">
                         <div id="formNotCorrect" class="alert alert-secondary" role="alert">
                             Ошибка заполнения формы
@@ -93,7 +93,7 @@
                                     <c:forEach  items="${users}" var="u">
                                     <tr class="write" style="cursor: pointer;">
                                         <td><div style="overflow: auto;">${u.userId}</div></td>
-                                        <td><div style="overflow: auto;">${u.role}</div></td>
+                                        <td><div style="overflow: auto;">${u.role.substring(5).toLowerCase()}</div></td>
                                         <td><div style="overflow: auto;">${u.firstName}</div></td>
                                         <td><div style="overflow: auto;">${u.lastName}</div></td>
                                         <td><div style="overflow: auto;">${u.login}</div></td>
@@ -116,7 +116,7 @@
                     </div>
 
                     <div hidden class="form-floating mb-3">
-<%--                        <form:input path="userId" class="form-control id" placeholder="Id" required="true"/>--%>
+                        <form:input path="userId" class="form-control id" placeholder="Id" required="true"/>
                     </div>
                     <div id="notUniqueLogin" class="alert alert-secondary" role="alert">
                         Учётная запись с таким логином уже существует
@@ -127,13 +127,13 @@
                         <label for="inputUsername">Login</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <form:select path="role" class="form-select mb-3 select-role" id="floatingInput" aria-label=".form-select-lg example">
+                        <form:select path="role" class="form-select mb-3 select-role" id="selectedRole" aria-label=".form-select-lg example">
 <%--                                            <select class="form-select  mb-3 role select-role" id="select-role" aria-label=".form-select-lg example">--%>
                             <c:forEach items="${roles}" var="role">
                                 <option value="${role}">${role}</option>
                             </c:forEach>
                         </form:select>
-                        <label for="floatingInput">Role</label>
+                        <label for="selectedRole">Role</label>
                     </div>
                     <div class="form-floating mb-3">
                         <form:input path="firstName" class="form-control first-name" id="firstName" placeholder="First name" required="true"/>
@@ -145,7 +145,7 @@
 <%--                                            <input  class="form-control last-name" id="floatingInput2"  placeholder="Last name" required="true">--%>
                         <label for="secondName">Last name</label>
                     </div>
-                    <button class="w-100 btn btn-lg btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button">Edit</button>
+                    <button class="w-100 btn btn-lg btn-warning" onclick="aboutNewUserConfig()" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button">Edit</button>
                     <hr class="my-4">
                     <small class="text-muted">By clicking Edit, you must show to the user his new roles.</small>
 
@@ -154,11 +154,14 @@
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">Посмотрим-ка еще разок!</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    ...
+                                    <p>Ты уверен, что хочешь изменить пользователя: </p>
+                                    <p id="oldUserConfig"></p>
+                                    <p>на: </p>
+                                    <p id="newUserConfig"></p>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-warning">Edit</button>
@@ -170,21 +173,27 @@
                 </form:form>
 
                 <script>
+
+                    var login;
+
                     $("#table tr").click(function(){
+                        login = $(this).find('td').eq(4).text();
                         $(this).addClass('selected').siblings().removeClass('selected');
                         var id=$(this).find('td').eq(0).text();
                         var role=$(this).find('td').eq(1).text();
                         var firstName=$(this).find('td').eq(2).text();
                         var lastName=$(this).find('td').eq(3).text();
-                        var login=$(this).find('td').eq(4).text();
-                        if(role == 'ROLE_USER'){
-                            $('select.select-role').val(1);
+
+                        document.getElementById('oldUserConfig').innerHTML = 'Login: ' + login + ', first name: ' + firstName + ', last name: ' + lastName + ', role:' + role;
+
+                        if(role == 'user'){
+                            $('select.select-role').val('User');
                         }
-                        if (role == 'ROLE_TUTOR'){
-                            $('select.select-role').val(2);
+                        if (role == 'tutor'){
+                            $('select.select-role').val('Tutor');
                         }
-                        if (role == 'ROLE_ADMIN'){
-                            $('select.select-role').val(3);
+                        if (role == 'admin'){
+                            $('select.select-role').val('Admin');
                         }
                         $('input.id').val(id);
                         $('input.first-name').val(firstName);
@@ -195,9 +204,8 @@
                     $("#notUniqueLogin").hide();
                     $("#unsuccessfulCreating").hide();
                     $("#formNotCorrect").hide();
-                    $("#passwordsNotEquals").hide();
 
-                    let usernameIsUnique = false;
+                    let usernameIsUnique = true;
 
                     function checkUserName(isUnique) {
                         if (isUnique) {
@@ -212,6 +220,10 @@
                     $().ready(function () {
 
                         $("#inputUsername").change(function (event) {
+
+                            usernameIsUnique = false;
+                            $("#notUniqueLogin").hide();
+                            if($("#inputUsername").val() !== login){
 
                             console.log($(event.target).val());
 
@@ -231,15 +243,16 @@
                                 .fail(function (xhr, status, error) {
                                     alert('Error\n' + xhr.responseText + '\n' + status + '\n' + error);
                                 });
-
+                            } else {
+                                usernameIsUnique = true;
+                            }
                         });
 
                         $("#creatingUserForm").submit(function (event) {
                             if ( ! (
                                 $("#inputUsername").val().length >= 4 && usernameIsUnique &&
                                 $("#firstName").val().length > 0 &&
-                                $("#secondName").val().length > 0 &&
-                                $("#inputPassword").val().length >= 4))
+                                $("#secondName").val().length > 0))
                             {
                                 $("#successfulCreating").hide();
                                 $("#closeModal").click();
@@ -248,7 +261,13 @@
                                 event.preventDefault();
                             }
                         })
+
                     });
+
+                    function aboutNewUserConfig(){
+                        document.getElementById('newUserConfig').innerHTML = 'Login: ' + $("#inputUsername").val() + ', first name: ' + $("#firstName").val() + ', last name: ' + $("#secondName").val() + ', role:' + $("#selectedRole").val();
+
+                    }
                 </script>
 
             </div>

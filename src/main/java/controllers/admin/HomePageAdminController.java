@@ -34,13 +34,20 @@ public class HomePageAdminController {
 
     @GetMapping(value = "/admin/updateUser")
     public ModelAndView editUser(ModelAndView modelAndView){
-
+        
         List<User> users = this.userService.getLazyInstance().getAllUser();
+        User userSession = this.userService.getUserFromSession().getUser();
+        for (int i = 0; i < users.size(); i++) {
+            if(users.get(i).getUserId() == userSession.getUserId()){
+                users.remove(i);
+                break;
+            }
+        }
 
         modelAndView.setViewName("admin/updateUser");
         modelAndView.addObject("successEdition", null);
         modelAndView.addObject("users", users);
-        modelAndView.addObject("user", new User());
+        modelAndView.addObject("userJSP", new User());
         modelAndView.addObject("roles", RoleEnum.getAllRoles());
         return modelAndView;
     }
