@@ -43,31 +43,26 @@ public class UserManagementAdminController {
         this.deleteUserWithHisStatisticResolver = deleteUserWithHisStatisticResolver;
     }
 
-    @PostMapping(value = "/admin/createUser")
-    public ModelAndView addUser(ModelAndView modelAndView, User user) {
-
-        this.userService.registerNewUser(user.getLogin(), user.getFirstName(), user.getLastName(), passwordEncoder.encode(user.getPassword()), RoleEnum.valueOf(user.getRole()));
-
-        modelAndView.setViewName("redirect:/admin/createUser");
-//        modelAndView.addObject("successCreation", user.getLogin());
-//        modelAndView.addObject("user", new User());
-//        modelAndView.addObject("roles", RoleEnum.getAllRoles());
-        return modelAndView;
-    }
+//    @PostMapping(value = "/admin/createUser")
+//    public ModelAndView addUser(ModelAndView modelAndView, User user) {
+//        this.userService.registerNewUser(user.getLogin(), user.getFirstName(), user.getLastName(), passwordEncoder.encode(user.getPassword()), RoleEnum.valueOf(user.getRole()));
+//        modelAndView.setViewName("redirect:/admin/createUser");
+//        return modelAndView;
+//    }
 
     @PostMapping(value = "/admin/addUser", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-//    public User createUser(@RequestBody User userData) {
     public String createUser(
             @RequestParam(value = "login", required = false, defaultValue = "undefined") String login,
             @RequestParam(value = "firstName", required = false, defaultValue = "undefined") String firstName,
             @RequestParam(value = "lastName", required = false, defaultValue = "undefined") String lastName,
             @RequestParam(value = "password", required = false, defaultValue = "undefined") String password,
-            @RequestParam(value = "role", required = false, defaultValue = "undefined") String role ) {
+            @RequestParam(value = "role", required = false, defaultValue = "undefined") String role
+    ) {
         this.userService.registerNewUser(login, firstName, lastName, passwordEncoder.encode(password), RoleEnum.valueOf(role));
-
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("success", true);
+//        jsonObject.addProperty("message", "Новый пользователь");
         return jsonObject.toString();
     }
 

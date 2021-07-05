@@ -57,14 +57,14 @@
                     </symbol>
                 </svg>
 
-                <div class="alert alert-success" role="alert">
+                <div id="successfulCreating" class="alert alert-success" role="alert">
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
                     <h4 class="alert-heading">Well done!</h4>
                     <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
                     <hr>
                     <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
                 </div>
-                <div class="alert alert-danger" role="alert">
+                <div id="unsuccessfulCreating" class="alert alert-danger" role="alert">
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                     <h4 class="alert-heading">Error!</h4>
                     <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
@@ -75,18 +75,21 @@
             </div>
             <div class="col-md-10 mx-auto col-lg-8">
                 <form class="p-4 p-md-5 border rounded-3 bg-light">
-                    <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="name">
+                    <div id="notUniqueTopicName" class="alert alert-secondary" role="alert">
+                        Тема с таким названием уже сущесвует
                     </div>
                     <div class="mb-3">
-                        <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
+                        <label for="inputName" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="inputName" placeholder="name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="inputDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="inputDescription" rows="5"></textarea>
                     </div>
 
                     <button class="w-100 btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button">Create</button>
                     <hr class="my-4">
-                    <small class="text-muted">By clicking Create, you must show to the user the login and password.</small>
+                    <small class="text-muted">By clicking Create, you create a new topic.</small>
 
                     <!-- Modal -->
                     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -100,16 +103,99 @@
                                     ...
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                    <button onclick="create()" type="button" class="btn btn-primary">Create</button>
+                                    <button id="closeModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </form>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
             </div>
         </div>
     </div>
 
+    <script>
+        $("#notUniqueTopicName").hide();
+        $("#unsuccessfulCreating").hide();
+        $("#successfulCreating").hide();
+
+        let topicNameIsUnique = false;
+
+        function checkTopicName(isUnique) {
+            if (isUnique) {
+                $("#notUniqueTopicName").hide();
+                topicNameIsUnique = true;
+            } else {
+                $("#notUniqueTopicName").show();
+                topicNameIsUnique = false
+            }
+        }
+
+        function create() {
+            if ( (
+                $("#inputName").val().length >= 4 && topicNameIsUnique &&
+                $("#inputDescription").val().length > 0))
+            {
+                $.ajax({
+                    url: "/admin/addTopic",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        name: $("#inputName").val(),
+                        description: $("#inputDescription").val(),
+                        "${_csrf.parameterName}" : "${_csrf.token}"
+                    },
+                })
+                    .done(function (data) {
+                        console.log(data);
+                        $("#closeModal").click();
+                        $("#inputName").val("");
+                        $("#inputDescription").val("");
+                        if(data.success === true){
+                            $("#unsuccessfulCreating").hide();
+                            $("#successfulCreating").show();
+                        } else {
+                            $("#unsuccessfulCreating").show();
+                        }
+                    })
+                    .fail(function (xhr, status, error) {
+                        alert('Error\n' + xhr.responseText + '\n' + status + '\n' + error);
+                    });
+            } else {
+                $("#successfulCreating").hide();
+                $("#closeModal").click();
+                $("#unsuccessfulCreating").show();
+                $("#formNotCorrect").show();
+            }
+        }
+
+        $().ready(function () {
+
+            $("#inputName").change(function (event) {
+
+                console.log($(event.target).val());
+
+                $.ajax({
+                    url: "/admin/isUniqueTopicName",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        name: $(event.target).val(),
+                        "${_csrf.parameterName}" : "${_csrf.token}"
+                    },
+                })
+                    .done(function (data) {
+                        console.log( data);
+                        checkTopicName(data.unique);
+                    })
+                    .fail(function (xhr, status, error) {
+                        alert('Error\n' + xhr.responseText + '\n' + status + '\n' + error);
+                    });
+
+            });
+
+        });
+    </script>
 </body>
 </html>

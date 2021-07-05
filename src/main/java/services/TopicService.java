@@ -73,6 +73,25 @@ public class TopicService {
             return manager.getAll();
         }
 
+        public void createTopic(String name, String description){
+            Topic topic = new Topic();
+            topic.setName(name);
+            topic.setDescription(description);
+            manager.create(topic);
+        }
+
+        public boolean isTopicWithName(String name){
+            try{
+                return this.getTopicByName(name) != null;
+            } catch (IllegalArgumentException e){
+                return false;
+            }
+        }
+
+        public void updateTopic(Topic topic){
+            manager.update(topic);
+        }
+
     }
 
 }

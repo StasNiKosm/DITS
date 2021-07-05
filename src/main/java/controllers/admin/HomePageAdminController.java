@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import repository.dao.emuns.RoleEnum;
 import repository.dao.entities.User;
+import services.TopicService;
 import services.UserSecurityService;
 import services.UserService;
 
@@ -19,9 +20,16 @@ public class HomePageAdminController {
 
     UserService userService;
 
+    TopicService topicService;
+
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
+    }
+
+    @Autowired
+    public void setTopicService(TopicService topicService) {
+        this.topicService = topicService;
     }
 
     @GetMapping(value = "/admin/createUser")
@@ -67,6 +75,7 @@ public class HomePageAdminController {
     @GetMapping(value = "/admin/editTopic")
     public ModelAndView editTopic(ModelAndView modelAndView){
         modelAndView.setViewName("admin/editTopic");
+        modelAndView.addObject("topics", topicService.getLazyInstance().getAllTopics());
         return modelAndView;
     }
 

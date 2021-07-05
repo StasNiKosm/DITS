@@ -48,14 +48,14 @@
                 <h1 class="display-4 fw-bold lh-1 mb-3">Changing</h1>
                 <p class="col-lg-10 fs-4">У тебя есть возвожность создавать нового уникального пользователя. Сделав это, убедись, что права на пользование аккаутном передал физическому пользователю без ошибок.</p>
 
-                <div class="alert alert-success" role="alert">
+                <div id="successfulCreating" class="alert alert-success" role="alert">
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
                     <h4 class="alert-heading">Well done!</h4>
                     <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
                     <hr>
                     <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
                 </div>
-                <div class="alert alert-danger" role="alert">
+                <div id="unsuccessfulCreating" class="alert alert-danger" role="alert">
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                     <h4 class="alert-heading">Error!</h4>
                     <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
@@ -69,43 +69,45 @@
                     <div class="form-floating mb-3">
                         <input class="form-control selected-name" list="datalistOptions" id="inputDataList" placeholder="Введите для поиска..." >
                         <datalist class="datalist" id="datalistOptions" >
-                            <option value="Topic 1">Description-description-description-descroption-description</option>
-                            <option value="Topic 2">Description-description-description-descroption-description</option>
-                            <option value="Topic 3">Description-description-description-descroption-description</option>
-                            <option value="Topic 4">Description-description-description-descroption-description</option>
-                            <option value="Topic 5">Description-description-description-descroption-description</option>
-                            <option value="Topic 6">Description-description-description-descroption-description</option>
-                            <option value="Topic 7">Description-description-description-descroption-description</option>
-                            <option value="Topic 8">Description-description-description-descroption-description</option>
-                            <option value="Topic 9">Description-description-description-descroption-description</option>
-                            <option value="Topic 10">Description-description-description-descroption-description</option>
-                            <option value="Topic 11">Description-description-description-descroption-description</option>
-                            <option value="Topic 12">Description-description-description-descroption-description</option>
-                            <option value="Topic 13">Description-description-description-descroption-description</option>
-                            <option value="Topic 14">Description-description-description-descroption-description</option>
+<%--                            <table class="table table-bordered table-striped" id="table" style="table-layout: fixed; overflow: scroll;">--%>
+<%--                                <thead>--%>
+<%--                                <tr>--%>
+<%--                                    <th width="65">Id</th>--%>
+<%--                                    <th >Name</th>--%>
+<%--                                    <th >Description</th>--%>
+<%--                                </tr>--%>
+<%--                                </thead>--%>
+<%--                                <tbody id="myTable">--%>
+<%--                                <c:forEach  items="${topics}" var="t">--%>
+<%--                                    <tr class="write" style="cursor: pointer;">--%>
+<%--                                        <td><div style="overflow: auto;">${t.name}</div></td>--%>
+<%--                                        <td><div style="overflow: auto;">${t.description}</div></td>--%>
+<%--                                    </tr>--%>
+<%--                                </c:forEach>--%>
+<%--                                </tbody>--%>
+<%--                            </table>--%>
+                            <c:forEach items="${topics}" var="topic">
+                                <option value="${topic.name}">${topic.description}</option>
+                            </c:forEach>
                         </datalist>
-
-                        <script>
-                            $(document).on('change', '#inputDataList', function () {
-                                $("#formControlInput1").val($("#datalistOptions option[value='" + $("#inputDataList").val() + "']").val());
-                                $("#formControlTextarea1").val($("#datalistOptions option[value='" + $("#inputDataList").val() + "']").text());
-                            });
-                        </script>
 
                         <label for="inputDataList" class="form-label">Select topic</label>
                     </div>
-                    <div class="mb-3">
-                        <label for="formControlInput1" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="formControlInput1" >
+                    <div id="notUniqueTopicName" class="alert alert-secondary" role="alert">
+                        Тема с таким названием уже сущесвует
                     </div>
                     <div class="mb-3">
-                        <label for="formControlTextarea1" class="form-label">Description</label>
-                        <textarea class="form-control" id="formControlTextarea1" rows="5"></textarea>
+                        <label for="inputName" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="inputName" placeholder="name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="inputDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="inputDescription" rows="5"></textarea>
                     </div>
 
                     <button class="w-100 btn btn-lg btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button">Edit</button>
                     <hr class="my-4">
-                    <small class="text-muted">By clicking Delete, you delete user data permanently.</small>
+                    <small class="text-muted">By clicking Edit, you edit selected topic.</small>
 
                     <!-- Modal -->
                     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -119,17 +121,121 @@
                                     ...
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-warning">Edit</button>
+                                    <button onclick="edit()" type="button" class="btn btn-warning">Edit</button>
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </form>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
             </div>
         </div>
     </div>
 
+    <script>
+
+        var name;
+
+        $(document).on('change', '#inputDataList', function () {
+            name = $("#datalistOptions option[value='" + $("#inputDataList").val() + "']").val();
+            $("#inputName").val(name);
+            $("#inputDescription").val($("#datalistOptions option[value='" + $("#inputDataList").val() + "']").text());
+        });
+
+        $("#notUniqueTopicName").hide();
+        $("#unsuccessfulCreating").hide();
+        $("#successfulCreating").hide();
+
+        let topicNameIsUnique = false;
+
+        function checkTopicName(isUnique) {
+            if (isUnique) {
+                $("#notUniqueTopicName").hide();
+                topicNameIsUnique = true;
+            } else {
+                $("#notUniqueTopicName").show();
+                topicNameIsUnique = false
+            }
+        }
+
+        function edit() {
+            if ( (
+                $("#inputName").val().length >= 4 && topicNameIsUnique &&
+                $("#inputDescription").val().length > 0))
+            {
+                $.ajax({
+                    url: "/admin/addTopic",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        name: $("#inputName").val(),
+                        description: $("#inputDescription").val(),
+                        "${_csrf.parameterName}" : "${_csrf.token}"
+                    },
+                })
+                    .done(function (data) {
+                        console.log(data);
+                        $("#closeModal").click();
+                        $("#inputName").val("");
+                        $("#inputDescription").val("");
+                        if(data.success === true){
+                            $("#unsuccessfulCreating").hide();
+                            $("#successfulCreating").show();
+                        } else {
+                            $("#unsuccessfulCreating").show();
+                        }
+                    })
+                    .fail(function (xhr, status, error) {
+                        alert('Error\n' + xhr.responseText + '\n' + status + '\n' + error);
+                    });
+            } else {
+                $("#successfulCreating").hide();
+                $("#closeModal").click();
+                $("#unsuccessfulCreating").show();
+                $("#formNotCorrect").show();
+            }
+        }
+
+        $().ready(function () {
+
+            $("#inputName").change(function (event) {
+
+                topicNameIsUnique = false;
+                $("#notUniqueTopicName").hide();
+                if($("#inputName").val() !== name){
+
+                    console.log($(event.target).val());
+
+                    $.ajax({
+                        url: "/admin/isUniqueTopicName",
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            name: $(event.target).val(),
+                            "${_csrf.parameterName}" : "${_csrf.token}"
+                        },
+                    })
+                        .done(function (data) {
+                            console.log( data);
+                            checkTopicName(data.unique);
+                        })
+                        .fail(function (xhr, status, error) {
+                            alert('Error\n' + xhr.responseText + '\n' + status + '\n' + error);
+                        });
+                } else {
+                    topicNameIsUnique = true;
+                }
+            });
+        });
+
+
+
+        // function aboutNewUserConfig(){
+        //     document.getElementById('newUserConfig').innerHTML = 'Login: ' + $("#inputUsername").val() + ', first name: ' + $("#firstName").val() + ', last name: ' + $("#secondName").val() + ', role:' + $("#selectedRole").val();
+        //
+        // }
+    </script>
 
 </body>
 </html>

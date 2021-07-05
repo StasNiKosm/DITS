@@ -62,7 +62,7 @@ public class UserService {
             manager.update(user);
         }
 
-        //Не удалит юзера, если у него уже есть кака-либо статисти - упадет с ошибкой
+        //Не удалит юзера, если у него уже есть кака-либо статисти - упадет с ошибкой (иди в статистик сервис)
         public void deleteUser(User user){
             manager.delete(user);
         }
@@ -87,8 +87,6 @@ public class UserService {
         user.setLastName(lastName);
         user.setPassword(password);
         user.setRole(role.getName());
-
-        System.out.println(user);
 
         getLazyInstance().manager.create(user);
     }
