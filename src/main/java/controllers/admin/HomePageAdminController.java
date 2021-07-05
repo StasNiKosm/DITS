@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import repository.dao.emuns.RoleEnum;
 import repository.dao.entities.User;
+import services.UserSecurityService;
 import services.UserService;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -22,11 +24,9 @@ public class HomePageAdminController {
         this.userService = userService;
     }
 
-
     @GetMapping(value = "/admin/createUser")
     public ModelAndView createUser(ModelAndView modelAndView) {
         modelAndView.setViewName("admin/createUser");
-        modelAndView.addObject("successCreation", null);
         modelAndView.addObject("user", new User());
         modelAndView.addObject("roles", RoleEnum.getAllRoles());
         return modelAndView;
@@ -34,15 +34,8 @@ public class HomePageAdminController {
 
     @GetMapping(value = "/admin/updateUser")
     public ModelAndView editUser(ModelAndView modelAndView){
-        
-        List<User> users = this.userService.getLazyInstance().getAllUser();
-        User userSession = this.userService.getUserFromSession().getUser();
-        for (int i = 0; i < users.size(); i++) {
-            if(users.get(i).getUserId() == userSession.getUserId()){
-                users.remove(i);
-                break;
-            }
-        }
+
+        List<User> users = this.userService.getAllUserWithoutSessionUser();
 
         modelAndView.setViewName("admin/updateUser");
         modelAndView.addObject("successEdition", null);
@@ -54,7 +47,14 @@ public class HomePageAdminController {
 
     @GetMapping(value = "/admin/deleteUser")
     public ModelAndView deleteUser(ModelAndView modelAndView){
+
+        List<User> users = this.userService.getAllUserWithoutSessionUser();
+
         modelAndView.setViewName("admin/deleteUser");
+        modelAndView.addObject("successDeletion", null);
+        modelAndView.addObject("userJSP", new User());
+        modelAndView.addObject("users", users);
+        modelAndView.addObject("roles", RoleEnum.getAllRoles());
         return modelAndView;
     }
 

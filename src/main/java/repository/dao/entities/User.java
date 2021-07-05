@@ -7,7 +7,9 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Collections;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tuser")
@@ -33,6 +35,10 @@ public class User {
 
     @Column(name = "role", length = 255)
     private String role;
+
+//    @OneToMany( cascade = CascadeType.REMOVE)
+//    @ToString.Exclude private Set<Statistic> statistic = Collections.emptySet();
+
 
     @Override
     public boolean equals(Object o) {

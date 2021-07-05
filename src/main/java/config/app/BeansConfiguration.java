@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import repository.connection.HibernateSessionFactory;
 import services.*;
+import services.user.DeleteUserWithHisStatisticResolver;
 import services.user.TestResultResolver;
 
 @Configuration
@@ -249,6 +250,11 @@ public class BeansConfiguration {
     @Bean
     public LiteratureService literatureService() {
         return new LiteratureService();
+    }
+
+    @Bean
+    public DeleteUserWithHisStatisticResolver deleteUserWithHisStatisticResolver() {
+        return new DeleteUserWithHisStatisticResolver();
     }
 
 }

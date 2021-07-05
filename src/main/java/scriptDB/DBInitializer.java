@@ -16,6 +16,7 @@ public class DBInitializer {
 
     public static void main(String[] args) throws SQLException {
             //init();
+
     }
 
     public static void createNewTest() {

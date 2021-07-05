@@ -65,7 +65,8 @@
             </div>
 
             <div class="col-md-10 mx-auto col-lg-6">
-                <form class="p-4 p-md-5 border rounded-3 bg-light">
+                <form:form method="post" action="/admin/deleteUser" modelAttribute="userJSP" class="p-4 p-md-5 border rounded-3 bg-light" >
+<%--                <form class="p-4 p-md-5 border rounded-3 bg-light">--%>
                     <div class="form-floating mb-3">
                         <button class="btn btn-outline-primary btn-lg dropdown-toggle " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
                             Select user
@@ -85,27 +86,15 @@
                                     </tr>
                                     </thead>
                                     <tbody id="myTable">
-                                    <tr сlass="write" style="cursor: pointer;">
-                                        <td><div style="overflow: auto;">1</div></td>
-                                        <td><div style="overflow: auto;">Admin</div></td>
-                                        <td><div style="overflow: auto;">Stanislav</div></td>
-                                        <td><div style="overflow: auto;">Nikunenko</div></td>
-                                        <td><div style="overflow: auto;">Stanislav_Nikunenko</div></td>
-                                    </tr>
-                                    <tr сlass="write" style="cursor: pointer;">
-                                        <td><div style="overflow: auto;">2</div></td>
-                                        <td><div style="overflow: auto;">User</div></td>
-                                        <td><div style="overflow: auto;">Egor</div></td>
-                                        <td><div style="overflow: auto;">Sushchenko</div></td>
-                                        <td><div style="overflow: auto;">Egor_Sushchenko</div></td>
-                                    </tr>
-                                    <tr сlass="write" style="cursor: pointer;">
-                                        <td><div style="overflow: auto;">1</div></td>
-                                        <td><div style="overflow: auto;">Tutor</div></td>
-                                        <td><div style="overflow: auto;">Vlad</div></td>
-                                        <td><div style="overflow: auto;">Polkovsky</div></td>
-                                        <td><div style="overflow: auto;">Vlad_Polkovsky</div></td>
-                                    </tr>
+                                    <c:forEach  items="${users}" var="u">
+                                        <tr class="write" style="cursor: pointer;">
+                                            <td><div style="overflow: auto;">${u.userId}</div></td>
+                                            <td><div style="overflow: auto;">${u.role.substring(5, 6).concat(u.role.substring(6).toLowerCase())}</div></td>
+                                            <td><div style="overflow: auto;">${u.firstName}</div></td>
+                                            <td><div style="overflow: auto;">${u.lastName}</div></td>
+                                            <td><div style="overflow: auto;">${u.login}</div></td>
+                                        </tr>
+                                    </c:forEach>
                                     </tbody>
                                 </table>
                                 <script>
@@ -122,21 +111,29 @@
                         </ul>
                     </div>
 
-                    <div class="form-floating mb-3">
-                        <input disabled class="form-control role" id="floatingInput" placeholder="Role" required="true">
-                        <label for="floatingInput">Role</label>
+                    <div hidden class="form-floating mb-3">
+                        <form:input path="userId" class="form-control id" placeholder="Id" required="true"/>
                     </div>
                     <div class="form-floating mb-3">
-                        <input disabled class="form-control first-name" id="floatingInput1" placeholder="First name" required="true">
-                        <label for="floatingInput1">First name</label>
+                        <form:input path="role" class="form-control role" id="role" placeholder="Role" required="true"/>
+<%--                        <input disabled class="form-control role" id="role" placeholder="Role" required="true">--%>
+                        <label for="role">Role</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input disabled class="form-control last-name" id="floatingInput2"  placeholder="Last name" required="true">
-                        <label for="floatingInput2">Last name</label>
+                        <form:input path="firstName" class="form-control first-name" id="firstName" placeholder="First name" required="true"/>
+
+                    <%--                        <input disabled class="form-control first-name" id="firstName" placeholder="First name" required="true">--%>
+                        <label for="firstName">First name</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input disabled class="form-control login" id="floatingInput3"  placeholder="Login" required="true">
-                        <label for="floatingInput3">Login</label>
+                        <form:input path="lastName" class="form-control last-name" id="secondName" placeholder="Last name" required="true"/>
+<%--                        <input disabled class="form-control last-name" id="lastName"  placeholder="Last name" required="true">--%>
+                        <label for="lastName">Last name</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <form:input path="login" class="form-control login" id="inputUsername" placeholder="Login" required="true"/>
+                    <%--                        <input disabled class="form-control login" id="login"  placeholder="Login" required="true">--%>
+                        <label for="login">Login</label>
                     </div>
                     <button class="w-100 btn btn-lg btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button">Delete</button>
                     <hr class="my-4">
@@ -154,14 +151,14 @@
                                     ...
                                 </div>
                                 <div class="modal-footer">
+                                    <button type="submit" class="btn btn-danger">Save changes</button>
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Save changes</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                </form>
+                </form:form>
+<%--                </form>--%>
                 <script>
                     $("#table tr").click(function(){
                         $(this).addClass('selected').siblings().removeClass('selected');
@@ -170,6 +167,7 @@
                         var firstName=$(this).find('td').eq(2).text();
                         var lastName=$(this).find('td').eq(3).text();
                         var login=$(this).find('td').eq(4).text();
+                        $('input.id').val(id);
                         $('input.role').val(role);
                         $('input.first-name').val(firstName);
                         $('input.last-name').val(lastName);

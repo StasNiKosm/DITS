@@ -58,12 +58,13 @@ public class UserService {
                     .orElseThrow(() -> new UsernameNotFoundException("No user with name '" + login + "'"));
         }
 
-        public List<User> getAllUser(){
-            return manager.getAll();
-        }
-
         public void updateUser(User user){
             manager.update(user);
+        }
+
+        //Не удалит юзера, если у него уже есть кака-либо статисти - упадет с ошибкой
+        public void deleteUser(User user){
+            manager.delete(user);
         }
 
 
@@ -104,6 +105,18 @@ public class UserService {
                 getLazyInstance().getUserByLogin(principal.getUsername()),
                 principal.getAuthorities()
         );
+    }
+
+    public List<User> getAllUserWithoutSessionUser(){
+        List<User> users = lazyInstance.manager.getAll();
+        User userSession = this.getUserFromSession().getUser();
+        for (int i = 0; i < users.size(); i++) {
+            if(users.get(i).getUserId() == userSession.getUserId()){
+                users.remove(i);
+                break;
+            }
+        }
+        return users;
     }
 
 }

@@ -29,15 +29,15 @@
             <property name="javax.persistence.jdbc.password" value="stas"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL10Dialect"/>
 
-<!--            &lt;!&ndash;    PARAMETERS ?   &ndash;&gt;-->
-<!--            &lt;!&ndash;    for using method getCurrentSession()    &ndash;&gt;-->
-<!--            <property name="hibernate.current_session_context_class" value="thread"/>-->
-<!--            &lt;!&ndash;    for watching sql in logs    &ndash;&gt;-->
-<!--            <property name="hibernate.show_sql" value="true"/>-->
-<!--            &lt;!&ndash;    for hibernate updating db    &ndash;&gt;-->
-<!--            <property name="hibernate.hbm2ddl.auto" value="update"/>-->
+            <!--    PARAMETERS ?   -->
+            <!--    for using method getCurrentSession()    -->
+            <property name="hibernate.current_session_context_class" value="thread"/>
+            <!--    for watching sql in logs    -->
+            <property name="hibernate.show_sql" value="true"/>
+            <!--    for hibernate updating db    -->
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
 
-<!--            &lt;!&ndash;    DROP -> CREAT -> INITIALIZE (all tables with his test data)   &ndash;&gt;-->
+            <!--    DROP -> CREAT -> INITIALIZE (all tables with his test data)   -->
 
 <!--            &lt;!&ndash;    Tells Hibernate to first drop and then create a new bd    &ndash;&gt;-->
 <!--            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>-->

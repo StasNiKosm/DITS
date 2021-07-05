@@ -1,5 +1,6 @@
 package repository.dao;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 

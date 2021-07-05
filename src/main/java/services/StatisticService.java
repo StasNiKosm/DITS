@@ -5,6 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import repository.dao.entities.Statistic;
+import repository.dao.entities.User;
 import repository.managers.eager.EagerManager;
 import repository.managers.lazy.LazyManager;
 
@@ -63,6 +64,25 @@ public class StatisticService {
             session.close();
 
             return statistics;
+        }
+
+        public void deleteStatisticByUser(User user){
+            List<Statistic> statistics = manager.getAll();
+            for (int i = 0; i < statistics.size(); i++) {
+                if(statistics.get(i).getUser().getUserId() == user.getUserId()) {
+                    manager.delete(statistics.get(i));
+                }
+            }
+        }
+
+        public boolean hasUserStatistic(User user){
+            List<Statistic> statistics = manager.getAll();
+            for (int i = 0; i < statistics.size(); i++) {
+                if(statistics.get(i).getUser().getUserId() == user.getUserId()) {
+                    return true;
+                }
+            }
+            return false;
         }
 
     }

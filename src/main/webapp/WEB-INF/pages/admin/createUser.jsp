@@ -48,15 +48,13 @@
                 <h1 class="display-4 fw-bold lh-1 mb-3">Creating</h1>
                 <p class="col-lg-10 fs-4">У тебя есть возвожность создавать нового уникального пользователя. Сделав это, убедись, что логин и пароль аккаунта физическому пользователю будет передан без ошибок.</p>
 
-                <c:if test="${successCreation != null}">
                 <div id="successfulCreating" class="alert alert-success" role="alert">
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
                     <h4 class="alert-heading">Well done!</h4>
-                    <p>Новый пользователь с логином: ${successCreation}.</p>
+                    <p>Новый пользователь с логином: .</p>
                     <hr>
                     <p class="mb-0">Создание нового пользователя прошло успешно. Молодец!</p>
                 </div>
-                </c:if>
                 <div id="unsuccessfulCreating" class="alert alert-danger" role="alert">
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                     <h4 class="alert-heading">Fail!</h4>
@@ -67,44 +65,43 @@
             </div>
 
             <div class="col-md-10 mx-auto col-lg-6">
-                <form:form id="creatingUserForm" class="p-4 p-md-5 border rounded-3 bg-light" method="post" action="/admin/createUser" modelAttribute="user">
-                    <%--                <form class="p-4 p-md-5 border rounded-3 bg-light" method="post" action="/admin/createUser" modelAttribute="user">--%>
+<%--                <form:form id="creatingUserForm" class="p-4 p-md-5 border rounded-3 bg-light" method="post" action="/admin/createUser" modelAttribute="user">--%>
+                <form id="creatingUserForm" class="p-4 p-md-5 border rounded-3 bg-light" >
                     <div id="formNotCorrect" class="alert alert-secondary" role="alert">
                         Ошибка заполнения формы
                     </div>
                     <div class="form-floating mb-3">
-                        <form:select path="role" class="form-select  mb-3" id="floatingInput" aria-label=".form-select-lg example">
+<%--                        <form:select path="role" class="form-select  mb-3" id="floatingInput" aria-label=".form-select-lg example">--%>
+                        <select id="selectRole" class="form-select  mb-3" id="floatingInput" aria-label=".form-select-lg example">
                             <c:forEach items="${roles}" var="role">
                                 <option value="${role}">${role}</option>
                             </c:forEach>
-                        </form:select>
+                        </select>
                         <label for="floatingInput">Role</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <form:input path="firstName" class="form-control" id="firstName" placeholder="First name" required="true"/>
-                            <%--                        <input  class="form-control" id="firstName" placeholder="First name" required="true">--%>
+<%--                        <form:input path="firstName" class="form-control" id="firstName" placeholder="First name" required="true"/>--%>
+                        <input  class="form-control" id="firstName" placeholder="First name" required="true">
                         <label for="firstName">First name</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <form:input path="lastName" class="form-control" id="secondName" placeholder="Last name" required="true"/>
-                            <%--                        <input  class="form-control" id="secondName" placeholder="Last name" required="true">--%>
+<%--                        <form:input path="lastName" class="form-control" id="secondName" placeholder="Last name" required="true"/>--%>
+                        <input  class="form-control" id="secondName" placeholder="Last name" required="true">
                         <label for="secondName">Last name</label>
                     </div>
                     <div id="notUniqueLogin" class="alert alert-secondary" role="alert">
                         Учётная запись с таким логином уже существует
                     </div>
                     <div class="form-floating mb-3">
-                        <form:input path="login" class="form-control" id="inputUsername" placeholder="Login" required="true"/>
-                            <%--                        <input class="form-control" id="inputUsername" placeholder="Login" required="true">--%>
+<%--                        <form:input path="login" class="form-control" id="inputUsername" placeholder="Login" required="true"/>--%>
+                        <input class="form-control" id="inputUsername" placeholder="Login" required="true">
                         <label for="inputUsername">Login</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <form:password path="password" class="form-control" id="inputPassword" placeholder="password" required="true"/>
-                            <%--                        <input type="password" class="form-control" id="inputPassword" placeholder="Password" required="true">--%>
+<%--                        <form:password path="password" class="form-control" id="inputPassword" placeholder="password" required="true"/>--%>
+                        <input type="password" class="form-control" id="inputPassword" placeholder="Password" required="true">
                         <label for="inputPassword">Password</label>
                     </div>
-
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 
                     <button class="w-100 btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#modal" type="button">Create</button>
                     <hr class="my-4">
@@ -123,14 +120,15 @@
                                     <p></p>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Create</button>
+                                    <button onclick="create()" type="button" class="btn btn-primary">Create</button>
                                     <button id="closeModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <%--                </form>--%>
-                </form:form>
+                </form>
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+<%--                </form:form>--%>
             </div>
         </div>
     </div>
@@ -138,6 +136,7 @@
     <script>
         $("#notUniqueLogin").hide();
         $("#unsuccessfulCreating").hide();
+        $("#successfulCreating").hide();
         $("#formNotCorrect").hide();
         $("#passwordsNotEquals").hide();
 
@@ -152,13 +151,45 @@
                 usernameIsUnique = false
             }
         }
-        
+
+        function create() {
+            $.ajax({
+                url: "/admin/addUser",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    firstName: $("#firstName").val(),
+                    lastName: $("#secondName").val(),
+                    login: $("#inputUsername").val(),
+                    password: $("#inputPassword").val(),
+                    role: $("#selectRole option:selected").val(),
+                    "${_csrf.parameterName}" : "${_csrf.token}"
+                },
+            })
+                .done(function (data) {
+                    console.log(data);
+                    $("#closeModal").click();
+                    $("#firstName").val("");
+                    $("#secondName").val("");
+                    $("#inputUsername").val("");
+                    $("#inputPassword").val("");
+                    if(data.success === true){
+                        $("#successfulCreating").show();
+                    } else {
+                        $("#unsuccessfulCreating").show();
+                    }
+                })
+                .fail(function (xhr, status, error) {
+                    alert('Error\n' + xhr.responseText + '\n' + status + '\n' + error);
+                });
+        }
+
         $().ready(function () {
-        
+
             $("#inputUsername").change(function (event) {
-        
+
                 console.log($(event.target).val());
-        
+
                 $.ajax({
                     url: "/admin/isUniqueLogin",
                     type: "POST",
@@ -175,9 +206,9 @@
                     .fail(function (xhr, status, error) {
                         alert('Error\n' + xhr.responseText + '\n' + status + '\n' + error);
                     });
-        
+
             });
-        
+
             $("#creatingUserForm").submit(function (event) {
                 if ( ! (
                     $("#inputUsername").val().length >= 4 && usernameIsUnique &&

@@ -13,6 +13,7 @@ import repository.dao.entities.User;
 import services.TestService;
 import services.UserSecurityService;
 import services.UserService;
+import services.user.DeleteUserWithHisStatisticResolver;
 import services.user.TestResultResolver;
 
 import java.util.List;
@@ -25,6 +26,8 @@ public class UserManagementAdminController {
 
     PasswordEncoder passwordEncoder;
 
+    DeleteUserWithHisStatisticResolver deleteUserWithHisStatisticResolver;
+
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
@@ -35,31 +38,37 @@ public class UserManagementAdminController {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Autowired
+    public void setDeleteUserWithHisStatisticResolver(DeleteUserWithHisStatisticResolver deleteUserWithHisStatisticResolver) {
+        this.deleteUserWithHisStatisticResolver = deleteUserWithHisStatisticResolver;
+    }
 
-    /*@PostMapping(value = "/admin/createUser", consumes = "application/json")
-    @ResponseBody
-    public String addUser(@RequestBody User user){
-        this.userService.registerNewUser(user.getLogin(), user.getFirstName(), user.getLastName(), passwordEncoder.encode(user.getPassword()), RoleEnum.valueOf(user.getRole()));
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("success", true);
-//        jsonObject.addProperty("prop", "Неправильно!");
-        return jsonObject.toString();
-       // model.addAttribute("roles", RoleEnum.getAllRules());
-       // modelAndView.setViewName("admin/createUser");
-      //  modelAndView.addObject("user", new User());
-      //  modelAndView.addObject("roles", RoleEnum.getAllRules());
-        //return modelAndView;
-    }*/
     @PostMapping(value = "/admin/createUser")
     public ModelAndView addUser(ModelAndView modelAndView, User user) {
 
         this.userService.registerNewUser(user.getLogin(), user.getFirstName(), user.getLastName(), passwordEncoder.encode(user.getPassword()), RoleEnum.valueOf(user.getRole()));
 
-        modelAndView.setViewName("admin/createUser");
-        modelAndView.addObject("successCreation", user.getLogin());
-        modelAndView.addObject("user", new User());
-        modelAndView.addObject("roles", RoleEnum.getAllRoles());
+        modelAndView.setViewName("redirect:/admin/createUser");
+//        modelAndView.addObject("successCreation", user.getLogin());
+//        modelAndView.addObject("user", new User());
+//        modelAndView.addObject("roles", RoleEnum.getAllRoles());
         return modelAndView;
+    }
+
+    @PostMapping(value = "/admin/addUser", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+//    public User createUser(@RequestBody User userData) {
+    public String createUser(
+            @RequestParam(value = "login", required = false, defaultValue = "undefined") String login,
+            @RequestParam(value = "firstName", required = false, defaultValue = "undefined") String firstName,
+            @RequestParam(value = "lastName", required = false, defaultValue = "undefined") String lastName,
+            @RequestParam(value = "password", required = false, defaultValue = "undefined") String password,
+            @RequestParam(value = "role", required = false, defaultValue = "undefined") String role ) {
+        this.userService.registerNewUser(login, firstName, lastName, passwordEncoder.encode(password), RoleEnum.valueOf(role));
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("success", true);
+        return jsonObject.toString();
     }
 
     @PostMapping(value = "/admin/updateUser")
@@ -69,14 +78,7 @@ public class UserManagementAdminController {
         user.setRole(RoleEnum.valueOf(user.getRole()).getName());
         this.userService.getLazyInstance().updateUser(user);
 
-        List<User> users = this.userService.getLazyInstance().getAllUser();
-        User userSession = this.userService.getUserFromSession().getUser();
-        for (int i = 0; i < users.size(); i++) {
-            if(users.get(i).getUserId() == userSession.getUserId()){
-                users.remove(i);
-                break;
-            }
-        }
+        List<User> users = this.userService.getAllUserWithoutSessionUser();
 
         modelAndView.setViewName("admin/updateUser");
         modelAndView.addObject("successEdition", user.getFirstName() + " " + user.getLastName() + " login: " + user.getLogin() + " role: " + RoleEnum.byName(user.getRole()));
@@ -92,5 +94,28 @@ public class UserManagementAdminController {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("unique", !userService.isLoginRegistered(login));
         return jsonObject.toString();
+    }
+
+    @PostMapping(value = "/admin/deleteUser")
+    public ModelAndView deleteUser(ModelAndView modelAndView, User user) {
+
+        List<User> users = this.userService.getAllUserWithoutSessionUser();
+        for (User value : users) {
+            if (value.getUserId() == user.getUserId()) {
+                user.setPassword(value.getPassword());
+                users.remove(value);
+                break;
+            }
+        }
+
+        deleteUserWithHisStatisticResolver.deleteUserWithHisStatistic(user);
+
+
+        modelAndView.setViewName("redirect:/admin/deleteUser");
+//        modelAndView.addObject("successDeletion", user.getFirstName() + " " + user.getLastName() + " login: " + user.getLogin() + " role: " + RoleEnum.byName(user.getRole()));
+//        modelAndView.addObject("userJSP", new User());
+//        modelAndView.addObject("users", users);
+//        modelAndView.addObject("roles", RoleEnum.getAllRoles());
+        return modelAndView;
     }
 }
