@@ -80,6 +80,10 @@ public class TopicService {
             manager.create(topic);
         }
 
+        public void createTopic(Topic topic){
+            manager.create(topic);
+        }
+
         public boolean isTopicWithName(String name){
             try{
                 return this.getTopicByName(name) != null;
@@ -92,6 +96,9 @@ public class TopicService {
             manager.update(topic);
         }
 
+        public void deleteTopic(Topic topic){
+            manager.delete(topic);
+        }
     }
 
 }

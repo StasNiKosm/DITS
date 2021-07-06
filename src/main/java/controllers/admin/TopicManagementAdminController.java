@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import repository.dao.entities.Topic;
 import services.TopicService;
 
 @Controller
@@ -37,18 +38,22 @@ public class TopicManagementAdminController {
     @ResponseBody
     public String checkLogin(@RequestParam(value = "name", required = false, defaultValue = "undefined") String name) {
         JsonObject jsonObject = new JsonObject();
-        boolean b = topicService.getLazyInstance().isTopicWithName(name);
-        jsonObject.addProperty("unique", !b);
+        jsonObject.addProperty("unique", !topicService.getLazyInstance().isTopicWithName(name));
         return jsonObject.toString();
     }
 
-    @PostMapping(value = "/admin/editTopic", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+        @PostMapping(value = "/admin/editTopic", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String editTopic(
+            @RequestParam(name = "id", required = false, defaultValue = "undefined") int id,
             @RequestParam(name = "name", required = false, defaultValue = "undefined") String name,
             @RequestParam(name = "description", required = false, defaultValue = "undefined") String description
     ) {
-//        topicService.getLazyInstance().updateTopic();
+        Topic topic = topicService.getLazyInstance().getTopicById(id);
+        topic.setName(name);
+        topic.setDescription(description);
+        topicService.getLazyInstance().updateTopic(topic);
+
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("success", true);
 //        jsonObject.addProperty("message", "Новый ");

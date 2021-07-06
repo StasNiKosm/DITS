@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import repository.dao.emuns.RoleEnum;
+import repository.dao.entities.Test;
+import repository.dao.entities.Topic;
 import repository.dao.entities.User;
 import services.TopicService;
 import services.UserSecurityService;
@@ -89,6 +91,9 @@ public class HomePageAdminController {
     @GetMapping(value = "/admin/createTest")
     public ModelAndView createTest(ModelAndView modelAndView){
         modelAndView.setViewName("admin/createTestAdmin");
+        modelAndView.addObject("topic", new Topic());
+        modelAndView.addObject("test", new Test());
+        modelAndView.addObject("topics", topicService.getLazyInstance().getAllTopics());
         return modelAndView;
     }
 

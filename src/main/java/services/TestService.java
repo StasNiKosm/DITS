@@ -63,6 +63,24 @@ public class TestService {
             return getQuestionsFromTest(test.getTestId());
         }
 
+        public boolean isTestWithName(String name) {
+            try{
+                return this.getTestByName(name) != null;
+            } catch (IllegalArgumentException e){
+                return false;
+            }
+        }
+
+        public Test getTestByName(String name) {
+            return manager.executeSql("FROM Test where name = '" + name + "'")
+                    .stream()
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("No topic with name '" + name + "'"));
+        }
+
+        public void createTest(Test test){
+            manager.create(test);
+        }
     }
 
     public boolean isTestExist(int id) {

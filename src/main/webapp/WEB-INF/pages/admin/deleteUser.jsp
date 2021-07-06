@@ -121,12 +121,11 @@
                     </div>
                     <div class="form-floating mb-3">
                         <form:input path="firstName" class="form-control first-name" id="firstName" placeholder="First name" required="true"/>
-
                     <%--                        <input disabled class="form-control first-name" id="firstName" placeholder="First name" required="true">--%>
                         <label for="firstName">First name</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <form:input path="lastName" class="form-control last-name" id="secondName" placeholder="Last name" required="true"/>
+                        <form:input path="lastName"  class="form-control last-name" id="secondName" placeholder="Last name" required="true"/>
 <%--                        <input disabled class="form-control last-name" id="lastName"  placeholder="Last name" required="true">--%>
                         <label for="lastName">Last name</label>
                     </div>

@@ -67,31 +67,56 @@
             <div class="col-md-10 mx-auto col-lg-6">
                 <form class="p-4 p-md-5 border rounded-3 bg-light">
                     <div class="form-floating mb-3">
-                        <input class="form-control selected-name" list="datalistOptions" id="inputDataList" placeholder="Введите для поиска..." >
-                        <datalist class="datalist" id="datalistOptions" >
-<%--                            <table class="table table-bordered table-striped" id="table" style="table-layout: fixed; overflow: scroll;">--%>
-<%--                                <thead>--%>
-<%--                                <tr>--%>
-<%--                                    <th width="65">Id</th>--%>
-<%--                                    <th >Name</th>--%>
-<%--                                    <th >Description</th>--%>
-<%--                                </tr>--%>
-<%--                                </thead>--%>
-<%--                                <tbody id="myTable">--%>
-<%--                                <c:forEach  items="${topics}" var="t">--%>
-<%--                                    <tr class="write" style="cursor: pointer;">--%>
-<%--                                        <td><div style="overflow: auto;">${t.name}</div></td>--%>
-<%--                                        <td><div style="overflow: auto;">${t.description}</div></td>--%>
-<%--                                    </tr>--%>
-<%--                                </c:forEach>--%>
-<%--                                </tbody>--%>
-<%--                            </table>--%>
-                            <c:forEach items="${topics}" var="topic">
-                                <option value="${topic.name}">${topic.description}</option>
-                            </c:forEach>
-                        </datalist>
+                        <button class="btn btn-outline-primary btn-lg dropdown-toggle " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                            Select topic
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <div class="form-floating">
+                                <input class="form-control" id="myInput" type="text" placeholder="Search..">
+                                <label for="myInput">Topic</label>
+                                <table class="table table-bordered table-striped" id="table" style="table-layout: fixed; overflow: scroll;">
+                                    <thead>
+                                    <tr>
+                                        <th width="65">Id</th>
+                                        <th >Name</th>
+                                        <th >Description</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="myTable">
+                                    <c:forEach  items="${topics}" var="t">
+                                        <tr class="write" style="cursor: pointer;">
+                                            <td><div style="overflow: auto;">${t.topicId}</div></td>
+                                            <td><div style="overflow: auto;">${t.name}</div></td>
+                                            <td><div style="overflow: auto;">${t.description}</div></td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                                <script>
+                                    $(document).ready(function(){
+                                        $("#myInput").on("keyup", function() {
+                                            var value = $(this).val().toLowerCase();
+                                            $("#myTable tr").filter(function() {
+                                                $(this).toggle( $(this).text().toLowerCase().indexOf(value) > -1 );
+                                            });
+                                        });
+                                    });
+                                </script>
+                            </div>
+                        </ul>
+<%--                        <input class="form-control selected-name" list="datalistOptions" id="inputDataList" placeholder="Введите для поиска..." >--%>
+<%--                        <datalist class="datalist" id="datalistOptions" >--%>
+<%--                            <c:forEach items="${topics}" var="topic">--%>
+<%--                                <option value="${topic.name}">--%>
+<%--                                    <div id="selectedTopicHiddenDiv${topic.topicId}" hidden>${topic.topicId}</div>${topic.description}--%>
+<%--                                </option>--%>
+<%--                            </c:forEach>--%>
+<%--                        </datalist>--%>
+<%--                        <label for="inputDataList" class="form-label">Select topic</label>--%>
 
-                        <label for="inputDataList" class="form-label">Select topic</label>
+                    </div>
+                    <div class="mb-3">
+                        <input hidden type="text" class="form-control" id="inputId" placeholder="id">
                     </div>
                     <div id="notUniqueTopicName" class="alert alert-secondary" role="alert">
                         Тема с таким названием уже сущесвует
@@ -122,7 +147,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button onclick="edit()" type="button" class="btn btn-warning">Edit</button>
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button id="closeModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                 </div>
                             </div>
                         </div>
@@ -137,10 +162,21 @@
 
         var name;
 
-        $(document).on('change', '#inputDataList', function () {
-            name = $("#datalistOptions option[value='" + $("#inputDataList").val() + "']").val();
+        // $(document).on('change', '#inputDataList', function () {
+        //     name = $("#datalistOptions option[value='" + $("#inputDataList").val() + "']").val();
+        //     $("#inputName").val(name);
+        //     $("#inputDescription").val($("#datalistOptions option[value='" + $("#inputDataList").val() + "']").text());
+        // });
+        $("#table tr").click(function(){
+            var id=$(this).find('td').eq(0).text();
+            name = $(this).find('td').eq(1).text();
+            var description=$(this).find('td').eq(2).text();
+
+            // document.getElementById('oldUserConfig').innerHTML = 'Login: ' + login + ', first name: ' + firstName + ', last name: ' + lastName + ', role:' + role;
+
+            $("#inputId").val(id);
             $("#inputName").val(name);
-            $("#inputDescription").val($("#datalistOptions option[value='" + $("#inputDataList").val() + "']").text());
+            $("#inputDescription").val(description);
         });
 
         $("#notUniqueTopicName").hide();
@@ -160,15 +196,17 @@
         }
 
         function edit() {
+            $("#closeModal").click();
             if ( (
                 $("#inputName").val().length >= 4 && topicNameIsUnique &&
                 $("#inputDescription").val().length > 0))
             {
                 $.ajax({
-                    url: "/admin/addTopic",
+                    url: "/admin/editTopic",
                     type: "POST",
                     dataType: "json",
                     data: {
+                        id:  $("#inputId").val(),
                         name: $("#inputName").val(),
                         description: $("#inputDescription").val(),
                         "${_csrf.parameterName}" : "${_csrf.token}"
@@ -176,7 +214,7 @@
                 })
                     .done(function (data) {
                         console.log(data);
-                        $("#closeModal").click();
+
                         $("#inputName").val("");
                         $("#inputDescription").val("");
                         if(data.success === true){
@@ -191,7 +229,6 @@
                     });
             } else {
                 $("#successfulCreating").hide();
-                $("#closeModal").click();
                 $("#unsuccessfulCreating").show();
                 $("#formNotCorrect").show();
             }
