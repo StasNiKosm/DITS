@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -49,44 +50,57 @@ public class TestManagementAdminController {
         System.out.println("topicDescription= " + testDescription);
         System.out.println("___________________________________");
 
-//        Topic topic;
-//        if(topicId.isEmpty()){
-//            topic = new Topic();
-//            topic.setName(topicName);
-//            topic.setDescription(topicDescription);
-//        } else {
-//            topic = topicService.getLazyInstance().getTopicById(Integer.parseInt(topicId));
-//        }
-//        topicService.getLazyInstance().createTopic(topic);
-//        Test test = new Test();
-//        test.setName(testName);
-//        test.setDescription(testDescription);
-//        test.setTopic(topic);
-//        testService.getLazyInstance().createTest(test);
+        Topic topic;
+        if(topicId.isEmpty()){
+            topic = new Topic();
+            topic.setName(topicName);
+            topic.setDescription(topicDescription);
+        } else {
+            topic = topicService.getLazyInstance().getTopicById(Integer.parseInt(topicId));
+        }
+        topicService.getLazyInstance().createTopic(topic);
+        Test test = new Test();
+        test.setName(testName);
+        test.setDescription(testDescription);
+        test.setTopic(topic);
+        testService.getLazyInstance().createTest(test);
+
+        System.out.println("TEST ID: " + test.getTestId());
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("success", true);
+        jsonObject.addProperty("newTestId", test.getTestId());
 //        jsonObject.addProperty("message", "Новый ");
         return jsonObject.toString();
     }
 
 
-//
-//    @PostMapping(value = "/admin/createTest")
-//    public ModelAndView createTest( ModelAndView modelAndView, Test test, Topic topic,
-//            @RequestParam(name = "topicId", required = false) int topicId,
-//            @RequestParam(name = "topicName", required = false) String topicName,
-//            @RequestParam(name = "topicDescription", required = false) String topicDescription,
-//            @RequestParam(name = "testName") String testName,
-//            @RequestParam(name = "testDescription", required = false) String testDescription
-//    ) {
-//
-//        //CREATE TEST
-//
-////        modelAndView.setViewName("admin/createTestAdmin");
-//
-//        return modelAndView;
-//    }
+
+    @PostMapping(value = "/admin/createAndFillTest")
+    public ModelAndView createTest(
+            ModelAndView modelAndView,
+                                //    Test test
+//                                    Topic topic,
+            @RequestParam(name = "topicId", required = false) int topicId,
+            @RequestParam(name = "topicName", required = false) String topicName,
+            @RequestParam(name = "topicDescription", required = false) String topicDescription,
+            @RequestParam(name = "testName") String testName,
+            @RequestParam(name = "testDescription", required = false) String testDescription
+    ) {
+
+        //CREATE TEST
+        System.out.println("___________________________________");
+        System.out.println("topicID= " + topicId);
+        System.out.println("topicName= " + topicName);
+        System.out.println("topicDescription= " + topicDescription);
+        System.out.println("testName= " + testName);
+        System.out.println("topicDescription= " + testDescription);
+        System.out.println("___________________________________");
+
+        modelAndView.setViewName("admin/admin");
+
+        return modelAndView;
+    }
 
     @PostMapping(value = "/admin/isUniqueTestName")
     @ResponseBody
@@ -94,5 +108,15 @@ public class TestManagementAdminController {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("unique", !testService.getLazyInstance().isTestWithName(name));
         return jsonObject.toString();
+    }
+
+
+    @PostMapping(value = "/admin/filling_out_the_test")
+    public ModelAndView fillingTest(ModelAndView modelAndView, String testId)
+    {
+        modelAndView.setViewName("admin/questionsPages4Test");
+        modelAndView.addObject("test", testService.getLazyInstance().getTestById(Integer.parseInt(testId)));
+
+        return modelAndView;
     }
 }

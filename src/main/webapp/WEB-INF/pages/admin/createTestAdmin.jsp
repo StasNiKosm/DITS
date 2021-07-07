@@ -65,7 +65,7 @@
 
             </div>
             <div class="col-md-10 mx-auto col-lg-8">
-                <form class="p-4 p-md-5 border rounded-3 bg-light">
+                <form class="p-4 p-md-5 border rounded-3 bg-light" action="/admin/createTest/createAndFillTest" method="post" modelattribute="test">
                     <div id="selectedTopic" modelAttribute="test">
                         <div class="form-floating mb-3">
 
@@ -115,7 +115,7 @@
                             <label for="inputTopicId" class="form-label">Topic id</label>
                         </div>
                         <div class=" form-floating mb-3">
-                            <input disabled type="text" class="form-control" id="inputTopicName" placeholder="Topic name">
+                            <input disabled type="text" class="form-control" id="inputTopicName" placeholder="Topic name"/>
                             <label for="inputTopicName" class="form-label">Topic name</label>
                         </div>
                     </div>
@@ -135,11 +135,12 @@
                             <label for="inputOwnTopicDescription" class="form-label">Topic description</label>
                         </div>
                     </div>
+                    <hr class="my-3">
                     <div id="notUniqueTestName" class="alert alert-secondary" role="alert">
                         Тест с таким названием уже сущесвует
                     </div>
                     <div class=" form-floating mb-3">
-                        <input type="text" class="form-control" id="inputTestName" placeholder="name" required="true">
+                        <input type="text" class="form-control" id="inputTestName" placeholder="name" required="true"/>
                         <label for="inputTestName" class="form-label">Test name</label>
                     </div>
                     <div class=" form-floating mb-3">
@@ -148,6 +149,7 @@
                     </div>
 
                     <button class="w-100 btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button">Create</button>
+
                     <hr class="my-4">
                     <small class="text-muted">By clicking Create, you create a new test with selected topic.</small>
 
@@ -164,14 +166,20 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button onclick="create()" type="button" class="btn btn-primary">Create</button>
-                                    <button onclick="createAndFill()" type="button" class="btn btn-primary">Create and fill</button>
                                     <button id="closeModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </form>
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                <form method="post" action="/admin/filling_out_the_test">
+                    <div id="filling_out_the_test" class=" mb-3">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                        <label for="testId">test id</label><input id="testId" name="testId" type="text">
+                        <button class="w-100 btn btn-lg btn-success" type="submit" >Fill in the test with questions</button>
+                    </div>
+                </form>
+
             </div>
         </div>
     </div>
@@ -179,9 +187,10 @@
     <script>
         $("#ownTopic").hide();
         $("#notUniqueTestName").hide();
+        $("#filling_out_the_test").hide();
         $("#notUniqueTopicName").hide();
-        $("#unsuccessfulCreating").hide();
         $("#successfulCreating").hide();
+        $("#unsuccessfulCreating").hide();
 
         let topicNameIsUnique = false;
         let testNameIsUnique = false;
@@ -264,9 +273,14 @@
                     if(data.success === true){
                         $("#unsuccessfulCreating").hide();
                         $("#successfulCreating").show();
+                        $("#filling_out_the_test").show();
+
+                        $("#testId").val(data.newTestId);
+
                     } else {
                         $("#unsuccessfulCreating").show();
                         $("#successfulCreating").hide();
+                        $("#filling_out_the_test").hide();
                     }
                 })
                 .fail(function (xhr, status, error) {

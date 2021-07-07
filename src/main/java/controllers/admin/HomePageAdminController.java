@@ -91,8 +91,9 @@ public class HomePageAdminController {
     @GetMapping(value = "/admin/createTest")
     public ModelAndView createTest(ModelAndView modelAndView){
         modelAndView.setViewName("admin/createTestAdmin");
-        modelAndView.addObject("topic", new Topic());
-        modelAndView.addObject("test", new Test());
+        modelAndView.addObject("newTestId", "");
+//        modelAndView.addObject("topic", new Topic());
+//        modelAndView.addObject("test", new Test());
         modelAndView.addObject("topics", topicService.getLazyInstance().getAllTopics());
         return modelAndView;
     }
