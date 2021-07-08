@@ -65,7 +65,7 @@
 
             </div>
             <div class="col-md-10 mx-auto col-lg-8">
-                <form class="p-4 p-md-5 border rounded-3 bg-light" action="/admin/createTest/createAndFillTest" method="post" modelattribute="test">
+                <form class="p-4 p-md-5 border rounded-3 bg-light" >
                     <div id="selectedTopic" modelAttribute="test">
                         <div class="form-floating mb-3">
 
@@ -148,17 +148,17 @@
                         <label for="inputTestDescription" class="form-label">Test description</label>
                     </div>
 
-                    <button class="w-100 btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button">Create</button>
+                    <button class="w-100 btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#createModal" type="button">Create</button>
 
                     <hr class="my-4">
                     <small class="text-muted">By clicking Create, you create a new test with selected topic.</small>
 
                     <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                    <h5 class="modal-title" id="createModalLabel">Modal title</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
@@ -166,19 +166,56 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button onclick="create()" type="button" class="btn btn-primary">Create</button>
-                                    <button id="closeModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button id="closeCreatingModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </form>
-                <form method="post" action="/admin/filling_out_the_test">
-                    <div id="filling_out_the_test" class=" mb-3">
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-                        <label for="testId">test id</label><input id="testId" name="testId" type="text">
-                        <button class="w-100 btn btn-lg btn-success" type="submit" >Fill in the test with questions</button>
+
+                <div id="filling_out_the_test" class=" mb-3">
+                    <button class="w-100 btn btn-lg btn-success" data-bs-toggle="modal" data-bs-target="#configQuestion" type="button">Create</button>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" id="configQuestion" tabindex="-1" aria-labelledby="configQuestionLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="configQuestionLabel">Переходим к созданию первого вопроса</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Укажите количество ответов, литературы и количество ссылок на нее</p>
+                                <form method="post" action="/admin/filling_out_the_test">
+                                    <div class=" form-floating mb-3">
+                                        <input name="answersNumber" type="number" class="form-control" id="inputAnswersCount" placeholder="Answers number" required="true"/>
+                                        <label for="inputAnswersCount" class="form-label">Answers number</label>
+                                    </div>
+                                    <div class=" form-floating mb-3">
+                                        <input name="literatureNumber" type="number" class="form-control" id="inputLiteratureCount" placeholder="Literature number" required="true"/>
+                                        <label for="inputLiteratureCount" class="form-label">Literature number</label>
+                                    </div>
+                                    <div class=" form-floating mb-3">
+                                        <input name="linksNumber" type="text" class="form-control" id="inputLinksCount" placeholder="Links number" required="true"/>
+                                        <label for="inputLinksCount" class="form-label">Links number</label>
+                                        <small id="passwordHelpBlock" class="form-text text-muted">
+                                            При нескольких литератур, укажите количесво ссылок под каждую из них разделяя запятыми.
+                                        </small>
+                                    </div>
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                                    <label for="testId">test id</label><input name="testId" type="text" id="testId">
+                                    <button class="w-100 btn btn-lg btn-success" type="submit" >Apply</button>
+
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+<%--                                <button onclick="create()" type="button" class="btn btn-primary">Create</button>--%>
+                                <button id="closeCongigQuestionModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
                     </div>
-                </form>
+                </div>
+
 
             </div>
         </div>
@@ -187,7 +224,7 @@
     <script>
         $("#ownTopic").hide();
         $("#notUniqueTestName").hide();
-        $("#filling_out_the_test").hide();
+        // $("#filling_out_the_test").hide();
         $("#notUniqueTopicName").hide();
         $("#successfulCreating").hide();
         $("#unsuccessfulCreating").hide();
@@ -264,7 +301,7 @@
             })
                 .done(function (data) {
                     console.log(data);
-                    $("#closeModal").click();
+                    $("#closeCreatingModal").click();
                     $("#inputTopicName").val("");
                     $("#inputOwnTopicName").val("");
                     $("#inputOwnTopicDescription").val("");
@@ -294,7 +331,7 @@
                     sendJSON();
                 } else {
                     $("#successfulCreating").hide();
-                    $("#closeModal").click();
+                    $("#closeCreatingModal").click();
                     $("#unsuccessfulCreating").show();
                     $("#formNotCorrect").show();
                 }
@@ -303,7 +340,7 @@
                     sendJSON();
                 } else {
                     $("#successfulCreating").hide();
-                    $("#closeModal").click();
+                    $("#closeCreatingModal").click();
                     $("#unsuccessfulCreating").show();
                     $("#formNotCorrect").show();
                 }

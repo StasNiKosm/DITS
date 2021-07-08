@@ -81,6 +81,10 @@ public class TestService {
         public void createTest(Test test){
             manager.create(test);
         }
+
+        public void updateTest(Test test){
+            manager.update(test);
+        }
     }
 
     public boolean isTestExist(int id) {

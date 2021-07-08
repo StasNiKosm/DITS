@@ -13,6 +13,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
+
 </head>
 <body>
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -42,9 +43,167 @@
         </div>
     </header>
 
-    <h1>${test.name}</h1>
-    <h2>${test.description}</h2>
-    <p></p>
+
+    <div class="container col-xl-10 col-xxl-10 py-5">
+
+        <div class="row mb-5">
+            <div class="col-md-3 col-sm-6">
+                <img src="http://devincubator.by/images/human1.png" alt="mdo" width="200" height="200" >
+            </div>
+            <div class="col-md-9 col-sm-6 ">
+                <dl class="row">
+                    <dt class="col-sm-2"><h1>Test:</h1></dt>
+                    <dd class="col-sm-10">
+                        <h1>${test.name}</h1>
+                        <p class="fw-light fst-italic fs-4">${test.description}</p>
+                    </dd>
+
+                    <dt class="col-sm-2"><h2>Topic:</h2></dt>
+                    <dd class="col-sm-10">
+                        <h3>${test.topic.name}</h3>
+                        <p class="fw-light fst-italic">${test.topic.description}</p>
+                    </dd>
+
+                </dl>
+<%--                <h1>Test: ${test.name}</h1>--%>
+<%--                <h3 class="fst-italic">${test.description}</h3>--%>
+<%--                <h2>Topic: ${test.topic.name}</h2>--%>
+<%--                <h4 class="fst-italic">${test.topic.description}</h4>--%>
+            </div>
+        </div>
+
+        <hr class="my-4">
+<%--        <h1 class="pb-1 border-bottom text-center ">Выбирайте, добавляйте и редактируйте вопросы</h1>--%>
+        <div class="row  g-lg-5 py-5 " >
+            <div class="col-lg-4 text-center text-lg-start ">
+                <h1 class="display-4 fw-bold lh-1 mb-3">Questions</h1>
+                <div class="row ">
+<%--                    <p class="col-lg-10 fs-4">Ты можешь создавать новые вопросы, а так же удалять их. Для этого тебе надо нажимать на соответствующие кнопки :)</p>--%>
+                    <div class="col-mb-3 ">
+                        <c:forEach items="${test.questions}" var="question" varStatus="loop">
+                            <button class="btn btn-lg btn-outline-success mb-4 mx-2"  type="button" style="width: 65px; height: 65px; ">${loop.index + 1}</button>
+                        </c:forEach>
+                        <button id="creatingQuestion" class="btn btn-lg btn-outline-success mb-4 mx-2"  type="button" style="background-color: #e7e7e7; color: black; width: 65px; height: 65px; ">${test.questions.size() + 1}</button>
+                    </div>
+
+                    <hr class="my-4">
+                    <div class="col-mb-12 d-flex justify-content-evenly">
+                        <button class="btn btn-lg btn-warning mb-4 mx-2" style="width: 200px; " type="button">Add question</button>
+                    </div>
+                </div>
+            </div>
+
+
+
+<%--            <div class="col-md-10 mx-auto col-lg-8">--%>
+<%--                XDCFGVBHNJMK< FDFGTYHUJKIM< BVFGYHUJKM VCFTYUJM VCFTGYHJNM VCFTGYHUJMN VGYHUJM VGYHUJKM--%>
+<%--            </div>--%>
+
+                <div class="col-md-10 mx-auto col-lg-8">
+                    <form class="p-4 p-md-5 border rounded-3 bg-light">
+                        <h1 class="text-center ">Creating question </h1>
+                        <div class=" form-floating mb-3">
+                            <textarea class="form-control" id="inputQuestionDescription" rows="5">${question.description}</textarea>
+                            <label for="inputQuestionDescription" class="form-label">Question description</label>
+                        </div>
+
+                        <c:forEach items="${question.literature}" var="literature" varStatus="loop">
+                            <h4 class="pb-1 border-bottom text-center ">Literature ${loop.index + 1}</h4>
+                            <div class=" form-floating mb-3">
+                                <input value="${literature.description}" type="text" class="form-control" id="inputLiteratureDescription" placeholder="name" required="true"/>
+                                <label for="inputLiteratureDescription" class="form-label">Literature description</label>
+                            </div>
+                            <h6 class="pb-1 border-bottom text-center ">Links</h6>
+                            <c:forEach items="${literature.links}" var="link">
+                                <div class=" form-floating mb-3">
+                                    <input value="${link.link}" type="text" class="form-control" id="inputLink" placeholder="name" required="true"/>
+                                    <label for="inputLink" class="form-label">Link</label>
+                                </div>
+<%--                                <button type="button" class="btn btn-outline-danger">Delete</button>--%>
+                            </c:forEach>
+                            <button type="button" class=" w-100 btn btn-outline-warning mb-3">Add link</button>
+                        </c:forEach>
+                        <button type="button" class=" w-100 btn btn-outline-warning">Add literature</button>
+
+
+                        <h4 class="pb-1 border-bottom text-center ">Answers</h4>
+                        <div id="parentDivForAnswers">
+                            <ol id="ol" class="list-group list-group-numbered mb-3">
+                                <c:forEach items="${question.answers}" var="answer">
+                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                        <div class="col-sm-10  ms-2 me-auto">
+                                            <textarea class="form-control inputAnswerDescription" rows="2">${answer.description}</textarea>
+                                        </div>
+                                        <div class="col-sm-1  ">
+                                            <div class="row">
+                                                <div class="form-check">
+                                                    <input ${answer.correct == 1 ? "checked" : ""} style="width: 30px; height: 30px;" class="form-check-input" type="checkbox" value="fgh" id="flexCheckDefault" >
+                                                    <label class="form-check-label ms-2 mt-1" for="flexCheckDefault">
+                                                        True
+                                                    </label>
+                                                </div>
+                                                <button onclick="deleteLi(this)" type="button" class="deleteLi btn btn-outline-danger btn-sm">Delete</button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </c:forEach>
+                                <li>
+                                <div class="col-sm-10  ms-2 me-auto"><textarea class="form-control inputAnswerDescription" rows="2"></textarea></div><div class="col-sm-1"><div class="row"><div class="form-check"><input style="width: 30px; height: 30px;" class="form-check-input" type="checkbox" value="fgh" id="flexCheckDefault" ><label class="form-check-label ms-2 mt-1" for="flexCheckDefault">True</label></div><button type="button" class="deleteLi btn btn-outline-danger btn-sm">Delete</button></div></div>
+                                </li>
+                                <li>
+                                <div class="col-sm-10  ms-2 me-auto"><textarea class="form-control inputAnswerDescription" rows="2"></textarea></div><div class="col-sm-1"><div class="row"><div class="form-check"><input style="width: 30px; height: 30px;" class="form-check-input" type="checkbox" value="fgh" id="flexCheckDefault" ><label class="form-check-label ms-2 mt-1" for="flexCheckDefault">True</label></div><button type="button" class="deleteLi btn btn-outline-danger btn-sm">Delete</button></div></div>
+                                </li>
+                            </ol>
+                            <button onclick="createNewLi()" type="button" class=" w-100 btn btn-outline-warning mb-3">Add answer</button>
+                        </div>
+                        <ul>
+                            <li>One</li>
+                            <li>Two</li>
+                            <li>Three</li>
+                        </ul>
+                        <script>
+
+                            $(document).ready(function () {
+                                $('li').click(function (event) {
+                                    $(event.target).closest('li').remove();
+                                });
+                            });
+                            function createNewLi(){
+                                let new_li = document.createElement('li');
+                                new_li.className = "list-group-item d-flex justify-content-between align-items-start";
+                                new_li.innerHTML = '<div class="col-sm-10  ms-2 me-auto"><textarea class="form-control inputAnswerDescription" rows="2"></textarea></div><div class="col-sm-1"><div class="row"><div class="form-check"><input style="width: 30px; height: 30px;" class="form-check-input" type="checkbox" value="fgh" id="flexCheckDefault" ><label class="form-check-label ms-2 mt-1" for="flexCheckDefault">True</label></div><button type="button" class="deleteLi btn btn-outline-danger btn-sm">Delete</button></div></div>';
+                                ol.append(new_li); // вставить liLast в конец <ol>
+                            }
+
+                            $(document).ready(function () {
+                                $('button.deleteLi').click(function (event) {
+                                    $(event.target).closest('li').remove();
+                                });
+                            });
+
+                        </script>
+                            <%--                    <div class="row g-3 mb-3">--%>
+                            <%--                        <div class="col-2">--%>
+                            <%--                            <button class="btn btn-success mb-4 mx-2" type="button">Да</button>--%>
+                            <%--                        </div>--%>
+                            <%--                        <div class="col-sm-8">--%>
+                            <%--                            <textarea class="form-control inputAnswerDescription" rows="2"></textarea>--%>
+                            <%--                        </div>--%>
+                            <%--                        <div class="col-sm-2">--%>
+                            <%--                            <button class="btn btn-danger mb-4 mx-2" type="button">Delete</button>--%>
+                            <%--                        </div>--%>
+
+                            <%--                    </div>--%>
+
+
+                        <button class="w-100 btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button">Keep</button>
+
+                    </form>
+                </div>
+
+
+        </div>
+    </div>
 
 
 

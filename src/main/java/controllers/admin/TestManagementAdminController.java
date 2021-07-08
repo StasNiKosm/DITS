@@ -9,10 +9,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import repository.dao.entities.Question;
 import repository.dao.entities.Test;
 import repository.dao.entities.Topic;
 import services.TestService;
 import services.TopicService;
+
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 @Controller
 public class TestManagementAdminController {
@@ -75,33 +79,6 @@ public class TestManagementAdminController {
     }
 
 
-
-    @PostMapping(value = "/admin/createAndFillTest")
-    public ModelAndView createTest(
-            ModelAndView modelAndView,
-                                //    Test test
-//                                    Topic topic,
-            @RequestParam(name = "topicId", required = false) int topicId,
-            @RequestParam(name = "topicName", required = false) String topicName,
-            @RequestParam(name = "topicDescription", required = false) String topicDescription,
-            @RequestParam(name = "testName") String testName,
-            @RequestParam(name = "testDescription", required = false) String testDescription
-    ) {
-
-        //CREATE TEST
-        System.out.println("___________________________________");
-        System.out.println("topicID= " + topicId);
-        System.out.println("topicName= " + topicName);
-        System.out.println("topicDescription= " + topicDescription);
-        System.out.println("testName= " + testName);
-        System.out.println("topicDescription= " + testDescription);
-        System.out.println("___________________________________");
-
-        modelAndView.setViewName("admin/admin");
-
-        return modelAndView;
-    }
-
     @PostMapping(value = "/admin/isUniqueTestName")
     @ResponseBody
     public String checkLogin(@RequestParam(value = "name", required = false, defaultValue = "undefined") String name) {
@@ -112,11 +89,15 @@ public class TestManagementAdminController {
 
 
     @PostMapping(value = "/admin/filling_out_the_test")
-    public ModelAndView fillingTest(ModelAndView modelAndView, String testId)
-    {
+    public ModelAndView fillingTest(ModelAndView modelAndView, String testId, int answersNumber, int literatureNumber, String linksNumber) {
         modelAndView.setViewName("admin/questionsPages4Test");
-        modelAndView.addObject("test", testService.getLazyInstance().getTestById(Integer.parseInt(testId)));
+        modelAndView.addObject("test", testService.getEagerInstance().getTestById(Integer.parseInt(testId)));
+        modelAndView.addObject("answersNumber", answersNumber);
+        modelAndView.addObject("literatureNumber", literatureNumber);
+        modelAndView.addObject("linksNumber", Arrays.stream(linksNumber.split(",")).map(String::trim).collect(Collectors.toList()));
 
         return modelAndView;
     }
+
+
 }

@@ -2,9 +2,12 @@ package services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import repository.dao.entities.Literature;
 import repository.dao.entities.Question;
 import repository.managers.eager.EagerManager;
 import repository.managers.lazy.LazyManager;
+
+import java.util.Set;
 
 @Service
 public class QuestionService {

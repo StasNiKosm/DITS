@@ -50,6 +50,10 @@ public class AnswerService {
             return manager.executeSql("From Answer where questionid = " + id + " and correct = 1");
         }
 
+        public List<Answer> getAllAnswerByQuestionId(int questionId) {
+            return manager.executeSql("From Answer where questionid = " + questionId);
+        }
+
     }
 
 }
