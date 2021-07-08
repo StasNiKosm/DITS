@@ -39,6 +39,9 @@ public class LinkService {
             this.manager = manager;
         }
 
+        public void createLink(Link link){
+            manager.create(link);
+        }
 
 
     }

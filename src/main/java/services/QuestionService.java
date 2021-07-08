@@ -42,6 +42,10 @@ public class QuestionService {
             this.manager = manager;
         }
 
+        public void createQuestion(Question question){
+            manager.create(question);
+        }
+
     }
 
 }

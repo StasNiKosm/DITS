@@ -54,6 +54,10 @@ public class AnswerService {
             return manager.executeSql("From Answer where questionid = " + questionId);
         }
 
+        public void createAnswer(Answer answer){
+            manager.create(answer);
+        }
+
     }
 
 }

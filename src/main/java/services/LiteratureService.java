@@ -52,6 +52,10 @@ public class LiteratureService {
             collection.forEach(lit -> list.add(manager.read(lit.getLiteratureId())));
             return list;
         }
+
+        public void createLiterature(Literature literature){
+            manager.create(literature);
+        }
     }
 
 }

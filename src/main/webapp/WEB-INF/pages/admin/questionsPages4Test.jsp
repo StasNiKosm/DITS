@@ -13,6 +13,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
+    <style type="text/css">
+        .nobull {
+            list-style-type: none;
+            padding: 0;
+        }
+    </style>
 
 </head>
 <body>
@@ -65,10 +71,6 @@
                     </dd>
 
                 </dl>
-<%--                <h1>Test: ${test.name}</h1>--%>
-<%--                <h3 class="fst-italic">${test.description}</h3>--%>
-<%--                <h2>Topic: ${test.topic.name}</h2>--%>
-<%--                <h4 class="fst-italic">${test.topic.description}</h4>--%>
             </div>
         </div>
 
@@ -88,118 +90,213 @@
 
                     <hr class="my-4">
                     <div class="col-mb-12 d-flex justify-content-evenly">
-                        <button class="btn btn-lg btn-warning mb-4 mx-2" style="width: 200px; " type="button">Add question</button>
+                        <button class="btn btn-lg btn-warning mb-4 mx-2" style="width: 200px; " data-bs-toggle="modal" data-bs-target="#configQuestion" type="button">Add question</button>
                     </div>
                 </div>
             </div>
 
-
-
-<%--            <div class="col-md-10 mx-auto col-lg-8">--%>
-<%--                XDCFGVBHNJMK< FDFGTYHUJKIM< BVFGYHUJKM VCFTYUJM VCFTGYHJNM VCFTGYHUJMN VGYHUJM VGYHUJKM--%>
-<%--            </div>--%>
-
-                <div class="col-md-10 mx-auto col-lg-8">
-                    <form class="p-4 p-md-5 border rounded-3 bg-light">
-                        <h1 class="text-center ">Creating question </h1>
-                        <div class=" form-floating mb-3">
-                            <textarea class="form-control" id="inputQuestionDescription" rows="5">${question.description}</textarea>
-                            <label for="inputQuestionDescription" class="form-label">Question description</label>
+            <!-- Modal -->
+            <div class="modal fade" id="configQuestion" tabindex="-1" aria-labelledby="configQuestionLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="configQuestionLabel">Переходим к созданию первого вопроса</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-
-                        <c:forEach items="${question.literature}" var="literature" varStatus="loop">
-                            <h4 class="pb-1 border-bottom text-center ">Literature ${loop.index + 1}</h4>
-                            <div class=" form-floating mb-3">
-                                <input value="${literature.description}" type="text" class="form-control" id="inputLiteratureDescription" placeholder="name" required="true"/>
-                                <label for="inputLiteratureDescription" class="form-label">Literature description</label>
-                            </div>
-                            <h6 class="pb-1 border-bottom text-center ">Links</h6>
-                            <c:forEach items="${literature.links}" var="link">
+                        <div class="modal-body">
+                            <p>Укажите количество ответов, литературы и количество ссылок на нее</p>
+                            <form method="post" action="/admin/filling_out_the_test">
                                 <div class=" form-floating mb-3">
-                                    <input value="${link.link}" type="text" class="form-control" id="inputLink" placeholder="name" required="true"/>
-                                    <label for="inputLink" class="form-label">Link</label>
+                                    <input name="answersNumber" type="number" class="form-control" id="inputAnswersCount" placeholder="Answers number" required>
+                                    <label for="inputAnswersCount" class="form-label">Answers number</label>
                                 </div>
-<%--                                <button type="button" class="btn btn-outline-danger">Delete</button>--%>
-                            </c:forEach>
-                            <button type="button" class=" w-100 btn btn-outline-warning mb-3">Add link</button>
-                        </c:forEach>
-                        <button type="button" class=" w-100 btn btn-outline-warning">Add literature</button>
+                                <div class=" form-floating mb-3">
+                                    <input name="literatureNumber" type="number" class="form-control" id="inputLiteratureCount" placeholder="Literature number" required/>
+                                    <label for="inputLiteratureCount" class="form-label">Literature number</label>
+                                </div>
+                                <div class=" form-floating mb-3">
+                                    <input name="linksNumber" type="text" class="form-control" id="inputLinksCount" placeholder="Links number" required/>
+                                    <label for="inputLinksCount" class="form-label">Links number</label>
+                                    <small id="passwordHelpBlock" class="form-text text-muted">
+                                        При нескольких литератур, укажите количесво ссылок под каждую из них разделяя запятыми.
+                                    </small>
+                                </div>
+                                <input id="questionNumber" name="questionNumber" value="${questionNumber}">
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                                <label for="testId">test id</label><input value="${test.testId}" name="testId" type="text" id="testId">
+                                <button class="w-100 btn btn-lg btn-success" type="submit" >Apply</button>
 
-
-                        <h4 class="pb-1 border-bottom text-center ">Answers</h4>
-                        <div id="parentDivForAnswers">
-                            <ol id="ol" class="list-group list-group-numbered mb-3">
-                                <c:forEach items="${question.answers}" var="answer">
-                                    <li class="list-group-item d-flex justify-content-between align-items-start">
-                                        <div class="col-sm-10  ms-2 me-auto">
-                                            <textarea class="form-control inputAnswerDescription" rows="2">${answer.description}</textarea>
-                                        </div>
-                                        <div class="col-sm-1  ">
-                                            <div class="row">
-                                                <div class="form-check">
-                                                    <input ${answer.correct == 1 ? "checked" : ""} style="width: 30px; height: 30px;" class="form-check-input" type="checkbox" value="fgh" id="flexCheckDefault" >
-                                                    <label class="form-check-label ms-2 mt-1" for="flexCheckDefault">
-                                                        True
-                                                    </label>
-                                                </div>
-                                                <button onclick="deleteLi(this)" type="button" class="deleteLi btn btn-outline-danger btn-sm">Delete</button>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </c:forEach>
-                                <li>
-                                <div class="col-sm-10  ms-2 me-auto"><textarea class="form-control inputAnswerDescription" rows="2"></textarea></div><div class="col-sm-1"><div class="row"><div class="form-check"><input style="width: 30px; height: 30px;" class="form-check-input" type="checkbox" value="fgh" id="flexCheckDefault" ><label class="form-check-label ms-2 mt-1" for="flexCheckDefault">True</label></div><button type="button" class="deleteLi btn btn-outline-danger btn-sm">Delete</button></div></div>
-                                </li>
-                                <li>
-                                <div class="col-sm-10  ms-2 me-auto"><textarea class="form-control inputAnswerDescription" rows="2"></textarea></div><div class="col-sm-1"><div class="row"><div class="form-check"><input style="width: 30px; height: 30px;" class="form-check-input" type="checkbox" value="fgh" id="flexCheckDefault" ><label class="form-check-label ms-2 mt-1" for="flexCheckDefault">True</label></div><button type="button" class="deleteLi btn btn-outline-danger btn-sm">Delete</button></div></div>
-                                </li>
-                            </ol>
-                            <button onclick="createNewLi()" type="button" class=" w-100 btn btn-outline-warning mb-3">Add answer</button>
+                            </form>
                         </div>
-                        <ul>
-                            <li>One</li>
-                            <li>Two</li>
-                            <li>Three</li>
-                        </ul>
-                        <script>
-
-                            $(document).ready(function () {
-                                $('li').click(function (event) {
-                                    $(event.target).closest('li').remove();
-                                });
-                            });
-                            function createNewLi(){
-                                let new_li = document.createElement('li');
-                                new_li.className = "list-group-item d-flex justify-content-between align-items-start";
-                                new_li.innerHTML = '<div class="col-sm-10  ms-2 me-auto"><textarea class="form-control inputAnswerDescription" rows="2"></textarea></div><div class="col-sm-1"><div class="row"><div class="form-check"><input style="width: 30px; height: 30px;" class="form-check-input" type="checkbox" value="fgh" id="flexCheckDefault" ><label class="form-check-label ms-2 mt-1" for="flexCheckDefault">True</label></div><button type="button" class="deleteLi btn btn-outline-danger btn-sm">Delete</button></div></div>';
-                                ol.append(new_li); // вставить liLast в конец <ol>
-                            }
-
-                            $(document).ready(function () {
-                                $('button.deleteLi').click(function (event) {
-                                    $(event.target).closest('li').remove();
-                                });
-                            });
-
-                        </script>
-                            <%--                    <div class="row g-3 mb-3">--%>
-                            <%--                        <div class="col-2">--%>
-                            <%--                            <button class="btn btn-success mb-4 mx-2" type="button">Да</button>--%>
-                            <%--                        </div>--%>
-                            <%--                        <div class="col-sm-8">--%>
-                            <%--                            <textarea class="form-control inputAnswerDescription" rows="2"></textarea>--%>
-                            <%--                        </div>--%>
-                            <%--                        <div class="col-sm-2">--%>
-                            <%--                            <button class="btn btn-danger mb-4 mx-2" type="button">Delete</button>--%>
-                            <%--                        </div>--%>
-
-                            <%--                    </div>--%>
-
-
-                        <button class="w-100 btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button">Keep</button>
-
-                    </form>
+                        <div class="modal-footer">
+                            <%--                                <button onclick="create()" type="button" class="btn btn-primary">Create</button>--%>
+                            <button id="closeCongigQuestionModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
                 </div>
+            </div>
+
+            <div id="successfulCreating" class="alert alert-success" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                <h4 class="alert-heading">Well done!</h4>
+                <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                <hr>
+                <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+            </div>
+            <div id="unsuccessfulCreating" class="alert alert-danger" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                <h4 class="alert-heading">Error!</h4>
+                <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                <hr>
+                <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+            </div>
+
+            <div id="configQuestionForm" class="col-md-10 mx-auto col-lg-8">
+                <form class="p-4 p-md-5 border rounded-3 bg-light">
+                    <h1 class="text-center ">Creating question ${questionNumber}</h1>
+                    <div class=" form-floating mb-3">
+                        <textarea class="form-control" id="inputQuestionDescription" rows="5"></textarea>
+                        <label for="inputQuestionDescription" class="form-label">Question description</label>
+                    </div>
+
+                    <ul id="literature" class="nobull">
+                        <c:forEach var="i" begin="1" end="${literatureNumber}" step="1">
+                            <li class="li">
+                                <h4 class="pb-1 border-bottom text-center ">Literature ${i}</h4>
+                                <div class="literature_div form-floating mb-3">
+                                    <input type="text" class="form-control" id="inputLiteratureDescription" placeholder="name" required/>
+                                    <label for="inputLiteratureDescription" class="form-label">Literature description</label>
+                                </div>
+                                <h6 class="pb-1 border-bottom text-center ">Links</h6>
+                                <ul class="nobull">
+                                    <c:forEach var="j" begin="1" end="${linksNumber.get(i - 1)}" step="1">
+                                        <li class="li">
+                                            <div class=" form-floating mb-3">
+                                                <input type="text" class="form-control" id="inputLink" placeholder="name" required/>
+                                                <label for="inputLink" class="form-label">Link</label>
+                                            </div>
+                                        </li>
+                                    </c:forEach>
+                                </ul>
+                            </li>
+                        </c:forEach>
+                    </ul>
+
+
+                    <h4 class="pb-1 border-bottom text-center ">Answers</h4>
+                    <div id="parentDivForAnswers">
+                        <ol id="answers" class="list-group list-group-numbered mb-3">
+                            <c:forEach  var="i" begin="1" end="${answersNumber}" step="1">
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="col-sm-9  ms-2 me-auto">
+                                        <textarea class="form-control inputAnswerDescription"></textarea>
+                                    </div>
+                                    <div class="form-check">
+                                        <input style="width: 30px; height: 30px;" class="form-check-input" type="checkbox" value="fgh" id="flexCheckDefault" >
+                                        <label class="form-check-label ms-2 mt-1" for="flexCheckDefault">
+                                            True
+                                        </label>
+                                    </div>
+                                </li>
+                            </c:forEach>
+                        </ol>
+                    </div>
+                    <div id="notConfigured" class="alert alert-secondary" role="alert">
+                        ПроверЬ, всё ли заполнил! И помни, должен быть хоть один ответ верен :)
+                    </div>
+                    <button onclick="keep()" class="w-100 btn btn-lg btn-primary"  type="button">Keep</button>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                </form>
+            </div>
+            <script>
+                $("#configQuestionForm").show();
+                $("#successfulCreating").hide();
+                $("#unsuccessfulCreating").hide();
+                $("#notConfigured").hide();
+
+                function keep(){
+
+                    var answers = [];
+                    var corrects = [];
+                    var literature = [];
+                    var links = [];
+                    $("#answers").children().each(function() { answers.push($(this).children().first().children().val()) });
+                    $("#literature").children().each(function() { literature.push($(this).children('div').children().val()) });
+                    $("#literature").children().each(function() { $(this).children('ul').children().each(function() { links.push( $(this).children().children().val() )}) });
+                    $("#answers").children().each(function() { corrects.push($(this).children().last().first().children().is(':checked') ? 1 : 0) });
+                    console.log(answers);
+                    console.log(corrects);
+                    console.log(literature);
+                    console.log(links);
+
+                    //Если какой-либо из одного элемента пуст, он вернет false
+                    function checkArray(my_arr){
+                        for(var i=0;i<my_arr.length;i++){
+                            if(my_arr[i] === "")
+                                return false;
+                        }
+                        return true;
+                    }
+                    //Если массиве только 0, он вернет false
+                    function checkNumArray(my_arr){
+                        for(var i=0;i<my_arr.length;i++){
+                            if(my_arr[i] === 1)
+                                return true;
+                        }
+                        return false;
+                    }
+
+                    if(
+                        $("#questionNumber").val().length !== 0 &&
+                        checkArray(answers) &&
+                        checkArray(literature) &&
+                        checkArray(links) &&
+                        checkNumArray(corrects)
+                    ) {
+                        $.ajax({
+                            url: "/admin/addQuestion",
+                            type: "POST",
+                            dataType: "json",
+                            data: {
+                                testId: ${test.testId},
+                                questionNumber: $("#questionNumber").val(),
+                                description: $("#inputQuestionDescription").val(),
+                                answers: answers,
+                                corrects: corrects,
+                                literature: literature,
+                                links: links,
+                                linkCipher: ${linksNumber},
+                                "${_csrf.parameterName}" : "${_csrf.token}"
+                            },
+                        })
+                            .done(function (data) {
+                                console.log(data);
+
+                                $("#questionNumber").val(parseInt($("#questionNumber").val()) + 1);
+                                $("#inputQuestionDescription").val("");
+                                $("#answers").children().each(function() { answers.push($(this).children().first().children().val("")) });
+                                $("#literature").children().each(function() { literature.push($(this).children('div').children().val("")) });
+                                $("#literature").children().each(function() { $(this).children('ul').children().each(function() { links.push( $(this).children().children().val("") )}) });
+
+                                $("#configQuestionForm").hide();
+                                $("#successfulCreating").show();
+                                $("#unsuccessfulCreating").hide();
+                                $("#notConfigured").hide();
+
+                            })
+                            .fail(function (xhr, status, error) {
+                                alert('Error\n' + xhr.responseText + '\n' + status + '\n' + error);
+                                $("#successfulCreating").hide();
+                                $("#unsuccessfulCreating").show();
+                                $("#notConfigured").show();
+                            });
+                    } else {
+                        $("#notConfigured").show();
+                    }
+
+                }
+
+            </script>
 
 
         </div>

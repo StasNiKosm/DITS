@@ -202,6 +202,7 @@
                                             При нескольких литератур, укажите количесво ссылок под каждую из них разделяя запятыми.
                                         </small>
                                     </div>
+                                    <input id="questionNumber" name="questionNumber" value="1">
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                                     <label for="testId">test id</label><input name="testId" type="text" id="testId">
                                     <button class="w-100 btn btn-lg btn-success" type="submit" >Apply</button>
