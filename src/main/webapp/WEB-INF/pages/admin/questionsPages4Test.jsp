@@ -83,7 +83,12 @@
 <%--                    <p class="col-lg-10 fs-4">Ты можешь создавать новые вопросы, а так же удалять их. Для этого тебе надо нажимать на соответствующие кнопки :)</p>--%>
                     <div class="col-mb-3 ">
                         <c:forEach items="${test.questions}" var="question" varStatus="loop">
-                            <button class="btn btn-lg btn-outline-success mb-4 mx-2"  type="button" style="width: 65px; height: 65px; ">${loop.index + 1}</button>
+                            <form method="get" action="/admin/editAnyQuestion4Test">
+                                <input value="${test.testId}" name="testId" type="text" class="form-control" placeholder="testId" required/>
+                                <input value="${question.questionId}" name="questionId" type="text" class="form-control" placeholder="questionId" required/>
+                                <input value="${loop.index + 1}" name="questionNumber" type="text" class="form-control" placeholder="questionNumber" required/>
+                                <button class="btn btn-lg btn-outline-success mb-4 mx-2"  type="submit" style="width: 65px; height: 65px; ">${loop.index + 1}</button>
+                            </form>
                         </c:forEach>
                         <button id="creatingQuestion" class="btn btn-lg btn-outline-success mb-4 mx-2"  type="button" style="background-color: #e7e7e7; color: black; width: 65px; height: 65px; ">${test.questions.size() + 1}</button>
                     </div>

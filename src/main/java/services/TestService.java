@@ -12,6 +12,7 @@ import repository.dao.entities.Test;
 import repository.managers.eager.EagerManager;
 import repository.managers.lazy.LazyManager;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -85,6 +86,10 @@ public class TestService {
         public void updateTest(Test test){
             manager.update(test);
         }
+
+        public List<Test> getAllTests(){
+            return manager.getAll();
+        }
     }
 
     public boolean isTestExist(int id) {
@@ -108,6 +113,6 @@ public class TestService {
             testArray.add(currentTestObject);
         });
         return result;
-    };
+    }
 
 }

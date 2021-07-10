@@ -10,6 +10,7 @@ import repository.dao.emuns.RoleEnum;
 import repository.dao.entities.Test;
 import repository.dao.entities.Topic;
 import repository.dao.entities.User;
+import services.TestService;
 import services.TopicService;
 import services.UserSecurityService;
 import services.UserService;
@@ -20,9 +21,11 @@ import java.util.List;
 @Controller
 public class HomePageAdminController {
 
-    UserService userService;
+    private UserService userService;
 
-    TopicService topicService;
+    private TopicService topicService;
+
+    private TestService testService;
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -32,6 +35,11 @@ public class HomePageAdminController {
     @Autowired
     public void setTopicService(TopicService topicService) {
         this.topicService = topicService;
+    }
+
+    @Autowired
+    public void setTestService(TestService testService) {
+        this.testService = testService;
     }
 
     @GetMapping(value = "/admin/createUser")
@@ -44,26 +52,18 @@ public class HomePageAdminController {
 
     @GetMapping(value = "/admin/updateUser")
     public ModelAndView editUser(ModelAndView modelAndView){
-
-        List<User> users = this.userService.getAllUserWithoutSessionUser();
-
         modelAndView.setViewName("admin/updateUser");
-        modelAndView.addObject("successEdition", null);
-        modelAndView.addObject("users", users);
-        modelAndView.addObject("userJSP", new User());
+        modelAndView.addObject("success", null);
+        modelAndView.addObject("users", this.userService.getAllUserWithoutSessionUser());
         modelAndView.addObject("roles", RoleEnum.getAllRoles());
         return modelAndView;
     }
 
     @GetMapping(value = "/admin/deleteUser")
     public ModelAndView deleteUser(ModelAndView modelAndView){
-
-        List<User> users = this.userService.getAllUserWithoutSessionUser();
-
         modelAndView.setViewName("admin/deleteUser");
-        modelAndView.addObject("successDeletion", null);
-        modelAndView.addObject("userJSP", new User());
-        modelAndView.addObject("users", users);
+        modelAndView.addObject("success", null);
+        modelAndView.addObject("users", this.userService.getAllUserWithoutSessionUser());
         modelAndView.addObject("roles", RoleEnum.getAllRoles());
         return modelAndView;
     }
@@ -77,7 +77,7 @@ public class HomePageAdminController {
     @GetMapping(value = "/admin/editTopic")
     public ModelAndView editTopic(ModelAndView modelAndView){
         modelAndView.setViewName("admin/editTopic");
-        modelAndView.addObject("topics", topicService.getLazyInstance().getAllTopics());
+        modelAndView.addObject("topics", this.topicService.getLazyInstance().getAllTopics());
         return modelAndView;
     }
 
@@ -91,7 +91,24 @@ public class HomePageAdminController {
     @GetMapping(value = "/admin/createTest")
     public ModelAndView createTest(ModelAndView modelAndView){
         modelAndView.setViewName("admin/createTestAdmin");
-        modelAndView.addObject("topics", topicService.getLazyInstance().getAllTopics());
+        modelAndView.addObject("topics", this.topicService.getLazyInstance().getAllTopics());
+        return modelAndView;
+    }
+
+    @GetMapping(value = "/admin/choose_test_for_edition")
+    public ModelAndView chooseTest(ModelAndView modelAndView){
+
+        modelAndView.setViewName("admin/chooseTest4Editing");
+        modelAndView.addObject("tests", this.testService.getEagerInstance().getAllTests());
+        return modelAndView;
+    }
+
+    @GetMapping(value = "/admin/choose_test_for_removing")
+    public ModelAndView chooseForRemoving(ModelAndView modelAndView){
+
+        modelAndView.setViewName("admin/chooseTest4Removing");
+        modelAndView.addObject("tests", this.testService.getEagerInstance().getAllTests());
+
         return modelAndView;
     }
 

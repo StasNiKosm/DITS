@@ -138,6 +138,7 @@ public class TestManagementAdminController {
             @RequestParam(value = "links[]", required = false) String[] links,
             @RequestParam(value = "linkCipher[]") String[] linkCipher
     ) {
+        System.out.println("___________________________________");
         System.out.println(questionNumber);
         System.out.println(description);
         System.out.println(Arrays.toString(answers));
@@ -145,6 +146,7 @@ public class TestManagementAdminController {
         System.out.println(Arrays.toString(literature));
         System.out.println(Arrays.toString(links));
         System.out.println(Arrays.toString(linkCipher));
+        System.out.println("___________________________________");
 
         Question question = new Question();
         question.setDescription(description);
@@ -179,5 +181,57 @@ public class TestManagementAdminController {
         jsonObject.addProperty("success", true);
         return jsonObject.toString();
     }
+
+    @GetMapping(value = "/admin/editFirstQuestion4Test")
+    public ModelAndView editFirstQuestion(ModelAndView modelAndView, String testId){
+
+        Test test = testService.getEagerInstance().getTestById(Integer.parseInt(testId));
+        modelAndView.addObject("test", test);
+        if(test.getQuestions().size() == 0){
+            modelAndView.setViewName("admin/emptyTestPage");
+        } else {
+            Question question = test.getQuestions().stream().findFirst().get();
+            modelAndView.setViewName("admin/editQuestionPage");
+            modelAndView.addObject("question", question);
+            modelAndView.addObject("questionNumber", 1);
+        }
+
+        return modelAndView;
+    }
+
+    @GetMapping(value = "/admin/editAnyQuestion4Test")
+    public ModelAndView editQuestion(ModelAndView modelAndView, int testId, int questionId, int questionNumber){
+        config4EditingQuestionPage(modelAndView, testId, questionId, questionNumber, testService);
+        return modelAndView;
+    }
+
+    static void config4EditingQuestionPage(ModelAndView modelAndView, int testId, int questionId, int questionNumber, TestService testService) {
+        Test test = testService.getEagerInstance().getTestById(testId);
+        Question question = test.getQuestions().stream().filter(p->p.getQuestionId()==questionId).findFirst().get();
+        modelAndView.setViewName("admin/editQuestionPage");
+        modelAndView.addObject("test", test);
+        modelAndView.addObject("question", question);
+        modelAndView.addObject("questionNumber", questionNumber);
+    }
+
+    @GetMapping(value = "/admin/emptyTest")
+    public ModelAndView emptyTest(ModelAndView modelAndView, int testId){
+        Test test = testService.getEagerInstance().getTestById(testId);
+        modelAndView.setViewName("admin/emptyTestPage");
+        modelAndView.addObject("test", test);
+        return modelAndView;
+    }
+
+    @PostMapping(value = "/admin/deleteTest")
+    @ResponseBody
+    public String deleteTest(@RequestParam(name = "testId") Integer testId){
+
+        System.out.println(testId);
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("success", true);
+        return jsonObject.toString();
+    }
+
 
 }

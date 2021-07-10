@@ -67,6 +67,9 @@ public class UserService {
             manager.delete(user);
         }
 
+        public boolean containsUserById(int userId){
+            return this.manager.read(userId) != null;
+        }
 
     }
 

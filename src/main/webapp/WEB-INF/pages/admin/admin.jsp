@@ -95,8 +95,8 @@
                 <h2>Tests</h2>
                 <p>Расширяй ситему тестирования! Можешь создать новый тест, изменить уже имеющиеся, либо его удалить. Но будь внимателен при удалении!</p>
                 <a href="/admin/createTest" class="btn btn-outline-primary btn-lg" style="min-width: 90px;">Create</a>
-                <a href="#" class="btn btn-outline-warning btn-lg" style="min-width: 90px">Edit</a>
-                <a href="#" class="btn btn-outline-danger btn-lg" style="min-width: 90px">Delete</a>
+                <a href="/admin/choose_test_for_edition" class="btn btn-outline-warning btn-lg" style="min-width: 90px">Edit</a>
+                <a href="/admin/choose_test_for_removing" class="btn btn-outline-danger btn-lg" style="min-width: 90px">Delete</a>
             </div>
         </div>
         <div class="col d-flex align-items-start">
@@ -116,7 +116,7 @@
             <div>
                 <h2>Self</h2>
                 <p>Саморазвивайся и тестируй систему! Проходи тесты как обычный пользователь.  </p>
-                <a href="#" class="btn btn-outline-primary btn-lg" style="min-width: 90px;">Go</a>
+                <a href="/user/test-chooser" class="btn btn-outline-primary btn-lg" style="min-width: 90px;">Go</a>
             </div>
         </div>
     </div>

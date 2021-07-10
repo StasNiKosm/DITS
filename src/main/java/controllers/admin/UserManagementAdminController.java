@@ -43,13 +43,6 @@ public class UserManagementAdminController {
         this.deleteUserWithHisStatisticResolver = deleteUserWithHisStatisticResolver;
     }
 
-//    @PostMapping(value = "/admin/createUser")
-//    public ModelAndView addUser(ModelAndView modelAndView, User user) {
-//        this.userService.registerNewUser(user.getLogin(), user.getFirstName(), user.getLastName(), passwordEncoder.encode(user.getPassword()), RoleEnum.valueOf(user.getRole()));
-//        modelAndView.setViewName("redirect:/admin/createUser");
-//        return modelAndView;
-//    }
-
     @PostMapping(value = "/admin/addUser", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String createUser(
@@ -59,26 +52,24 @@ public class UserManagementAdminController {
             @RequestParam(value = "password", required = false, defaultValue = "undefined") String password,
             @RequestParam(value = "role", required = false, defaultValue = "undefined") String role
     ) {
-        this.userService.registerNewUser(login, firstName, lastName, passwordEncoder.encode(password), RoleEnum.valueOf(role));
+        this.userService.registerNewUser(login, firstName, lastName, this.passwordEncoder.encode(password), RoleEnum.valueOf(role));
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("success", true);
-//        jsonObject.addProperty("message", "Новый пользователь");
         return jsonObject.toString();
     }
 
     @PostMapping(value = "/admin/updateUser")
-    public ModelAndView updateUser(ModelAndView modelAndView, User user) {
-
-        user.setPassword(this.userService.getLazyInstance().getUserById(user.getUserId()).getPassword());
-        user.setRole(RoleEnum.valueOf(user.getRole()).getName());
+    public ModelAndView updateUser(ModelAndView modelAndView, int userId, String firstName, String lastName, String login, String role) {
+        User user = this.userService.getLazyInstance().getUserById(userId);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setLogin(login);
+        user.setRole(RoleEnum.valueOf(role).getName());
         this.userService.getLazyInstance().updateUser(user);
 
-        List<User> users = this.userService.getAllUserWithoutSessionUser();
-
         modelAndView.setViewName("admin/updateUser");
-        modelAndView.addObject("successEdition", user.getFirstName() + " " + user.getLastName() + " login: " + user.getLogin() + " role: " + RoleEnum.byName(user.getRole()));
-        modelAndView.addObject("users", users);
-        modelAndView.addObject("userJSP", new User());
+        modelAndView.addObject("users", this.userService.getAllUserWithoutSessionUser());
+        modelAndView.addObject("success", true);
         modelAndView.addObject("roles", RoleEnum.getAllRoles());
         return modelAndView;
     }
@@ -87,30 +78,20 @@ public class UserManagementAdminController {
     @ResponseBody
     public String checkLogin(@RequestParam(value = "login", required = false, defaultValue = "undefined") String login) {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("unique", !userService.isLoginRegistered(login));
+        jsonObject.addProperty("unique", !this.userService.isLoginRegistered(login));
         return jsonObject.toString();
     }
 
     @PostMapping(value = "/admin/deleteUser")
-    public ModelAndView deleteUser(ModelAndView modelAndView, User user) {
-
-        List<User> users = this.userService.getAllUserWithoutSessionUser();
-        for (User value : users) {
-            if (value.getUserId() == user.getUserId()) {
-                user.setPassword(value.getPassword());
-                users.remove(value);
-                break;
-            }
+    public ModelAndView deleteUser(ModelAndView modelAndView, int userId) {
+        if(userService.getLazyInstance().containsUserById(userId)) {
+            User user = this.userService.getLazyInstance().getUserById(userId);
+            this.deleteUserWithHisStatisticResolver.deleteUserWithHisStatistic(user);
         }
-
-        deleteUserWithHisStatisticResolver.deleteUserWithHisStatistic(user);
-
-
-        modelAndView.setViewName("redirect:/admin/deleteUser");
-//        modelAndView.addObject("successDeletion", user.getFirstName() + " " + user.getLastName() + " login: " + user.getLogin() + " role: " + RoleEnum.byName(user.getRole()));
-//        modelAndView.addObject("userJSP", new User());
-//        modelAndView.addObject("users", users);
-//        modelAndView.addObject("roles", RoleEnum.getAllRoles());
+        modelAndView.setViewName("/admin/deleteUser");
+        modelAndView.addObject("users", this.userService.getAllUserWithoutSessionUser());
+        modelAndView.addObject("success", true);
+        modelAndView.addObject("roles", RoleEnum.getAllRoles());
         return modelAndView;
     }
 }

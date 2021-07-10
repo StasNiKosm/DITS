@@ -8,8 +8,8 @@ import java.util.stream.Collectors;
 
 public enum RoleEnum {
     User("ROLE_USER"),
-    Tutor("ROLE_TUTOR"),
-    Admin("ROLE_ADMIN");
+    Admin("ROLE_ADMIN"),
+    Unconfirmed("ROLE_UNCONFIRMED");
 
     private final String name;
 
@@ -24,7 +24,7 @@ public enum RoleEnum {
     public static RoleEnum byName(String name){
         switch (name){
             case "ROLE_USER" : return User;
-            case "ROLE_TUTOR" : return Tutor;
+            case "ROLE_UNCONFIRMED" : return Unconfirmed;
             case "ROLE_ADMIN" : return Admin;
             default : return null;
         }
@@ -35,7 +35,7 @@ public enum RoleEnum {
     }
 
     public static void main(String[] args) {
-        System.out.println(RoleEnum.User);
+        System.out.println(RoleEnum.valueOf("User").getName());
     }
 
 }
