@@ -45,27 +45,32 @@
     <div class="container col-xl-10 col-xxl-10 py-5">
         <div class="row align-items-center g-lg-5 py-5">
             <div class="col-lg-6 text-center text-lg-start">
-                <h1 class="display-4 fw-bold lh-1 mb-3">Changing</h1>
-                <p class="col-lg-10 fs-4">У тебя есть возвожность создавать нового уникального пользователя. Сделав это, убедись, что права на пользование аккаутном передал физическому пользователю без ошибок.</p>
-
-                <div id="successfulCreating" class="alert alert-success" role="alert">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-                    <h4 class="alert-heading">Well done!</h4>
-                    <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
-                    <hr>
-                    <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
-                </div>
-                <div id="unsuccessfulCreating" class="alert alert-danger" role="alert">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                    <h4 class="alert-heading">Error!</h4>
-                    <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
-                    <hr>
-                    <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
-                </div>
+                <h1 class="display-4 fw-bold lh-1 mb-3">Editing a topic</h1>
+                <p class="col-lg-10 fs-4">Корректируй темы, исправляй ошибки. Пользователи должны видеть и четко понимать, на какие темы они проходят тесты.</p>
+                <c:if test="${success != null}">
+                    <c:if test="${success == true}">
+                        <div id="successfulEdition" class="alert alert-success" role="alert">
+                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                            <h4 class="alert-heading">Well done!</h4>
+                            <p>Тема была успешна изменена.</p>
+                            <hr>
+                            <p class="mb-0">Всё прошло удачно.</p>
+                        </div>
+                    </c:if>
+                    <c:if test="${success == false}">
+                        <div id="unsuccessfulEdition" class="alert alert-danger" role="alert">
+                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                            <h4 class="alert-heading">Error!</h4>
+                            <p>Смотри внимательно! Поля не должны быть пустыми.</p>
+                            <hr>
+                            <p class="mb-0">Похоже, что у тея возникли некоторые трудности.</p>
+                        </div>
+                    </c:if>
+                </c:if>
             </div>
 
             <div class="col-md-10 mx-auto col-lg-6">
-                <form class="p-4 p-md-5 border rounded-3 bg-light">
+                <form class="p-4 p-md-5 border rounded-3 bg-light" method="post" action="/admin/editTopic">
                     <div class="form-floating mb-3">
                         <button class="btn btn-outline-primary btn-lg dropdown-toggle " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
                             Select topic
@@ -92,96 +97,93 @@
                                     </c:forEach>
                                     </tbody>
                                 </table>
-                                <script>
-                                    $(document).ready(function(){
-                                        $("#myInput").on("keyup", function() {
-                                            var value = $(this).val().toLowerCase();
-                                            $("#myTable tr").filter(function() {
-                                                $(this).toggle( $(this).text().toLowerCase().indexOf(value) > -1 );
-                                            });
-                                        });
-                                    });
-                                </script>
                             </div>
                         </ul>
-<%--                        <input class="form-control selected-name" list="datalistOptions" id="inputDataList" placeholder="Введите для поиска..." >--%>
-<%--                        <datalist class="datalist" id="datalistOptions" >--%>
-<%--                            <c:forEach items="${topics}" var="topic">--%>
-<%--                                <option value="${topic.name}">--%>
-<%--                                    <div id="selectedTopicHiddenDiv${topic.topicId}" hidden>${topic.topicId}</div>${topic.description}--%>
-<%--                                </option>--%>
-<%--                            </c:forEach>--%>
-<%--                        </datalist>--%>
-<%--                        <label for="inputDataList" class="form-label">Select topic</label>--%>
+                    </div>
+                    <script>
+                        $(document).ready(function(){
+                            $("#myInput").on("keyup", function() {
+                                var value = $(this).val().toLowerCase();
+                                $("#myTable tr").filter(function() {
+                                    $(this).toggle( $(this).text().toLowerCase().indexOf(value) > -1 );
+                                });
+                            });
+                        });
+                    </script>
 
-                    </div>
-                    <div class="mb-3">
-                        <input hidden type="text" class="form-control" id="inputId" placeholder="id">
-                    </div>
                     <div id="notUniqueTopicName" class="alert alert-secondary" role="alert">
                         Тема с таким названием уже сущесвует
                     </div>
                     <div class="mb-3">
-                        <label for="inputName" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="inputName" placeholder="name">
+                        <label for="inputName" class="form-label">Topic name</label>
+                        <input name="topicName" type="text" class="form-control" id="inputName" placeholder="name" required>
                     </div>
                     <div class="mb-3">
                         <label for="inputDescription" class="form-label">Description</label>
-                        <textarea class="form-control" id="inputDescription" rows="5"></textarea>
+                        <textarea name="topicDescription" class="form-control" id="inputDescription" rows="5" required></textarea>
                     </div>
 
-                    <button class="w-100 btn btn-lg btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button">Edit</button>
+                    <button id="editTopicButton" class="w-100 btn btn-lg btn-warning" data-bs-toggle="modal" data-bs-target="#editModal" type="button">Edit</button>
                     <hr class="my-4">
                     <small class="text-muted">By clicking Edit, you edit selected topic.</small>
 
                     <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                    <h5 class="modal-title" id="editModalLabel">Посмотрим-ка еще раз!</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    ...
+                                    <p>Хочешь изменить тему: </p>
+                                    <pre id="oldTopic" class="fs-5 ">
+
+                                    </pre>
+                                    <p>на: </p>
+                                    <pre id="newTopic" class="fs-5">
+
+                                    </pre>
                                 </div>
                                 <div class="modal-footer">
-                                    <button onclick="edit()" type="button" class="btn btn-warning">Edit</button>
+                                    <input hidden name="topicId" type="text" class="form-control" id="inputId" placeholder="id" required>
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                                    <button type="submit" class="btn btn-warning">Edit</button>
                                     <button id="closeModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </form>
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
             </div>
         </div>
     </div>
 
     <script>
 
-        var name;
+        var id;
+        var oldName;
+        var oldDescription;
 
-        // $(document).on('change', '#inputDataList', function () {
-        //     name = $("#datalistOptions option[value='" + $("#inputDataList").val() + "']").val();
-        //     $("#inputName").val(name);
-        //     $("#inputDescription").val($("#datalistOptions option[value='" + $("#inputDataList").val() + "']").text());
-        // });
         $("#table tr").click(function(){
-            var id=$(this).find('td').eq(0).text();
-            name = $(this).find('td').eq(1).text();
-            var description=$(this).find('td').eq(2).text();
-
-            // document.getElementById('oldUserConfig').innerHTML = 'Login: ' + login + ', first name: ' + firstName + ', last name: ' + lastName + ', role:' + role;
-
+            id = $(this).find('td').eq(0).text();
+            oldName = $(this).find('td').eq(1).text();
+            oldDescription = $(this).find('td').eq(2).text();
             $("#inputId").val(id);
-            $("#inputName").val(name);
-            $("#inputDescription").val(description);
+            $("#inputName").val(oldName);
+            $("#inputDescription").val(oldDescription);
+        });
+
+        $("#editTopicButton").on('click', function (){
+            var oldTopic = 'Topic name: ' + oldName + '\nDescription: ' + oldDescription;
+            var newTopic = 'Topic name: ' + $("#inputName").val() + '\nDescription: ' + $("#inputDescription").val();
+            $("#oldTopic").text(oldTopic);
+            $("#newTopic").text(newTopic);
         });
 
         $("#notUniqueTopicName").hide();
-        $("#unsuccessfulCreating").hide();
-        $("#successfulCreating").hide();
+        $("#unsuccessfulEdition").delay(7000).slideUp(300);
+        $("#successfulEdition").delay(5000).slideUp(300);
 
         let topicNameIsUnique = false;
 
@@ -195,44 +197,15 @@
             }
         }
 
-        function edit() {
-            $("#closeModal").click();
-            if ( (
-                $("#inputName").val().length >= 4 && topicNameIsUnique &&
-                $("#inputDescription").val().length > 0))
-            {
-                $.ajax({
-                    url: "/admin/editTopic",
-                    type: "POST",
-                    dataType: "json",
-                    data: {
-                        id:  $("#inputId").val(),
-                        name: $("#inputName").val(),
-                        description: $("#inputDescription").val(),
-                        "${_csrf.parameterName}" : "${_csrf.token}"
-                    },
-                })
-                    .done(function (data) {
-                        console.log(data);
-
-                        $("#inputName").val("");
-                        $("#inputDescription").val("");
-                        if(data.success === true){
-                            $("#unsuccessfulCreating").hide();
-                            $("#successfulCreating").show();
-                        } else {
-                            $("#unsuccessfulCreating").show();
-                        }
-                    })
-                    .fail(function (xhr, status, error) {
-                        alert('Error\n' + xhr.responseText + '\n' + status + '\n' + error);
-                    });
-            } else {
-                $("#successfulCreating").hide();
-                $("#unsuccessfulCreating").show();
-                $("#formNotCorrect").show();
+        $("#creatingUserForm").submit(function (event) {
+            if ( ! ($("#inputName").val().length > 0 && topicNameIsUnique && $("#inputDescription").val().length > 0)) {
+                $("#closeModal").click();
+                $("#successfulEdition").hide();
+                $("#unsuccessfulEdition").show();
+                $("#unsuccessfulEdition").delay(7000).slideUp(300);
+                event.preventDefault();
             }
-        }
+        })
 
         $().ready(function () {
 
@@ -240,7 +213,7 @@
 
                 topicNameIsUnique = false;
                 $("#notUniqueTopicName").hide();
-                if($("#inputName").val() !== name){
+                if($("#inputName").val() !== oldName){
 
                     console.log($(event.target).val());
 
@@ -266,12 +239,6 @@
             });
         });
 
-
-
-        // function aboutNewUserConfig(){
-        //     document.getElementById('newUserConfig').innerHTML = 'Login: ' + $("#inputUsername").val() + ', first name: ' + $("#firstName").val() + ', last name: ' + $("#secondName").val() + ', role:' + $("#selectedRole").val();
-        //
-        // }
     </script>
 
 </body>

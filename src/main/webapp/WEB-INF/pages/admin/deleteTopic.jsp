@@ -43,84 +43,107 @@
     </header>
     <div class="container col-xl-10 col-xxl-10 py-5">
         <div class="row align-items-center g-lg-5 py-5">
-            <div class="col-lg-6 text-center text-lg-start">
-                <h1 class="display-4 fw-bold lh-1 mb-3">Deletion</h1>
-                <p class="col-lg-10 fs-4">У тебя есть возвожность создавать нового уникального пользователя. Сделав это, убедись, что права на пользование аккаутном передал физическому пользователю без ошибок.</p>
-
-                <div class="alert alert-success" role="alert">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-                    <h4 class="alert-heading">Well done!</h4>
-                    <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
-                    <hr>
-                    <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
-                </div>
-                <div class="alert alert-danger" role="alert">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                    <h4 class="alert-heading">Error!</h4>
-                    <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
-                    <hr>
-                    <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
-                </div>
+            <div class="col-lg-5 text-center text-lg-start">
+                <h1 class="display-4 fw-bold lh-1 mb-3">Deleting a topic</h1>
+                <p class="col-lg-10 fs-4">Удаляй ненужные темы. Но буть аккуратен, у этой темы может быть много интересных тестов - рискуешь их потерять.</p>
+                <c:if test="${success != null}">
+                    <c:if test="${success == true}">
+                        <div id="successfulDeletion" class="alert alert-success" role="alert">
+                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                            <h4 class="alert-heading">Well done!</h4>
+                            <p>Тема удалена успешно.</p>
+                            <hr>
+                            <p class="mb-0">Всё прошло хорошо. Молодец!</p>
+                        </div>
+                    </c:if>
+                    <c:if test="${success == false}">
+                        <div id="unsuccessfulDeletion" class="alert alert-danger" role="alert">
+                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                            <h4 class="alert-heading">Error!</h4>
+                            <p>.</p>
+                            <hr>
+                            <p class="mb-0">Возникли трудности.</p>
+                        </div>
+                    </c:if>
+                </c:if>
             </div>
 
-            <div class="col-md-10 mx-auto col-lg-6">
-                <form class="p-4 p-md-5 border rounded-3 bg-light">
+            <div class="col-md-10 mx-auto col-lg-7">
+                <form class="p-4 p-md-5 border rounded-3 bg-light" method="post" action="/admin/deleteTopic">
                     <div class="form-floating mb-3">
-                        <input class="form-control selected-name" list="datalistOptions" id="inputDataList" placeholder="Введите для поиска..." >
-                        <datalist class="datalist" id="datalistOptions" >
-                            <option value="Topic 1">Description-description-description-descroption-description</option>
-                            <option value="Topic 2">Description-description-description-descroption-description</option>
-                            <option value="Topic 3">Description-description-description-descroption-description</option>
-                            <option value="Topic 4">Description-description-description-descroption-description</option>
-                            <option value="Topic 5">Description-description-description-descroption-description</option>
-                            <option value="Topic 6">Description-description-description-descroption-description</option>
-                            <option value="Topic 7">Description-description-description-descroption-description</option>
-                            <option value="Topic 8">Description-description-description-descroption-description</option>
-                            <option value="Topic 9">Description-description-description-descroption-description</option>
-                            <option value="Topic 10">Description-description-description-descroption-description</option>
-                            <option value="Topic 11">Description-description-description-descroption-description</option>
-                            <option value="Topic 12">Description-description-description-descroption-description</option>
-                            <option value="Topic 13">Description-description-description-descroption-description</option>
-                            <option value="Topic 14">Description-description-description-descroption-description</option>
-                        </datalist>
-
-                        <script>
-                            $(document).on('change', '#inputDataList', function () {
-                                $("#formControlInput1").val($("#datalistOptions option[value='" + $("#inputDataList").val() + "']").val());
-                                $("#formControlTextarea1").val($("#datalistOptions option[value='" + $("#inputDataList").val() + "']").text());
+                        <button class="btn btn-outline-primary btn-lg dropdown-toggle " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                            Select topic
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <div class="form-floating">
+                                <input class="form-control" id="myInput" type="text" placeholder="Search..">
+                                <label for="myInput">Topic</label>
+                                <table class="table table-bordered table-striped" id="table" style="table-layout: fixed; overflow: scroll;">
+                                    <thead>
+                                    <tr>
+                                        <th width="65">Id</th>
+                                        <th >Name</th>
+                                        <th >Description</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="myTable">
+                                    <c:forEach  items="${topics}" var="t">
+                                        <tr class="write" style="cursor: pointer;">
+                                            <td><div style="overflow: auto;">${t.topicId}</div></td>
+                                            <td><div style="overflow: auto;">${t.name}</div></td>
+                                            <td><div style="overflow: auto;">${t.description}</div></td>
+                                            <c:forEach  items="${t.tests}" var="test">
+                                                <td hidden><div style="overflow: auto;">${test.name}</div></td>
+                                            </c:forEach>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </ul>
+                    </div>
+                    <script>
+                        $(document).ready(function(){
+                            $("#myInput").on("keyup", function() {
+                                var value = $(this).val().toLowerCase();
+                                $("#myTable tr").filter(function() {
+                                    $(this).toggle( $(this).text().toLowerCase().indexOf(value) > -1 );
+                                });
                             });
-                        </script>
+                        });
+                    </script>
 
-                        <label for="inputDataList" class="form-label">Select topic</label>
+                    <div class="mb-3">
+                        <label for="topicName" class="form-label">Topic name</label>
+                        <input disabled type="text" class="form-control" id="topicName" placeholder="name">
                     </div>
                     <div class="mb-3">
-                        <label for="formControlInput1" class="form-label">Name</label>
-                        <input disabled type="text" class="form-control" id="formControlInput1" >
-                    </div>
-                    <div class="mb-3">
-                        <label for="formControlTextarea1" class="form-label">Description</label>
-                        <textarea disabled class="form-control" id="formControlTextarea1" rows="5"></textarea>
+                        <label for="topicDescription" class="form-label">Description</label>
+                        <textarea disabled class="form-control" id="topicDescription" rows="5"></textarea>
                     </div>
 
-
-                    <button class="w-100 btn btn-lg btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button">Delete</button>
+                    <button class="w-100 btn btn-lg btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" type="button">Delete</button>
                     <hr class="my-4">
                     <small class="text-muted">By clicking Delete, you delete user data permanently.</small>
 
                     <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                    <h5 class="modal-title" id="deleteModalLabel">Посмотрим-ка еще раз!</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    ...
+                                    <pre id="topic" class="fs-5">
+
+                                    </pre>
                                 </div>
                                 <div class="modal-footer">
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                                    <input hidden name="topicId" id="topicId" class="form-control id" placeholder="Id" required/>
+                                    <button type="submit" class="btn btn-danger">Delete</button>
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Save changes</button>
                                 </div>
                             </div>
                         </div>
@@ -129,7 +152,37 @@
             </div>
         </div>
     </div>
+    <script>
 
+        $("#successfulDeletion").delay(5000).slideUp(300);
+        $("#unsuccessfulDeletion").delay(7000).slideUp(300);
+
+        $("#table tr").click(function(){
+            $(this).addClass('selected').siblings().removeClass('selected');
+            var id = $(this).find('td').eq(0).text();
+            var name = $(this).find('td').eq(1).text();
+            var description = $(this).find('td').eq(2).text();
+
+            var topic = [] ;
+            $(this).find('td').each(function(){ topic.push($(this).text())});
+            var tests = [];
+            for (var i = 3; i < topic.length; i++){
+                tests.push(topic[i]);
+            }
+
+            $("#topicId").val(id);
+            $("#topicName").val(name);
+            $("#topicDescription").val(description);
+
+            var messageText;
+            if(tests.length === 0){
+                messageText = 'Topic name: ' + name + '\nDescription: ' + description;
+            } else {
+                messageText = 'Topic name: ' + name + '\nDescription: ' + description + '\n\nВМЕСТЕ СО ВСЕМИ ТЕСТАМИ: \nTest: ' + tests.join('\nTest: ') + ' ?';
+            }
+            $("#topic").text(messageText);
+        });
+    </script>
 
 </body>
 </html>

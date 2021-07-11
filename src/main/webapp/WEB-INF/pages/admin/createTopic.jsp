@@ -44,9 +44,9 @@
 
     <div class="container col-xl-10 col-xxl-10 py-5">
         <div class="row align-items-center g-lg-5 py-5">
-            <div class="col-lg-4 text-center text-lg-start">
-                <h1 class="display-4 fw-bold lh-1 mb-3">Creating</h1>
-                <p class="col-lg-10 fs-4">У тебя есть возвожность создавать нового уникального пользователя. Сделав это, убедись, что права на пользование аккаутном передал физическому пользователю без ошибок.</p>
+            <div class="col-lg-6 text-center text-lg-start">
+                <h1 class="display-4 fw-bold lh-1 mb-3">Creating a topic</h1>
+                <p class="col-lg-10 fs-4">Создавай новые темы для тестов, чтобы пользователям было легче понимать в каких темах они уже спецы.</p>
 
                 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
                     <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
@@ -60,26 +60,28 @@
                 <div id="successfulCreating" class="alert alert-success" role="alert">
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
                     <h4 class="alert-heading">Well done!</h4>
-                    <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                    <pre id="topicSuccess" class="fs-5 ">
+
+                    </pre>
                     <hr>
-                    <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+                    <p class="mb-0">Всё прошло успешно, молодец!</p>
                 </div>
                 <div id="unsuccessfulCreating" class="alert alert-danger" role="alert">
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                     <h4 class="alert-heading">Error!</h4>
-                    <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                    <p>Смотри внимательно! Поля должны быть заполненны.</p>
                     <hr>
-                    <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+                    <p class="mb-0">Похоже, что у тебя возникли трудности с созданием новой темы для тестов.</p>
                 </div>
 
             </div>
-            <div class="col-md-10 mx-auto col-lg-8">
+            <div class="col-md-10 mx-auto col-lg-6">
                 <form class="p-4 p-md-5 border rounded-3 bg-light">
                     <div id="notUniqueTopicName" class="alert alert-secondary" role="alert">
                         Тема с таким названием уже сущесвует
                     </div>
                     <div class="mb-3">
-                        <label for="inputName" class="form-label">Name</label>
+                        <label for="inputName" class="form-label">Topic name</label>
                         <input type="text" class="form-control" id="inputName" placeholder="name">
                     </div>
                     <div class="mb-3">
@@ -87,20 +89,23 @@
                         <textarea class="form-control" id="inputDescription" rows="5"></textarea>
                     </div>
 
-                    <button class="w-100 btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button">Create</button>
+                    <button id="createTopicButton" class="w-100 btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#createModal" type="button">Create</button>
                     <hr class="my-4">
                     <small class="text-muted">By clicking Create, you create a new topic.</small>
 
                     <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                    <h5 class="modal-title" id="createModalLabel">Посмотрим-ка еще раз!</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    ...
+                                    <p>Хочешь создать тему:</p>
+                                    <pre id="topic" class="fs-5 ">
+
+                                    </pre>
                                 </div>
                                 <div class="modal-footer">
                                     <button onclick="create()" type="button" class="btn btn-primary">Create</button>
@@ -110,7 +115,6 @@
                         </div>
                     </div>
                 </form>
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
             </div>
         </div>
     </div>
@@ -132,11 +136,14 @@
             }
         }
 
+        $("#createTopicButton").on('click', function (){
+            var messageText = 'Topic name: ' + $("#inputName").val() + '\nDescription: ' + $("#inputDescription").val();
+            $("#topic").text(messageText);
+            $("#topicSuccess").text(messageText);
+        });
+
         function create() {
-            if ( (
-                $("#inputName").val().length >= 4 && topicNameIsUnique &&
-                $("#inputDescription").val().length > 0))
-            {
+            if ($("#inputName").val().length > 0  && topicNameIsUnique && $("#inputDescription").val().length > 0) {
                 $.ajax({
                     url: "/admin/addTopic",
                     type: "POST",
@@ -155,8 +162,11 @@
                         if(data.success === true){
                             $("#unsuccessfulCreating").hide();
                             $("#successfulCreating").show();
+                            $("#successfulCreating").delay(5000).slideUp(300);
                         } else {
+                            $("#successfulCreating").hide();
                             $("#unsuccessfulCreating").show();
+                            $("#unsuccessfulCreating").delay(5000).slideUp(300);
                         }
                     })
                     .fail(function (xhr, status, error) {
@@ -166,7 +176,7 @@
                 $("#successfulCreating").hide();
                 $("#closeModal").click();
                 $("#unsuccessfulCreating").show();
-                $("#formNotCorrect").show();
+                $("#unsuccessfulCreating").delay(5000).slideUp(300);
             }
         }
 

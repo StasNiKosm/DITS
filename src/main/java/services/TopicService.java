@@ -99,6 +99,10 @@ public class TopicService {
         public void deleteTopic(Topic topic){
             manager.delete(topic);
         }
+
+        public boolean containsTopicById(int topicId){
+            return this.manager.read(topicId) != null;
+        }
     }
 
 }

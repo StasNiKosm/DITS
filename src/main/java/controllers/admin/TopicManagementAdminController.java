@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 import repository.dao.entities.Topic;
 import services.TopicService;
 
@@ -23,13 +24,12 @@ public class TopicManagementAdminController {
     @PostMapping(value = "/admin/addTopic", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String createTopic(
-            @RequestParam(name = "name", required = false, defaultValue = "undefined") String name,
-            @RequestParam(name = "description", required = false, defaultValue = "undefined") String description
+            @RequestParam(name = "name") String name,
+            @RequestParam(name = "description") String description
     ) {
         topicService.getLazyInstance().createTopic(name, description);
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("success", true);
-//        jsonObject.addProperty("message", "Новый ");
         return jsonObject.toString();
 
     }
@@ -42,23 +42,27 @@ public class TopicManagementAdminController {
         return jsonObject.toString();
     }
 
-        @PostMapping(value = "/admin/editTopic", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
-    public String editTopic(
-            @RequestParam(name = "id", required = false, defaultValue = "undefined") int id,
-            @RequestParam(name = "name", required = false, defaultValue = "undefined") String name,
-            @RequestParam(name = "description", required = false, defaultValue = "undefined") String description
-    ) {
-        Topic topic = topicService.getLazyInstance().getTopicById(id);
-        topic.setName(name);
-        topic.setDescription(description);
+    @PostMapping(value = "/admin/editTopic")
+    public ModelAndView editTopic(ModelAndView modelAndView, int topicId, String topicName, String topicDescription) {
+        Topic topic = topicService.getLazyInstance().getTopicById(topicId);
+        topic.setName(topicName);
+        topic.setDescription(topicDescription);
         topicService.getLazyInstance().updateTopic(topic);
-
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("success", true);
-//        jsonObject.addProperty("message", "Новый ");
-        return jsonObject.toString();
-
+        modelAndView.setViewName("admin/editTopic");
+        modelAndView.addObject("success", true);
+        modelAndView.addObject("topics", this.topicService.getLazyInstance().getAllTopics());
+        return modelAndView;
     }
 
+    @PostMapping(value = "/admin/deleteTopic")
+    public ModelAndView deleteTopic(ModelAndView modelAndView, int topicId) {
+        if(topicService.getLazyInstance().containsTopicById(topicId)) {
+            Topic topic = topicService.getLazyInstance().getTopicById(topicId);
+            topicService.getLazyInstance().deleteTopic(topic);
+        }
+        modelAndView.setViewName("admin/deleteTopic");
+        modelAndView.addObject("success", true);
+        modelAndView.addObject("topics", this.topicService.getEagerInstance().getAllTopics());
+        return modelAndView;
+    }
 }

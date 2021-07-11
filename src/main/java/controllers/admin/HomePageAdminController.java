@@ -78,12 +78,15 @@ public class HomePageAdminController {
     public ModelAndView editTopic(ModelAndView modelAndView){
         modelAndView.setViewName("admin/editTopic");
         modelAndView.addObject("topics", this.topicService.getLazyInstance().getAllTopics());
+        modelAndView.addObject("success", null);
         return modelAndView;
     }
 
     @GetMapping(value = "/admin/deleteTopic")
     public ModelAndView deleteTopic(ModelAndView modelAndView){
         modelAndView.setViewName("admin/deleteTopic");
+        modelAndView.addObject("topics", this.topicService.getEagerInstance().getAllTopics());
+        modelAndView.addObject("success", null);
         return modelAndView;
     }
 
@@ -97,7 +100,6 @@ public class HomePageAdminController {
 
     @GetMapping(value = "/admin/choose_test_for_edition")
     public ModelAndView chooseTest(ModelAndView modelAndView){
-
         modelAndView.setViewName("admin/chooseTest4Editing");
         modelAndView.addObject("tests", this.testService.getEagerInstance().getAllTests());
         return modelAndView;
@@ -105,10 +107,8 @@ public class HomePageAdminController {
 
     @GetMapping(value = "/admin/choose_test_for_removing")
     public ModelAndView chooseForRemoving(ModelAndView modelAndView){
-
         modelAndView.setViewName("admin/chooseTest4Removing");
         modelAndView.addObject("tests", this.testService.getEagerInstance().getAllTests());
-
         return modelAndView;
     }
 
