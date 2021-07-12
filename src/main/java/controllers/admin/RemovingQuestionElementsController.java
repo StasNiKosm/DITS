@@ -90,12 +90,6 @@ public class RemovingQuestionElementsController {
 
         Test test = testService.getEagerInstance().getTestById(testId);
 
-        System.out.println("#############################################");
-        System.out.println("#############################################");
-        System.out.println("#############################################");
-        System.out.println("#############################################");
-        System.out.println("test.getQuestions().size()"+test.getQuestions().size());
-
         if(test.getQuestions().size() == 0){
             modelAndView.setViewName("admin/emptyTestPage");
             modelAndView.addObject("test", test);

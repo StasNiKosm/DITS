@@ -20,7 +20,7 @@ public class LinkService {
 
     @Autowired
     public void setEagerInstance(EagerManager<Link> linkEagerManager) {
-        this.lazyInstance = new LinkServiceFacade(linkEagerManager);
+        this.eagerInstance = new LinkServiceFacade(linkEagerManager);
     }
 
     public LinkServiceFacade getEagerInstance() {

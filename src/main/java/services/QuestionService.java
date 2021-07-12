@@ -66,6 +66,9 @@ public class QuestionService {
             return list.get(list.size()-1).getQuestionId();
         }
 
+        public Question getQuestionById(int questionId){
+            return manager.read(questionId);
+        }
     }
 
 }

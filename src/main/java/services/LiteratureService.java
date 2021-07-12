@@ -70,6 +70,10 @@ public class LiteratureService {
         public boolean containsLiteratureById(int literatureId){
             return manager.read(literatureId) != null;
         }
+
+        public Literature getLiteratureById(int literatureId){
+            return manager.read(literatureId);
+        }
     }
 
 }

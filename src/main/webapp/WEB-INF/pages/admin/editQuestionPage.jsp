@@ -534,10 +534,10 @@
                         </div>
                         <div class="modal-footer">
                             <form id="modalForm" method="post" >
-                                <input name="id" type="text" class="form-control" id="inputElemId" placeholder="id" required/>
-                                <input name="testId" value="${test.testId}" type="number" class="form-control" placeholder="id" required/>
-                                <input name="questionId" value="${question.questionId}" type="number" class="form-control" placeholder="id" required/>
-                                <input name="questionNumber" value="${questionNumber}" type="number" class="form-control" placeholder="id" required/>
+                                <input hidden name="id" type="text" class="form-control" id="inputElemId" placeholder="id" required/>
+                                <input hidden name="testId" value="${test.testId}" type="number" class="form-control" placeholder="id" required/>
+                                <input hidden name="questionId" value="${question.questionId}" type="number" class="form-control" placeholder="id" required/>
+                                <input hidden name="questionNumber" value="${questionNumber}" type="number" class="form-control" placeholder="id" required/>
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                                 <button type="submit" class="btn btn-danger">Delete</button>
                             </form>
@@ -567,9 +567,9 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <input name="testId" value="${test.testId}" type="number" class="form-control" placeholder="id" required/>
-                                <input name="questionId" value="${question.questionId}" type="number" class="form-control" placeholder="id" required/>
-                                <input name="questionNumber" value="${questionNumber}" type="number" class="form-control" placeholder="id" required/>
+                                <input hidden name="testId" value="${test.testId}" type="number" class="form-control" placeholder="id" required/>
+                                <input hidden name="questionId" value="${question.questionId}" type="number" class="form-control" placeholder="id" required/>
+                                <input hidden name="questionNumber" value="${questionNumber}" type="number" class="form-control" placeholder="id" required/>
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                                 <button type="submit" class="btn btn-warning">Add</button>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -595,10 +595,10 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <input name="literatureId" type="text" class="form-control" id="literatureId" placeholder="id" required/>
-                                <input name="testId" value="${test.testId}" type="number" class="form-control" placeholder="id" required/>
-                                <input name="questionId" value="${question.questionId}" type="number" class="form-control" placeholder="id" required/>
-                                <input name="questionNumber" value="${questionNumber}" type="number" class="form-control" placeholder="id" required/>
+                                <input hidden name="literatureId" type="text" class="form-control" id="literatureId" placeholder="id" required/>
+                                <input hidden name="testId" value="${test.testId}" type="number" class="form-control" placeholder="id" required/>
+                                <input hidden name="questionId" value="${question.questionId}" type="number" class="form-control" placeholder="id" required/>
+                                <input hidden name="questionNumber" value="${questionNumber}" type="number" class="form-control" placeholder="id" required/>
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                                 <button type="submit" class="btn btn-warning">Add</button>
 
@@ -629,9 +629,9 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <input name="testId" value="${test.testId}" type="number" class="form-control" placeholder="id" required/>
-                                <input name="questionId" value="${question.questionId}" type="number" class="form-control" placeholder="id" required/>
-                                <input name="questionNumber" value="${questionNumber}" type="number" class="form-control" placeholder="id" required/>
+                                <input hidden name="testId" value="${test.testId}" type="number" class="form-control" placeholder="id" required/>
+                                <input hidden name="questionId" value="${question.questionId}" type="number" class="form-control" placeholder="id" required/>
+                                <input hidden name="questionNumber" value="${questionNumber}" type="number" class="form-control" placeholder="id" required/>
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                                 <button type="submit" class="btn btn-warning">Add</button>
 

@@ -37,15 +37,16 @@ public class SecurityController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    volatile boolean inited = false;
+//    volatile boolean inited = false;
 
     @GetMapping("/login")
     public String login() {
+       // DBInitializer.createNewTest();
         //if (!inited) {
-        if (false) {
-            DBInitializer.createNewTest();
-            inited = true;
-        }
+//        if (false) {
+//            DBInitializer.createNewTest();
+//            inited = true;
+//        }
         return "login";
     }
 
@@ -78,7 +79,7 @@ public class SecurityController {
                                   @RequestParam("secondName") String secondName,
                                   @RequestParam("password") String password
     ) {
-        userService.registerNewUser(login, firstName, secondName, passwordEncoder.encode(password), RoleEnum.User);
+        userService.registerNewUser(login, firstName, secondName, passwordEncoder.encode(password), RoleEnum.Unconfirmed);
         return "/login";
     }
 

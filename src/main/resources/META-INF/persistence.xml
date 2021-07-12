@@ -39,7 +39,7 @@
 
             <!--    DROP -> CREAT -> INITIALIZE (all tables with his test data)   -->
 
-<!--            &lt;!&ndash;    Tells Hibernate to first drop and then create a new bd    &ndash;&gt;-->
+            <!--    Tells Hibernate to first drop and then create a new bd    -->
 <!--            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>-->
 
 <!--            &lt;!&ndash;    DROP   defines that Hibernate will use a script in specify the location to drop the db    &ndash;&gt;-->

@@ -20,7 +20,6 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Map;
 
-import static repository.connection.HibernateSessionFactory.getEntityManagerFactory;
 
 public class StatisticService {
 

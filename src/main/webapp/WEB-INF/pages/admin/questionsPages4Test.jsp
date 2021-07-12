@@ -87,7 +87,8 @@
                         <c:forEach items="${test.questions}" var="question" varStatus="loop">
                            <button form="anyQuestionForm${loop.index + 1}" class="btn btn-lg btn-outline-success mb-4 mx-2"  type="submit" style="width: 65px; height: 65px; ">${loop.index + 1}</button>
                         </c:forEach>
-                        <button disabled form="questionForm" id="creatingQuestion" class="createdQuestion btn btn-lg btn-outline-success mb-4 mx-2"  type="button" style="background-color: #e7e7e7; color: black;" >${test.questions.size() + 1}</button>
+                        <button id="creatingQuestion" class="createdQuestion btn btn-lg btn-outline-success mb-4 mx-2"  type="button" style="background-color: #e7e7e7; color: black;" >${test.questions.size() + 1}</button>
+                        <button  form="questionForm" id="creatingQuestion2" class="createdQuestion btn btn-lg btn-outline-success mb-4 mx-2"  type="submit" >${test.questions.size() + 1}</button>
                     </div>
 
                     <hr class="my-4">
@@ -103,9 +104,9 @@
                     </form>
                 </c:forEach>
                 <form id="questionForm" method="get" action="/admin/editAnyQuestion4Test">
-                    <input  value="${test.testId}" name="testId" type="text" class="form-control" placeholder="testId" required/>
-                    <input id="inputNewQuestionId" name="questionId" type="text" class="form-control" placeholder="questionId" required/>
-                    <input  value="${test.questions.size() + 1}" name="questionNumber" type="text" class="form-control" placeholder="questionNumber" required/>
+                    <input hidden  value="${test.testId}" name="testId" type="text" class="form-control" placeholder="testId" required/>
+                    <input hidden id="inputNewQuestionId" name="questionId" type="text" class="form-control" placeholder="questionId" required/>
+                    <input hidden value="${test.questions.size() + 1}" name="questionNumber" type="text" class="form-control" placeholder="questionNumber" required/>
                 </form>
             </div>
 
@@ -153,16 +154,16 @@
             <div id="successfulCreating" class="alert alert-success" role="alert">
                 <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
                 <h4 class="alert-heading">Well done!</h4>
-                <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                <p>Вопрос добавлен.</p>
                 <hr>
-                <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+                <p class="mb-0">Всё гуд. Молодец!</p>
             </div>
             <div id="unsuccessfulCreating" class="alert alert-danger" role="alert">
                 <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                 <h4 class="alert-heading">Error!</h4>
-                <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                <p>Что-то пошло не так.</p>
                 <hr>
-                <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+                <p class="mb-0">Возникли трудности.</p>
             </div>
 
             <div id="configQuestionForm" class="col-md-10 mx-auto col-lg-8">
@@ -227,6 +228,7 @@
                 $("#successfulCreating").hide();
                 $("#unsuccessfulCreating").hide();
                 $("#notConfigured").hide();
+                $("#creatingQuestion2").hide();
 
                 function keep(){
 
@@ -261,12 +263,18 @@
                     }
 
                     if(
-                        $("#questionNumber").val().length !== 0 &&
+                        $("#inputQuestionDescription").val().length !== 0 &&
                         checkArray(answers) &&
                         checkArray(literature) &&
                         checkArray(links) &&
                         checkNumArray(corrects)
                     ) {
+                        console.log();
+                        console.log();
+                        console.log();
+                        console.log();
+                        console.log();
+
                         $.ajax({
                             url: "/admin/addQuestion",
                             type: "POST",
@@ -287,8 +295,10 @@
                                 console.log(data);
 
                                 $("#inputNewQuestionId").val(data.newQuestionId);
-                                $("#creatingQuestion").removeAttr("style");
-                                $("#creatingQuestion").removeAttr("disabled");
+                                // $("#creatingQuestion").removeAttr("style");
+                                // $("#creatingQuestion").removeAttr("disabled");
+                                $("#creatingQuestion2").show();
+                                $("#creatingQuestion").hide();
 
                                 $("#questionNumber").val(parseInt($("#questionNumber").val()) + 1);
                                 $("#inputQuestionDescription").val("");

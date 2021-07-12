@@ -17,10 +17,6 @@ public class HibernateSessionFactory {
 
     }
 
-    public static EntityManagerFactory getEntityManagerFactory(){
-        return Persistence.createEntityManagerFactory("persistence-unit");
-    }
-
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
             try {
