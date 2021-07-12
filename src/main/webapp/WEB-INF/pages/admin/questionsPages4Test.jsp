@@ -18,6 +18,10 @@
             list-style-type: none;
             padding: 0;
         }
+        .createdQuestion {
+            width: 65px;
+            height: 65px;
+        }
     </style>
 
 </head>
@@ -37,7 +41,7 @@
                 <img src="https://e7.pngegg.com/pngimages/754/474/png-clipart-computer-icons-system-administrator-avatar-computer-network-heroes-thumbnail.png" alt="mdo" width="32" height="32" class="rounded-circle">
                 <span class="fs-4 px-2">Admin</span>
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a href="#" class="nav-link px-2 text-secondary">Home</a></li>
+                    <li><a href="/admin" class="nav-link px-2 text-secondary">Home</a></li>
                     <li><a href="#" class="nav-link px-2 text-white">Help</a></li>
                     <li><a href="#" class="nav-link px-2 text-white">About</a></li>
                 </ul>
@@ -75,22 +79,15 @@
         </div>
 
         <hr class="my-4">
-<%--        <h1 class="pb-1 border-bottom text-center ">Выбирайте, добавляйте и редактируйте вопросы</h1>--%>
         <div class="row  g-lg-5 py-5 " >
             <div class="col-lg-4 text-center text-lg-start ">
                 <h1 class="display-4 fw-bold lh-1 mb-3">Questions</h1>
                 <div class="row ">
-<%--                    <p class="col-lg-10 fs-4">Ты можешь создавать новые вопросы, а так же удалять их. Для этого тебе надо нажимать на соответствующие кнопки :)</p>--%>
                     <div class="col-mb-3 ">
                         <c:forEach items="${test.questions}" var="question" varStatus="loop">
-                            <form method="get" action="/admin/editAnyQuestion4Test">
-                                <input value="${test.testId}" name="testId" type="text" class="form-control" placeholder="testId" required/>
-                                <input value="${question.questionId}" name="questionId" type="text" class="form-control" placeholder="questionId" required/>
-                                <input value="${loop.index + 1}" name="questionNumber" type="text" class="form-control" placeholder="questionNumber" required/>
-                                <button class="btn btn-lg btn-outline-success mb-4 mx-2"  type="submit" style="width: 65px; height: 65px; ">${loop.index + 1}</button>
-                            </form>
+                           <button form="anyQuestionForm${loop.index + 1}" class="btn btn-lg btn-outline-success mb-4 mx-2"  type="submit" style="width: 65px; height: 65px; ">${loop.index + 1}</button>
                         </c:forEach>
-                        <button id="creatingQuestion" class="btn btn-lg btn-outline-success mb-4 mx-2"  type="button" style="background-color: #e7e7e7; color: black; width: 65px; height: 65px; ">${test.questions.size() + 1}</button>
+                        <button disabled form="questionForm" id="creatingQuestion" class="createdQuestion btn btn-lg btn-outline-success mb-4 mx-2"  type="button" style="background-color: #e7e7e7; color: black;" >${test.questions.size() + 1}</button>
                     </div>
 
                     <hr class="my-4">
@@ -98,6 +95,18 @@
                         <button class="btn btn-lg btn-warning mb-4 mx-2" style="width: 200px; " data-bs-toggle="modal" data-bs-target="#configQuestion" type="button">Add question</button>
                     </div>
                 </div>
+                <c:forEach items="${test.questions}" var="question" varStatus="loop">
+                    <form id="anyQuestionForm${loop.index + 1}" method="get" action="/admin/editAnyQuestion4Test">
+                        <input hidden value="${test.testId}" name="testId" type="text" class="form-control" placeholder="testId" required/>
+                        <input hidden value="${question.questionId}" name="questionId" type="text" class="form-control" placeholder="questionId" required/>
+                        <input hidden value="${loop.index + 1}" name="questionNumber" type="text" class="form-control" placeholder="questionNumber" required/>
+                    </form>
+                </c:forEach>
+                <form id="questionForm" method="get" action="/admin/editAnyQuestion4Test">
+                    <input  value="${test.testId}" name="testId" type="text" class="form-control" placeholder="testId" required/>
+                    <input id="inputNewQuestionId" name="questionId" type="text" class="form-control" placeholder="questionId" required/>
+                    <input  value="${test.questions.size() + 1}" name="questionNumber" type="text" class="form-control" placeholder="questionNumber" required/>
+                </form>
             </div>
 
             <!-- Modal -->
@@ -126,9 +135,9 @@
                                         При нескольких литератур, укажите количесво ссылок под каждую из них разделяя запятыми.
                                     </small>
                                 </div>
-                                <input id="questionNumber" name="questionNumber" value="${questionNumber}">
+                                <input hidden id="questionNumber" name="questionNumber" value="${questionNumber}">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-                                <label for="testId">test id</label><input value="${test.testId}" name="testId" type="text" id="testId">
+                                <input hidden value="${test.testId}" name="testId" type="text" id="testId">
                                 <button class="w-100 btn btn-lg btn-success" type="submit" >Apply</button>
 
                             </form>
@@ -276,6 +285,10 @@
                         })
                             .done(function (data) {
                                 console.log(data);
+
+                                $("#inputNewQuestionId").val(data.newQuestionId);
+                                $("#creatingQuestion").removeAttr("style");
+                                $("#creatingQuestion").removeAttr("disabled");
 
                                 $("#questionNumber").val(parseInt($("#questionNumber").val()) + 1);
                                 $("#inputQuestionDescription").val("");

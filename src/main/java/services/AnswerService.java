@@ -58,6 +58,21 @@ public class AnswerService {
             manager.create(answer);
         }
 
+        public void updateAnswerById(int answerId, String answerDescription, int correct){
+            Answer answer = manager.read(answerId);
+            answer.setDescription(answerDescription);
+            answer.setCorrect(correct);
+            manager.update(answer);
+        }
+
+        public void deleteAnswerById(int answerId){
+            manager.delete(manager.read(answerId));
+        }
+
+        public boolean containsAnswerById(int answerId){
+            return manager.read(answerId) != null;
+        }
+
     }
 
 }

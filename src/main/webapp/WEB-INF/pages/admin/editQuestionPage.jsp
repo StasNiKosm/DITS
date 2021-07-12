@@ -31,12 +31,12 @@
                 <img src="https://e7.pngegg.com/pngimages/754/474/png-clipart-computer-icons-system-administrator-avatar-computer-network-heroes-thumbnail.png" alt="mdo" width="32" height="32" class="rounded-circle">
                 <span class="fs-4 px-2">Admin</span>
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a href="#" class="nav-link px-2 text-secondary">Home</a></li>
+                    <li><a href="/admin" class="nav-link px-2 text-secondary">Home</a></li>
                     <li><a href="#" class="nav-link px-2 text-white">Help</a></li>
                     <li><a href="#" class="nav-link px-2 text-white">About</a></li>
                 </ul>
                 <div class="text-end">
-                    <a href="/admin" type="button" class="btn btn-outline-light me-2">Назад</a>
+                    <a href="/admin/choose_test_for_edition" type="button" class="btn btn-outline-light me-2">Назад</a>
                     <a href="/logout" type="button" class="btn btn-warning">Выйти</a>
                 </div>
             </div>
@@ -72,13 +72,9 @@
                 <div class="row ">
                     <div class="col-mb-3 ">
                         <c:forEach items="${test.questions}" var="question" varStatus="loop">
-                            <form method="get" action="/admin/editAnyQuestion4Test">
-                                <input value="${test.testId}" name="testId" type="text" class="form-control" placeholder="testId" required/>
-                                <input value="${question.questionId}" name="questionId" type="text" class="form-control" placeholder="questionId" required/>
-                                <input value="${loop.index + 1}" name="questionNumber" type="text" class="form-control" placeholder="questionNumber" required/>
-                                <button class="btn btn-lg btn-${questionNumber == loop.index + 1 ? "" : "outline-"}success mb-4 mx-2"  type="submit" style="width: 65px; height: 65px; ">${loop.index + 1}</button>
-                            </form>
+                            <button form="anyQuestionForm${loop.index + 1}" class="btn btn-lg btn-${questionNumber == loop.index + 1 ? "" : "outline-"}success mb-4 mx-2"  type="submit" style="width: 65px; height: 65px; ">${loop.index + 1}</button>
                         </c:forEach>
+
                     </div>
 
                     <hr class="my-4">
@@ -86,6 +82,13 @@
                         <button class="btn btn-lg btn-warning mb-4 mx-2" data-bs-toggle="modal" data-bs-target="#configQuestion" style="width: 200px; " type="button">Add question</button>
                     </div>
                 </div>
+                <c:forEach items="${test.questions}" var="question" varStatus="loop">
+                    <form id="anyQuestionForm${loop.index + 1}" class="col" style="width: 65px; height: 65px;" method="get" action="/admin/editAnyQuestion4Test">
+                        <input hidden value="${test.testId}" name="testId" type="text" class="form-control" placeholder="testId" required/>
+                        <input hidden value="${question.questionId}" name="questionId" type="text" class="form-control" placeholder="questionId" required/>
+                        <input hidden value="${loop.index + 1}" name="questionNumber" type="text" class="form-control" placeholder="questionNumber" required/>
+                    </form>
+                </c:forEach>
             </div>
 
 
@@ -665,9 +668,9 @@
                                         При нескольких литератур, укажите количесво ссылок под каждую из них разделяя запятыми.
                                     </small>
                                 </div>
-                                <input id="questionNumber" name="questionNumber" value="${test.questions.size() + 1}">
+                                <input hidden id="questionNumber" name="questionNumber" value="${test.questions.size() + 1}">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-                                <label for="testId">test id</label><input value="${test.testId}" name="testId" type="text" id="testId">
+                                <input hidden value="${test.testId}" name="testId" type="text" id="testId">
                                 <button class="w-100 btn btn-lg btn-success" type="submit" >Apply</button>
 
                             </form>

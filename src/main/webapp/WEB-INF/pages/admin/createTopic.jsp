@@ -143,7 +143,7 @@
         });
 
         function create() {
-            if ($("#inputName").val().length > 0  && topicNameIsUnique && $("#inputDescription").val().length > 0) {
+            if ($("#inputName").val().length > 0  && topicNameIsUnique) {
                 $.ajax({
                     url: "/admin/addTopic",
                     type: "POST",

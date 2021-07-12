@@ -43,7 +43,19 @@ public class LinkService {
             manager.create(link);
         }
 
+        public void updateLinkById(int linkId, String link){
+            Link link1 = manager.read(linkId);
+            link1.setLink(link);
+            manager.update(link1);
+        }
 
+        public void deleteLinkById(int linkId){
+            manager.delete(manager.read(linkId));
+        }
+
+        public boolean containsLinkById(int linkId){
+            return manager.read(linkId) != null;
+        }
     }
 
 }

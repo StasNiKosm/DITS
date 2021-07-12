@@ -36,8 +36,8 @@
     <div class="container col-xl-10 col-xxl-10 py-5">
         <div class="row align-items-center g-lg-5 py-5">
             <div class="col-lg-4 text-center text-lg-start">
-                <h1 class="display-4 fw-bold lh-1 mb-3">Creating</h1>
-                <p class="col-lg-10 fs-4">У тебя есть возвожность создавать нового уникального пользователя. Сделав это, убедись, что права на пользование аккаутном передал физическому пользователю без ошибок.</p>
+                <h1 class="display-4 fw-bold lh-1 mb-3">Creating a test</h1>
+                <p class="col-lg-10 fs-4">Создавай новые интересные тесты. выбтрай для них тему или создай ее на месте.</p>
 
                 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
                     <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
@@ -51,16 +51,19 @@
                 <div id="successfulCreating" class="alert alert-success" role="alert">
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
                     <h4 class="alert-heading">Well done!</h4>
-                    <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                    <p>Новый тест:</p>
+                    <pre id="newTest" class="fs-5">
+
+                    </pre>
                     <hr>
-                    <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+                    <p class="mb-0">Отлично! Теперь можешь приступить к его заполнению вопросами.</p>
                 </div>
                 <div id="unsuccessfulCreating" class="alert alert-danger" role="alert">
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                     <h4 class="alert-heading">Error!</h4>
-                    <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                    <p>Что-то пошло не так, проверь, заполнил ли ты поля 'Topic name' и 'Test name'.</p>
                     <hr>
-                    <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+                    <p class="mb-0">Похоже, что у тебя возникли проблемы с созданием теста.</p>
                 </div>
 
             </div>
@@ -148,7 +151,7 @@
                         <label for="inputTestDescription" class="form-label">Test description</label>
                     </div>
 
-                    <button class="w-100 btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#createModal" type="button">Create</button>
+                    <button id="createTestButton" class="w-100 btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#createModal" type="button">Create</button>
 
                     <hr class="my-4">
                     <small class="text-muted">By clicking Create, you create a new test with selected topic.</small>
@@ -162,7 +165,9 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    ...
+                                    <pre id="newTestModal" class="fs-5">
+
+                                    </pre>
                                 </div>
                                 <div class="modal-footer">
                                     <button onclick="create()" type="button" class="btn btn-primary">Create</button>
@@ -174,7 +179,7 @@
                 </form>
 
                 <div id="filling_out_the_test" class=" mb-3">
-                    <button class="w-100 btn btn-lg btn-success" data-bs-toggle="modal" data-bs-target="#configQuestion" type="button">Create</button>
+                    <button class="w-100 btn btn-lg btn-success" data-bs-toggle="modal" data-bs-target="#configQuestion" type="button">Filling out the test</button>
                 </div>
                 <!-- Modal -->
                 <div class="modal fade" id="configQuestion" tabindex="-1" aria-labelledby="configQuestionLabel" aria-hidden="true">
@@ -202,16 +207,15 @@
                                             При нескольких литератур, укажите количесво ссылок под каждую из них разделяя запятыми.
                                         </small>
                                     </div>
-                                    <input id="questionNumber" name="questionNumber" value="1">
+                                    <input hidden disabled id="questionNumber" name="questionNumber" value="1">
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-                                    <label for="testId">test id</label><input name="testId" type="text" id="testId">
+                                    <input hidden disabled name="testId" type="text" id="testId">
                                     <button class="w-100 btn btn-lg btn-success" type="submit" >Apply</button>
 
                                 </form>
                             </div>
                             <div class="modal-footer">
-<%--                                <button onclick="create()" type="button" class="btn btn-primary">Create</button>--%>
-                                <button id="closeCongigQuestionModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button id="closeConfigQuestionModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                             </div>
                         </div>
                     </div>
@@ -225,7 +229,7 @@
     <script>
         $("#ownTopic").hide();
         $("#notUniqueTestName").hide();
-        // $("#filling_out_the_test").hide();
+        $("#filling_out_the_test").hide();
         $("#notUniqueTopicName").hide();
         $("#successfulCreating").hide();
         $("#unsuccessfulCreating").hide();
@@ -311,12 +315,14 @@
                     if(data.success === true){
                         $("#unsuccessfulCreating").hide();
                         $("#successfulCreating").show();
+                        $("#successfulCreating").delay(7000).slideUp(300);
                         $("#filling_out_the_test").show();
 
                         $("#testId").val(data.newTestId);
 
                     } else {
                         $("#unsuccessfulCreating").show();
+                        $("#unsuccessfulCreating").delay(7000).slideUp(300);
                         $("#successfulCreating").hide();
                         $("#filling_out_the_test").hide();
                     }
@@ -326,15 +332,28 @@
                 });
         }
 
+        $("#createTestButton").on('click', function (){
+            var messageText;
+            if($("#inputOwnTopicName").val() === ""){
+                messageText = 'Topic: ' + $("#inputTopicName").val() + '\nTest: ' + $("#inputTestName").val();
+            } else {
+                messageText = 'Topic: ' + $("#inputOwnTopicName").val() + '\nTest: ' + $("#inputTestName").val();
+            }
+            $("#newTest").text(messageText);
+            $("#newTestModal ").text(messageText);
+            console.log(messageText);
+        });
+
         function create() {
-            if (selectedTopic && ($("#inputTopicName").val().length > 0 || $("#inputOwnTopicName").val().length)) {
+
+            if (selectedTopic && ($("#inputTopicName").val().length > 0 || $("#inputOwnTopicName").val().length > 0)) {
                 if (testNameIsUnique) {
                     sendJSON();
                 } else {
                     $("#successfulCreating").hide();
                     $("#closeCreatingModal").click();
                     $("#unsuccessfulCreating").show();
-                    $("#formNotCorrect").show();
+                    $("#unsuccessfulCreating").delay(7000).slideUp(300);
                 }
             } else {
                 if (testNameIsUnique && topicNameIsUnique) {
@@ -343,7 +362,7 @@
                     $("#successfulCreating").hide();
                     $("#closeCreatingModal").click();
                     $("#unsuccessfulCreating").show();
-                    $("#formNotCorrect").show();
+                    $("#unsuccessfulCreating").delay(7000).slideUp(300);
                 }
             }
         }

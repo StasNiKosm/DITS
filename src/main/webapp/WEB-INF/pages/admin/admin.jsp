@@ -106,7 +106,9 @@
             <div>
                 <h2>Statistic</h2>
                 <p>Можешь постмотривать общюю статистику: по всем тестам, по всем пользователям, по всем вопросам.</p>
-                <a href="/admin/statistic" class="btn btn-outline-primary btn-lg" style="min-width: 90px;">Get</a>
+                <a href="/admin/question_statistics" class="btn btn-outline-primary btn-lg" style="min-width: 90px;">Question</a>
+                <a href="/admin/test_statistics" class="btn btn-outline-primary btn-lg" style="min-width: 90px;">Test</a>
+                <a href="/admin/user_statistics" class="btn btn-outline-primary btn-lg" style="min-width: 90px;">User</a>
             </div>
         </div>
         <div class="col d-flex align-items-start">
@@ -121,34 +123,6 @@
         </div>
     </div>
 </div>
-<%--<div class="container-sm h-100">
-    <div class="row justify-content-md-center align-items-center" style="min-height: 100px; height:10%; max-height: 150px;">
-        <div class="col-sm-6 display-6">
-            <p class="text-center">Привет, ${user.user.firstName} ${user.user.lastName}!</p>
-        </div>
-        <div class="col-sm-6">
-            <div class="row justify-content-md-center align-items-center">
-                <a href="/logout" class="btn btn-primary btn-lg active mx-auto" style="max-width: 300px;" role="button" aria-pressed="true">Выход</a>
-            </div>
-        </div>
-    </div>
-    <div class="row justify-content-md-center align-items-center" style="height: 90%;">
-        <div class="col-sm-6">
-            <img src="http://devincubator.by/images/human1.png" class="img-fluid mx-auto d-block" alt="DevIncubator">
-        </div>
-        <div class="col-sm-6 justify-content-md-center align-items-center">
-            <div class="row justify-content-md-center align-items-center">
-                <div class="col display-6">
-                    <p class="text-center">Выбор раздела</p>
-                </div>
-            </div>
-            <div class="d-grid gap-2 col-8 mx-auto">
-                <a href="/admin/creatTest" class="btn btn-primary" type="button">Создать тест</a>
-                <a href="/admin/creatUser" class="btn btn-primary" type="button">Создать пользователя</a>
-                <a href="/admin/statistic" class="btn btn-primary" type="button">Статистика</a>
-            </div>
-        </div>
-    </div>
-</div>--%>
+
 </body>
 </html>

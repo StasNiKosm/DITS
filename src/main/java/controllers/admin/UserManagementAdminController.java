@@ -22,11 +22,11 @@ import java.util.stream.Collectors;
 @Controller
 public class UserManagementAdminController {
 
-    UserService userService;
+    private UserService userService;
 
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
-    DeleteUserWithHisStatisticResolver deleteUserWithHisStatisticResolver;
+    private DeleteUserWithHisStatisticResolver deleteUserWithHisStatisticResolver;
 
     @Autowired
     public void setUserService(UserService userService) {

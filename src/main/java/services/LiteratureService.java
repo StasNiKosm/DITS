@@ -56,6 +56,20 @@ public class LiteratureService {
         public void createLiterature(Literature literature){
             manager.create(literature);
         }
+
+        public void updateLiteratureById(int literatureId, String literatureDescription){
+            Literature literature = manager.read(literatureId);
+            literature.setDescription(literatureDescription);
+            manager.update(literature);
+        }
+
+        public void deleteLiteratureById(int literatureId){
+            manager.delete(manager.read(literatureId));
+        }
+
+        public boolean containsLiteratureById(int literatureId){
+            return manager.read(literatureId) != null;
+        }
     }
 
 }

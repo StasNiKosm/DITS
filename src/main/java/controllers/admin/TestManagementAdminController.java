@@ -64,22 +64,12 @@ public class TestManagementAdminController {
     @PostMapping(value = "/admin/addTest", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String addTest(
-            //возникает java.lang.NumberFormatException: For input string: "", если topicId - int
             @RequestParam(name = "topicId", required = false) String topicId,
             @RequestParam(name = "topicName", required = false) String topicName,
             @RequestParam(name = "topicDescription", required = false) String topicDescription,
             @RequestParam(name = "testName") String testName,
             @RequestParam(name = "testDescription", required = false) String testDescription
     ){
-
-        System.out.println("___________________________________");
-        System.out.println("topicID= " + topicId);
-        System.out.println("topicName= " + topicName);
-        System.out.println("topicDescription= " + topicDescription);
-        System.out.println("testName= " + testName);
-        System.out.println("topicDescription= " + testDescription);
-        System.out.println("___________________________________");
-
         Topic topic;
         if(topicId.isEmpty()){
             topic = new Topic();
@@ -100,7 +90,6 @@ public class TestManagementAdminController {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("success", true);
         jsonObject.addProperty("newTestId", test.getTestId());
-//        jsonObject.addProperty("message", "Новый ");
         return jsonObject.toString();
     }
 
@@ -122,7 +111,6 @@ public class TestManagementAdminController {
         modelAndView.addObject("answersNumber", answersNumber);
         modelAndView.addObject("literatureNumber", literatureNumber);
         modelAndView.addObject("linksNumber", Arrays.stream(linksNumber.split(",")).map(String::trim).collect(Collectors.toList()));
-
         return modelAndView;
     }
 
@@ -138,20 +126,11 @@ public class TestManagementAdminController {
             @RequestParam(value = "links[]", required = false) String[] links,
             @RequestParam(value = "linkCipher[]") String[] linkCipher
     ) {
-        System.out.println("___________________________________");
-        System.out.println(questionNumber);
-        System.out.println(description);
-        System.out.println(Arrays.toString(answers));
-        System.out.println(Arrays.toString(corrects));
-        System.out.println(Arrays.toString(literature));
-        System.out.println(Arrays.toString(links));
-        System.out.println(Arrays.toString(linkCipher));
-        System.out.println("___________________________________");
-
         Question question = new Question();
         question.setDescription(description);
         question.setTest(testService.getEagerInstance().getTestById(testId));
         questionService.getLazyInstance().createQuestion(question);
+        int newQuestionId = questionService.getLazyInstance().getLastQuestionId();
 
         for (int i = 0; i < answers.length; i++) {
             Answer answer = new Answer();
@@ -179,12 +158,12 @@ public class TestManagementAdminController {
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("success", true);
+        jsonObject.addProperty("newQuestionId", newQuestionId);
         return jsonObject.toString();
     }
 
     @GetMapping(value = "/admin/editFirstQuestion4Test")
     public ModelAndView editFirstQuestion(ModelAndView modelAndView, String testId){
-
         Test test = testService.getEagerInstance().getTestById(Integer.parseInt(testId));
         modelAndView.addObject("test", test);
         if(test.getQuestions().size() == 0){
@@ -195,7 +174,6 @@ public class TestManagementAdminController {
             modelAndView.addObject("question", question);
             modelAndView.addObject("questionNumber", 1);
         }
-
         return modelAndView;
     }
 
@@ -223,15 +201,40 @@ public class TestManagementAdminController {
     }
 
     @PostMapping(value = "/admin/deleteTest")
-    @ResponseBody
-    public String deleteTest(@RequestParam(name = "testId") Integer testId){
+    public ModelAndView deleteTest(ModelAndView modelAndView, Integer testId){
+        if(testService.getLazyInstance().containsTestById(testId)) {
+            Test test = this.testService.getEagerInstance().getTestById(testId);
+            this.testService.getEagerInstance().deleteTest(test);
+            modelAndView.addObject("success", true);
+        } else {
+            modelAndView.addObject("success", null);
+        }
+        modelAndView.setViewName("admin/chooseTest4Removing");
+        modelAndView.addObject("tests", this.testService.getLazyInstance().getAllTests());
+        return modelAndView;
+    }
 
-        System.out.println(testId);
+    @PostMapping(value = "/admin/editTest")
+    @ResponseBody
+    public String editTest(
+            @RequestParam(value = "testId") int testId,
+            @RequestParam(value = "testName") String testName,
+            @RequestParam(value = "testDescription", required = false) String testDescription,
+            @RequestParam(value = "topicName") String topicName,
+            @RequestParam(value = "topicDescription", required = false) String topicDescription
+    ){
+        Test test = this.testService.getEagerInstance().getTestById(testId);
+        test.setName(testName);
+        test.setDescription(testDescription);
+        testService.getEagerInstance().updateTest(test);
+        Topic topic = topicService.getEagerInstance().getTopicById(test.getTopic().getTopicId());
+        topic.setName(topicName);
+        topic.setDescription(topicDescription);
+        topicService.getEagerInstance().updateTopic(topic);
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("success", true);
         return jsonObject.toString();
     }
-
 
 }

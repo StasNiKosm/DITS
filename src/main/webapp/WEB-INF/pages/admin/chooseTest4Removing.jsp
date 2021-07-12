@@ -45,25 +45,29 @@
 <div class="container col-xl-10 col-xxl-10 py-5">
     <div class="row align-items-center g-lg-5 py-5">
         <div class="col-lg-4 text-center text-lg-start">
-            <h1 class="display-4 fw-bold lh-1 mb-3">Creating</h1>
-            <p class="col-lg-10 fs-4">У тебя есть возвожность создавать нового уникального пользователя. Сделав это, убедись, что права на пользование аккаутном передал физическому пользователю без ошибок.</p>
+            <h1 class="display-4 fw-bold lh-1 mb-3">Deleting a test</h1>
+            <p class="col-lg-10 fs-4">Удаляй ненужные тесты. Но будь аккуратен, назад не их не вернуть.</p>
 
-            <div id="successfulDeleting" class="alert alert-success" role="alert">
-                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-                <h4 class="alert-heading">Well done!</h4>
-                <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
-                <hr>
-                <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
-            </div>
-
-            <div id="unsuccessfulDeleting" class="alert alert-danger" role="alert">
-                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                <h4 class="alert-heading">Error!</h4>
-                <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
-                <hr>
-                <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
-            </div>
-
+            <c:if test="${success != null}">
+                <c:if test="${success == true}">
+                    <div id="successfulDeletion" class="alert alert-success" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                        <h4 class="alert-heading">Well done!</h4>
+                        <p>Тест удален успешно.</p>
+                        <hr>
+                        <p class="mb-0">Всё прошло хорошо. Молодец!</p>
+                    </div>
+                </c:if>
+                <c:if test="${success == false}">
+                    <div id="unsuccessfulDeletion" class="alert alert-danger" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                        <h4 class="alert-heading">Error!</h4>
+                        <p>Что-то пошло не так:(</p>
+                        <hr>
+                        <p class="mb-0">Возникли трудности.</p>
+                    </div>
+                </c:if>
+            </c:if>
         </div>
 
         <div class="col-md-10 mx-auto col-lg-8">
@@ -132,13 +136,7 @@
                     <textarea disabled class="form-control" id="inputTopicDescription" rows="5"></textarea>
                     <label for="inputTopicDescription" class="form-label">Topic description</label>
                 </div>
-
-<%--                <form method="post" action="/admin/deleteTest">--%>
-<%--                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">--%>
-                    <input disabled name="testId" type="mumber" class="form-control" id="inputTestId" placeholder="testId" required/>
-                    <button id="deleteButton" class="w-100 btn btn-lg btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button">Delete</button>
-
-<%--                </form>--%>
+                <button id="deleteButton" class="w-100 btn btn-lg btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal" type="button">Delete</button>
 
                 <hr class="my-4">
                 <small class="text-muted">By clicking Create, you create a new test with selected topic.</small>
@@ -163,7 +161,11 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" onclick="deleteTest()" class="btn btn-danger">Delete</button>
+                <form name="testId" method="post" action="/admin/deleteTest">
+                    <input hidden  name="testId" type="mumber" class="form-control" id="inputTestId" placeholder="testId" required>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
                 <button id="closeModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
             </div>
         </div>
@@ -172,8 +174,8 @@
 
 <script>
 
-    $("#successfulDeleting").hide();
-    $("#unsuccessfulDeleting").hide();
+    $("#successfulDeletion").delay(4000).slideUp(300);
+    $("#unsuccessfulDeletion").delay(4000).slideUp(300);
 
     $("#table tr").click(function(){
         var testId = $(this).find('td').eq(1).text();
@@ -181,8 +183,6 @@
         var testDescription = $(this).find('td').eq(3).text();
         var topicName = $(this).find('td').eq(4).text();
         var topicDescription = $(this).find('td').eq(5).text();
-
-        // document.getElementById('oldUserConfig').innerHTML = 'Login: ' + login + ', first name: ' + firstName + ', last name: ' + lastName + ', role:' + role;
 
         $("#deleteButton").val(testId);
         $("#testName").text(testName);
@@ -193,32 +193,6 @@
         $("#inputTopicName").val(topicName);
         $("#inputTopicDescription").val(topicDescription);
     });
-
-    function deleteTest(){
-
-            $.ajax({
-                url: "/admin/deleteTest",
-                type: "POST",
-                dataType: "json",
-                data: {
-                    testId: $("#inputTestId").val(),
-                    "${_csrf.parameterName}" : "${_csrf.token}"
-                },
-            })
-                .done(function (data) {
-                    console.log( data);
-                    if(data.success){
-                        $("#closeModal").click();
-                        $("#successfulDeleting").show();
-                        $("#successfulDeleting").delay(3000).slideUp(300);
-                    }
-                })
-                .fail(function (xhr, status, error) {
-                    alert('Error\n' + xhr.responseText + '\n' + status + '\n' + error);
-                });
-
-    }
-
 </script>
 </body>
 </html>

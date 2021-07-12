@@ -25,7 +25,7 @@ public class TopicManagementAdminController {
     @ResponseBody
     public String createTopic(
             @RequestParam(name = "name") String name,
-            @RequestParam(name = "description") String description
+            @RequestParam(name = "description", required = false) String description
     ) {
         topicService.getLazyInstance().createTopic(name, description);
         JsonObject jsonObject = new JsonObject();

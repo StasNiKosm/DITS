@@ -7,6 +7,7 @@ import repository.dao.entities.Question;
 import repository.managers.eager.EagerManager;
 import repository.managers.lazy.LazyManager;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -23,7 +24,7 @@ public class QuestionService {
 
     @Autowired
     public void setEagerInstance(EagerManager<Question> questionEagerManager) {
-        this.lazyInstance = new QuestionServiceFacade(questionEagerManager);
+        this.eagerInstance = new QuestionServiceFacade(questionEagerManager);
     }
 
     public QuestionServiceFacade getEagerInstance() {
@@ -44,6 +45,25 @@ public class QuestionService {
 
         public void createQuestion(Question question){
             manager.create(question);
+        }
+
+        public void updateQuestionById(int questionId, String questionDescription){
+            Question question = manager.read(questionId);
+            question.setDescription(questionDescription);
+            manager.update(question);
+        }
+
+        public void deleteQuestionById(int questionId){
+            manager.delete(manager.read(questionId));
+        }
+
+        public boolean containsQuestionById(int questionId){
+            return manager.read(questionId) != null;
+        }
+
+        public int getLastQuestionId(){
+            List<Question> list = manager.getAll();
+            return list.get(list.size()-1).getQuestionId();
         }
 
     }

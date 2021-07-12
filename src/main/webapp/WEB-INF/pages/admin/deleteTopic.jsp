@@ -60,7 +60,7 @@
                         <div id="unsuccessfulDeletion" class="alert alert-danger" role="alert">
                             <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                             <h4 class="alert-heading">Error!</h4>
-                            <p>.</p>
+                            <p>Что-то пошло не так :(</p>
                             <hr>
                             <p class="mb-0">Возникли трудности.</p>
                         </div>

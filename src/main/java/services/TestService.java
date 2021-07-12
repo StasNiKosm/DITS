@@ -90,6 +90,14 @@ public class TestService {
         public List<Test> getAllTests(){
             return manager.getAll();
         }
+
+        public void deleteTest(Test test){
+            manager.delete(test);
+        }
+
+        public boolean containsTestById(int testId){
+            return manager.read(testId) != null;
+        }
     }
 
     public boolean isTestExist(int id) {

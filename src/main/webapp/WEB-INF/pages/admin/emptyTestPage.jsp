@@ -27,7 +27,7 @@
                     <li><a href="#" class="nav-link px-2 text-white">About</a></li>
                 </ul>
                 <div class="text-end">
-                    <a href="/admin" type="button" class="btn btn-outline-light me-2">Назад</a>
+                    <a href="/admin/choose_test_for_edition" type="button" class="btn btn-outline-light me-2">Назад</a>
                     <a href="/logout" type="button" class="btn btn-warning">Выйти</a>
                 </div>
             </div>
@@ -96,9 +96,9 @@
                                     При нескольких литератур, укажите количесво ссылок под каждую из них разделяя запятыми.
                                 </small>
                             </div>
-                            <input id="questionNumber" name="questionNumber" value="1">
+                            <input hidden id="questionNumber" name="questionNumber" value="1">
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-                            <label for="testId">test id</label><input value="${test.testId}" name="testId" type="text" id="testId">
+                            <input hidden value="${test.testId}" name="testId" type="text" id="testId">
                             <button class="w-100 btn btn-lg btn-success" type="submit" >Apply</button>
 
                         </form>

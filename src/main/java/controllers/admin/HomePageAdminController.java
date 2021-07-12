@@ -108,7 +108,8 @@ public class HomePageAdminController {
     @GetMapping(value = "/admin/choose_test_for_removing")
     public ModelAndView chooseForRemoving(ModelAndView modelAndView){
         modelAndView.setViewName("admin/chooseTest4Removing");
-        modelAndView.addObject("tests", this.testService.getEagerInstance().getAllTests());
+        modelAndView.addObject("tests", this.testService.getLazyInstance().getAllTests());
+        modelAndView.addObject("success", null);
         return modelAndView;
     }
 
