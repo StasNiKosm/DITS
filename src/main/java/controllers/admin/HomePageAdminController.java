@@ -42,6 +42,14 @@ public class HomePageAdminController {
         this.testService = testService;
     }
 
+    @GetMapping(value = "/admin/new")
+    public ModelAndView NEW(ModelAndView modelAndView) {
+        modelAndView.setViewName("admin/new");
+        modelAndView.addObject("tests", testService.getLazyInstance().getAllTests());
+        modelAndView.addObject("topics", topicService.getEagerInstance().getAllTopics());
+        return modelAndView;
+    }
+
     @GetMapping(value = "/admin/createUser")
     public ModelAndView createUser(ModelAndView modelAndView) {
         modelAndView.setViewName("admin/createUser");

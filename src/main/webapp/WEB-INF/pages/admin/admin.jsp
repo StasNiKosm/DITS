@@ -119,6 +119,7 @@
                 <h2>Self</h2>
                 <p>Саморазвивайся и тестируй систему! Проходи тесты как обычный пользователь.  </p>
                 <a href="/user/test-chooser" class="btn btn-outline-primary btn-lg" style="min-width: 90px;">Go</a>
+<%--                <a href="/admin/new" class="btn btn-outline-primary btn-lg" style="min-width: 90px;">NEW BUTION</a>--%>
             </div>
         </div>
     </div>
@@ -126,3 +127,19 @@
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

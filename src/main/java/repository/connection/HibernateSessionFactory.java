@@ -1,7 +1,10 @@
 package repository.connection;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
 import org.springframework.stereotype.Component;
+import repository.dao.entities.Topic;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -40,3 +43,6 @@ public class HibernateSessionFactory {
         return sessionFactory;
     }
 }
+
+
+
