@@ -45,9 +45,8 @@
                 <li><a href="#" class="nav-link px-2 text-white">Help</a></li>
                 <li><a href="#" class="nav-link px-2 text-white">About</a></li>
             </ul>
-            <p class="text-end">${user.user.firstName} ${user.user.lastName}!</p>
+            <p class="text-end">${user.user.firstName} ${user.user.lastName}   </p>
             <div class="text-end">
-                <p>${user.user.firstName} ${user.user.lastName}!</p>
                 <a href="/logout" type="button" class="btn btn-warning">Выйти</a>
             </div>
         </div>
