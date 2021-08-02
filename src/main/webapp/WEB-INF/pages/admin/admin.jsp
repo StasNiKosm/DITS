@@ -39,13 +39,12 @@
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <img src="https://e7.pngegg.com/pngimages/754/474/png-clipart-computer-icons-system-administrator-avatar-computer-network-heroes-thumbnail.png" alt="mdo" width="32" height="32" class="rounded-circle">
-            <span class="fs-4 px-2">Admin</span>
+            <span class="fs-4 px-2">Admin | ${user.user.firstName} ${user.user.lastName}</span>
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li><a href="/admin" class="nav-link px-2 text-secondary">Home</a></li>
                 <li><a href="#" class="nav-link px-2 text-white">Help</a></li>
                 <li><a href="#" class="nav-link px-2 text-white">About</a></li>
             </ul>
-            <p class="text-end">${user.user.firstName} ${user.user.lastName}   </p>
             <div class="text-end">
                 <a href="/logout" type="button" class="btn btn-warning">Выйти</a>
             </div>
