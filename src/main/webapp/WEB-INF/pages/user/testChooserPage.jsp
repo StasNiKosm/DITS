@@ -104,7 +104,7 @@
             $("#testDiv").show();
         }
 
-        // $().ready(function() {
+         $().ready(function() {
 
             $("#test").change(function (event) {
                 console.log("CLICK " + $(event.target).val());
@@ -117,6 +117,9 @@
                     }
                 });
             });
+         });
+
+        $().ready(function() {
 
             $("#topic").change(function(event) {
 
@@ -147,7 +150,7 @@
 
             $("#topic").trigger("change");
 
-        // });
+        });
     </script>
 </body>
 </html>
