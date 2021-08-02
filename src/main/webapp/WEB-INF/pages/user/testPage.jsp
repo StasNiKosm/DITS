@@ -41,7 +41,7 @@
                         <div class="row">
                             <div class="col d-flex justify-content-end">
                                 <button id="next-question" class="btn btn-primary" type="button" style="max-width:200px">Следующий</button>
-                                <button id="submit" class="btn btn-primary" type="submit" style="max-width:200px; display: none;">Зкончить</button>
+                                <button id="submit" class="btn btn-primary" type="submit" style="max-width:200px; display: none;">Закончить</button>
                             </div>
                         </div>
                     </form>

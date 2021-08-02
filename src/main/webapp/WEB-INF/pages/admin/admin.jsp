@@ -69,7 +69,7 @@
             </div>
             <div>
                 <h2>Users</h2>
-                <p>Можешь создать нового уникального пользователя, изменить роль уже существующего пользователя: сделать админом, тьютером или обычным пользователем, а также его удалить.</p>
+                <p>Можешь создать нового уникального пользователя, редактировать существующего пользователя, а также его удалить. Меняя роль Unconfirmed (самозарегестрировашийся пользователь) на User, ты позволяешь ему проходить тесты.</p>
                 <a href="/admin/createUser" class="btn btn-outline-primary btn-lg" style="min-width: 90px;">Create</a>
                 <a href="/admin/updateUser" class="btn btn-outline-warning btn-lg" style="min-width: 90px">Edit</a>
                 <a href="/admin/deleteUser" class="btn btn-outline-danger btn-lg" style="min-width: 90px">Delete</a>
