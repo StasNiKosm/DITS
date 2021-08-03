@@ -54,12 +54,6 @@
 
 <div class="container px-4 py-5" >
     <div class="row">
-<%--        <div class="col-md-3 col-sm-6">--%>
-<%--            <img src="http://devincubator.by/images/human1.png" alt="mdo" width="200" height="200" >--%>
-<%--        </div>--%>
-<%--        <div class="col col-sm-6 display-5">--%>
-<%--            <p class="text-left">Привет, ${user.user.firstName} ${user.user.lastName}!</p>--%>
-<%--        </div>--%>
     </div>
     <h1 class="pb-1 border-bottom text-center ">Выбор возможностей</h1>
     <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
